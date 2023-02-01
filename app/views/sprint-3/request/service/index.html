@@ -1,0 +1,49 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+What is the name of your discovery? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/service/summary" method="get">
+
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--l" for="title">
+      What is the name of your discovery?
+    </label>
+                        </h1>
+                        <div id="title-hint" class="govuk-hint">
+    This can be changed in future if you develop and name a service in a future phase.
+  </div>
+                        <input class="govuk-input" id="title" name="title" type="text" value={{data['title']}}>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">
+  Save and continue
+</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}
