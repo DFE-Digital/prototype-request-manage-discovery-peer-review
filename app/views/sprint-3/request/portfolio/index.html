@@ -1,0 +1,102 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Portfolio – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/sprint-3/request/end-date" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/dd" method="get">
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+        Portfolio
+      </h1>
+                            </legend>
+                               <div id="disco-end-hint" class="govuk-hint">
+      Select one option.
+    </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio" name="portfolio" type="radio" value="Families" {{ checked('portfolio','Families') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio">
+          Families
+        </label>
+                                </div>
+                                  <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-1" name="portfolio" type="radio" value="Funding" {{ checked('portfolio','Funding') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-1">
+          Funding
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-2" name="portfolio" type="radio" value="Ops and Infrastructure" {{ checked('portfolio','Ops and Infrastructure') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-2">
+          Ops and Infrastructure
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-3" name="portfolio" type="radio" value="Regions" {{ checked('portfolio','Regions') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-3">
+          Regions
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-4" name="portfolio" type="radio" value="Schools" {{ checked('portfolio','Schools') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-4">
+          Schools
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-5" name="portfolio" type="radio" value="Skills" {{ checked('portfolio','Skills') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-5">
+          Skills
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-6" name="portfolio" type="radio" value="STA"{{ checked('portfolio','STA') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-6">
+          STA
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-7" name="portfolio" type="radio" value="TRA" {{ checked('portfolio','TRA') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-7">
+          TRA
+        </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

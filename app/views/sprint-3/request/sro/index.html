@@ -1,0 +1,83 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Is {{data['dd']}} the Senior Responsible Officer (SRO)? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/sprint-3/request/dd" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/delivery" method="get">
+
+  <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="sro-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+       Is {{data['dd']}} also the Senior Responsible Officer (SRO)? 
+      </h1>
+              </legend>
+              <div id="sro-hint" class="govuk-hint">
+      Select one option.
+    </div>
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="sro" name="sro" type="radio" value="Yes" data-aria-controls="conditional-sro" {{ checked('sro','Yes') }}>
+                  <label class="govuk-label govuk-radios__label" for="sro">
+          Yes
+        </label>
+                </div>
+           
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="sro-2" name="sro" type="radio" value="No" data-aria-controls="conditional-sro-2"  {{ checked('sro','No') }}>
+                  <label class="govuk-label govuk-radios__label" for="sro-2">
+          No
+        </label>
+                </div>
+                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-sro-2">
+
+                   <div class="govuk-form-group">
+                       
+                            <label class="govuk-label" for="sro-name">
+      Name of the SRO
+    </label>
+                       
+
+                        <input class="govuk-input" id="sro-name" name="sro-name" type="text" value={{data['sro-name']}}>
+                    </div>
+
+                </div>
+
+              </div>
+            </fieldset>
+          </div>
+
+                    <button class="govuk-button" data-module="govuk-button">
+  Save and continue
+</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

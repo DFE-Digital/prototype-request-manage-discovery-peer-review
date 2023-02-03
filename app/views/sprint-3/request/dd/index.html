@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-What is the name of your discovery? – {{serviceName}} –  Request and manage a discovery peer review
+Deputy Director – {{serviceName}} –  Request and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -19,6 +19,8 @@ What is the name of your discovery? – {{serviceName}} –  Request and manage 
         </p>
     </div>
 
+    <a href="/sprint-3/request/portfolio" class="govuk-back-link">Back</a>
+
     {% endblock%}
 
     {% block content %}
@@ -26,18 +28,16 @@ What is the name of your discovery? – {{serviceName}} –  Request and manage 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/sprint-3/request/summary" method="get">
+                <form action="/sprint-3/request/sro" method="get">
 
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--l" for="title">
-      What is the name of your discovery?
+                            <label class="govuk-label govuk-label--l" for="dd">
+      Deputy Director
     </label>
                         </h1>
-                        <div id="title-hint" class="govuk-hint">
-    This can be changed in future if you develop and name a service in a future phase.
-  </div>
-                        <input class="govuk-input" id="title" name="title" type="text" value={{data['title']}}>
+
+                        <input class="govuk-input" id="dd" name="dd" type="text" value={{data['dd']}}>
                     </div>
 
                     <button class="govuk-button" data-module="govuk-button">

@@ -1,0 +1,84 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+ Do you have a product owner or product manager? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/sprint-3/request/delivery" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/check" method="get">
+
+  <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="pm-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+      Do you have a product owner or product manager?
+      </h1>
+              </legend>
+              <div id="pm-hint" class="govuk-hint">
+      Select one option.
+    </div>
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="pm" name="pm" type="radio" value="Yes" data-aria-controls="conditional-pm" {{ checked('pm','Yes') }}>
+                  <label class="govuk-label govuk-radios__label" for="pm">
+          Yes
+        </label>
+                </div>
+                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-pm">
+
+                   <div class="govuk-form-group">
+                       
+                            <label class="govuk-label" for="pm-name">
+      Name of the product owner or product manager
+    </label>
+                       
+
+                        <input class="govuk-input" id="pm-name" name="pm-name" type="text" value={{data['pm-name']}}>
+                    </div>
+
+                </div>
+           
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="pm-2" name="pm" type="radio" value="No" data-aria-controls="conditional-pm-2"  {{ checked('pm','No') }}>
+                  <label class="govuk-label govuk-radios__label" for="pm-2">
+          No
+        </label>
+                </div>
+                    
+
+              </div>
+            </fieldset>
+          </div>
+
+                    <button class="govuk-button" data-module="govuk-button">
+  Save and continue
+</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

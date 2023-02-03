@@ -1,0 +1,77 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+When did you start discovery? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+<a href="/sprint-3/request/summary" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/end-date" method="get">
+
+                    <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" role="group" aria-describedby="disco-start-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        When did you start discovery? 
+      </h1>
+    </legend>
+    <div id="disco-start-hint" class="govuk-hint">
+      For example, 18 2 2023
+    </div>
+    <div class="govuk-date-input" id="disco-start">
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="disco-start-day">
+            Day
+          </label>
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-start-day" name="disco-start-day" type="text" inputmode="numeric" value="{{data['disco-start-day']}}">
+        </div>
+      </div>
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="disco-start-month">
+            Month
+          </label>
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-start-month" name="disco-start-month" type="text" inputmode="numeric"value="{{data['disco-start-month']}}">
+        </div>
+      </div>
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="disco-start-year">
+            Year
+          </label>
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="disco-start-year" name="disco-start-year" type="text" inputmode="numeric"value="{{data['disco-start-year']}}">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+                    <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Discovery purpose – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/sprint-3/request/service" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/sprint-3/request/start-date" method="get">
+
+                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="300">
+                        <div class="govuk-form-group">
+                            <h1 class="govuk-label-wrapper">
+                                <label class="govuk-label govuk-label--l" for="purpose">Discovery purpose</label>
+                            </h1>
+                            <div id="purpose-hint" class="govuk-hint">Help people understand what your discovery is about</div>
+                            <textarea class="govuk-textarea govuk-js-character-count" id="purpose" name="purpose" rows="5" aria-describedby="purpose-info purpose-hint">{{data['purpose']}}</textarea>
+                        </div>
+                        <div id="purpose-info" class="govuk-hint govuk-character-count__message">You can enter up to 300 characters</div>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

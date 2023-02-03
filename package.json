@@ -5,6 +5,7 @@
     "start": "govuk-prototype-kit start"
   },
   "dependencies": {
+    "@microsoft/microsoft-graph-client": "^3.0.5",
     "dfeuk-frontend": "^2.1.4",
     "govuk-frontend": "^4.5.0",
     "govuk-prototype-kit": "^13.2.4"

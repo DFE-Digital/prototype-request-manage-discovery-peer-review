@@ -1,0 +1,106 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+When did you start discovery? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+  <div class="govuk-phase-banner">
+    <p class="govuk-phase-banner__content">
+      <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+      <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+    </p>
+  </div>
+
+  <a href="/sprint-3/request/start-date" class="govuk-back-link">Back</a>
+
+  {% endblock%}
+
+  {% block content %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <form action="/sprint-3/request/portfolio" method="get">
+
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="disco-end-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+        Do you have a planned end date for your discovery?
+      </h1>
+              </legend>
+              <div id="disco-end-hint" class="govuk-hint">
+      Select one option.
+    </div>
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="disco-end" name="disco-end" type="radio" value="Yes" data-aria-controls="conditional-disco-end" {{ checked('disco-end','Yes') }}>
+                  <label class="govuk-label govuk-radios__label" for="disco-end">
+          Yes
+        </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-disco-end">
+
+                  <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="disco-end-hint">
+                      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+      End date
+    </legend>
+                      <div id="disco-end-hint" class="govuk-hint">
+      For example, 18 2 2023
+    </div>
+                      <div class="govuk-date-input" id="disco-end">
+                        <div class="govuk-date-input__item">
+                          <div class="govuk-form-group">
+                            <label class="govuk-label govuk-date-input__label" for="disco-end-day">
+            Day
+          </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-day" name="disco-end-day" type="text" inputmode="numeric" value="{{data['disco-end-day']}}">
+                          </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                          <div class="govuk-form-group">
+                            <label class="govuk-label govuk-date-input__label" for="disco-end-month">
+            Month
+          </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-month" name="disco-end-month" type="text" inputmode="numeric"value="{{data['disco-end-month']}}">
+                          </div>
+                        </div>
+                        <div class="govuk-date-input__item">
+                          <div class="govuk-form-group">
+                            <label class="govuk-label govuk-date-input__label" for="disco-end-year">
+            Year
+          </label>
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="disco-end-year" name="disco-end-year" type="text" inputmode="numeric"value="{{data['disco-end-year']}}">
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="disco-end-2" name="disco-end" type="radio" value="No" data-aria-controls="conditional-disco-end-2"  {{ checked('disco-end','No') }}>
+                  <label class="govuk-label govuk-radios__label" for="disco-end-2">
+          No
+        </label>
+                </div>
+
+              </div>
+            </fieldset>
+          </div>
+          <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+        </form>
+
+      </div>
+    </div>
+
+  {% endblock %}
