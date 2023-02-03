@@ -33,7 +33,7 @@ Do you have a delivery manager? – {{serviceName}} –  Request and manage a di
                  <p>I know the dates below need to be in 18 June 2023 format and not 18 6 2023. I need to implement a filer to convert numbers to months</p>
 
 
-                <form action="/sprint-3/request/product" method="get">
+                <form action="/sprint-3/request/submitted" method="get">
 
                     <dl class="govuk-summary-list">
                         
@@ -41,30 +41,73 @@ Do you have a delivery manager? – {{serviceName}} –  Request and manage a di
                             <dt class="govuk-summary-list__key">Discovery name</dt>
                             <dd class="govuk-summary-list__value">{{data['title']}}</dd>
                             <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> discovery name</span></a>
+                                <a class="govuk-link" href="/sprint-3/request/service">Change<span class="govuk-visually-hidden"> discovery name</span></a>
                             </dd>
                         </div>
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Summary</dt>
                             <dd class="govuk-summary-list__value">{{data['purpose']}}</dd>
                             <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
+                                <a class="govuk-link" href="/sprint-3/request/summary">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
                             </dd>
                         </div>
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Start date</dt>
                             <dd class="govuk-summary-list__value">{{data['disco-start-day']}} {{data['disco-start-month']}} {{data['disco-start-year']}}</dd>
                             <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                                <a class="govuk-link" href="/sprint-3/request/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                             </dd>
                         </div>
                         
-                     
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Planned end date</dt>
+                            <dd class="govuk-summary-list__value">{{data['disco-end']}}
+                                {% if data['disco-end'] === "Yes"%}<br/>{{data['disco-start-day']}} {{data['disco-start-month']}} {{data['disco-start-year']}}{% endif%}</dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="/sprint-3/request/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                            </dd>
+                        </div>
+                        <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Portfolio</dt>
+                                <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/portfolio">Change<span class="govuk-visually-hidden"> portfolio of team doing the discovery</span></a>
+                                </dd>
+                            </div>
+                        <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Deputy Director</dt>
+                                <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
+                                </dd>
+                            </div>
+                        <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">SRO same as DD</dt>
+                                <dd class="govuk-summary-list__value">{{data['sro']}} 
+                                    {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
+                                </dd>
+                            </div>
+                        <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Delivery manager</dt>
+                                <dd class="govuk-summary-list__value">{{data['dm']}} 
+                                    {% if data['dm'] === "Yes"%}<br/>{{data['dm-name']}}{% endif%}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/delivery">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
+                                </dd>
+                            </div>
+                        <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Product owner or manager</dt>
+                                <dd class="govuk-summary-list__value">{{data['pm']}} 
+                                    {% if data['pm'] === "Yes"%}<br/>{{data['pm-name']}}{% endif%}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/product">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
+                                </dd>
+                            </div>
                     </dl>
 
-                    <button class="govuk-button" data-module="govuk-button">
-  Save and continue
-</button>
+                    <button class="govuk-button" data-module="govuk-button">Submit request</button>
                 </form>
 
             </div>
