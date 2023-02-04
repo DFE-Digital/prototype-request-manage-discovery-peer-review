@@ -29,6 +29,22 @@ router.post('/sprint-3/request/process-request', function (req, res) {
   res.redirect('/sprint-3/request/submitted')
 })
 
+router.get('/sprint-3/manage/', function (req, res) {
+  res.render('sprint-3/manage/index.html')
+})
+
+router.get('/sprint-3/manage/team/:id', function (req, res) {
+  res.render('sprint-3/manage/team/index.html')
+})
+
+router.get('/sprint-3/manage/review/:id', function (req, res) {
+  res.render('sprint-3/manage/review/index.html')
+})
+
+router.get('/sprint-3/manage/files/:id', function (req, res) {
+    res.render('sprint-3/manage/files/index.html')
+  })
+
 // Make sure this is after any routes for /manage
 router.get('/sprint-3/manage/:id', function (req, res) {
   res.render('sprint-3/manage/entry/index.html')

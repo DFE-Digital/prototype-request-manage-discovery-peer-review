@@ -1,0 +1,229 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Files – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/sprint-3/manage/" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>School 4 day week</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>12345</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Requestor</span><br/>James Cheetham</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>12 April 2023</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Rating</span><br/>
+                            <strong class="govuk-tag govuk-tag--grey">Under review</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/12345">Summary</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and reviewers</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">1</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting files</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Panel outcome</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+          Change<span class="govuk-visually-hidden"> outcome</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <p>The panel have given this discovery an <strong class="dfeuk-tag dfeuk-tag--yellow">Amber</strong> status.</p>
+                        <p>An amber outcome suggests the team should take note of any recommendations in this report, but does not prevent them from continuing their work.</p>
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Summary of review</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <p>This is meaningless 4-blocker root-and-branch review, for staff engagement i need to pee and then go to another meeting make it more corporate please.</p>
+                        <p>Big data usabiltiy. Out of scope turn the crank we need more paper. Conversational content incentivize adoption drink from the firehose ping me, let's take this conversation offline, or tread it daily.</p>
+                        <p>Three-martini lunch vertical integration work identify pain points productize. Diversify kpis what's the status on the deliverables for eow?, or can I just chime in on that one, nor five-year strategic plan parallel path make it a priority but what's the real problem we're trying to solve here?.</p>
+
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Panel comments</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <p>Where do we stand on the latest client ask technologically. Churning anomalies organic growth, or show pony, for you better eat a reality sandwich before you walk back in that boardroom.</p>
+                        <p>But what's the real problem we're trying to solve here? core competencies, or i'll book a meeting so we can solution this before the sprint is over, for take five, punch the tree, and come back in here with a clear head, and can you put it on my calendar? product launch moving the goalposts.</p>
+
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">What the team has done well</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <ol class="govuk-list govuk-list--number">
+                            <li>Those options are already baked in with this model</li>
+                            <li>We need to start advertising on social media finance incentivize adoption</li>
+                            <li>Bench mark t-shaped individual, but what about scaling components to a global audience?</li>
+                            <li>Groom the backlog get buy-in introduccion, and please advise soonest,</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">What the team can improve</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="#">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <ol class="govuk-list govuk-list--number">
+                            <li>Those options are already baked in with this model</li>
+                            <li>We need to start advertising on social media finance incentivize adoption</li>
+                            <li>Bench mark t-shaped individual, but what about scaling components to a global audience?</li>
+                            <li>Groom the backlog get buy-in introduccion, and please advise soonest,</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <form method="post">
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+        Are you happy to accept the panel's review?
+      </h2>
+                            </legend>
+                            <div id="contact-hint" class="govuk-hint">
+      Select one option.
+    </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="contact" name="contact" type="radio" value="email" data-aria-controls="conditional-contact">
+                                    <label class="govuk-label govuk-radios__label" for="contact">
+          Yes
+        </label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="contact-by-email">
+            Email address
+          </label>
+                                        <input class="govuk-input govuk-!-width-one-third" id="contact-by-email" name="contact-by-email" type="email" spellcheck="false" autocomplete="email">
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="contact-2" name="contact" type="radio" value="phone" data-aria-controls="conditional-contact-2">
+                                    <label class="govuk-label govuk-radios__label" for="contact-2">
+          No
+        </label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="contact-by-phone">
+            Phone number
+          </label>
+                                        <input class="govuk-input govuk-!-width-one-third" id="contact-by-phone" name="contact-by-phone" type="tel" autocomplete="tel">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

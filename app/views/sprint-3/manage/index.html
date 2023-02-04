@@ -1,0 +1,59 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+
+                <h1 class="govuk-heading-l">Manage discovery peer reviews</h1>
+
+                <table class="dfeuk-table dfeuk-table-responsive">
+                    <thead class="dfeuk-table__head">
+                        <tr class="dfeuk-table__row">
+                            <th scope="col" class="dfeuk-table__header">Code</th>
+                            <th scope="col" class="dfeuk-table__header">Discovery</th>
+                            <th scope="col" class="dfeuk-table__header">Portfolio</th>
+                            <th scope="col" class="dfeuk-table__header">Requestor</th>
+                            <th scope="col" class="dfeuk-table__header">Review date</th>
+                            <th scope="col" class="dfeuk-table__header">Design</th>
+                            <th scope="col" class="dfeuk-table__header">Research</th>
+                        </tr>
+                    </thead>
+                    <tbody class="dfeuk-table__body">
+                        <tr class="dfeuk-table__row">
+                            <th scope="row" class="dfeuk-table__header"><a href="/sprint-3/manage/12345">12345</a></th>
+                            <td class="dfeuk-table__cell">School 4 day week</td>
+                            <td class="dfeuk-table__cell">Schools</td>
+                            <td class="dfeuk-table__cell">James Cheetham</td>
+                            <td class="dfeuk-table__cell">12 April 2023</td>
+                            <td class="dfeuk-table__cell">Andy Jones</td>
+                            <td class="dfeuk-table__cell">Tom Adams</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    {% endblock %}
