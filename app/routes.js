@@ -29,13 +29,7 @@ router.post('/sprint-3/request/process-request', function (req, res) {
   res.redirect('/sprint-3/request/submitted')
 })
 
-
-
-
-
 // Make sure this is after any routes for /manage
-router.get('/sprint-3/manage/:id', function(req, res){
-
-res.render('manage/entry/index')
-
+router.get('/sprint-3/manage/:id', function (req, res) {
+  res.render('sprint-3/manage/entry/index.html')
 })
