@@ -72,7 +72,8 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
- {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
@@ -82,50 +83,25 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                 </nav>
             </div>
             <div class="govuk-grid-column-two-thirds">
-                <h2 class="govuk-heading-m">Supporting artefacts</h2>
+                <h2 class="govuk-heading-m">Add a link to an artefact</h2>
 
-                <p>You can add links to supporting artefacts for your peer review.</p>
+                <form action="/sprint-3/manage/artefacts/add/12345" method="post">
 
-                {% if artefacts.length%}
-
-                    <table class="govuk-table">
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Artefact</th>
-                                <th scope="col" class="govuk-table__header">Added on</th>
-                                <th scope="col" class="govuk-table__header">Added By</th>
-                                <th scope="col" class="govuk-table__header">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                            {% for a in artefacts %}
-                                <tr class="govuk-table__row">
-                                    <th scope="row" class="govuk-table__header">
-                                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
-                                    </th>
-                                    <td class="govuk-table__cell">{{a.addedBy}}</td>
-                                    <td class="govuk-table__cell">{{a.addedOn}}</td>
-                                    <td class="govuk-table__cell">
-                                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <p>
-                        <a href="/sprint-3/manage/artefacts/add/12345">Add another link</a>
-                    </p>
-
-                {% else %}
-                    <div class="govuk-inset-text">
-                        <p>No links have been added</p>
-                        <p>
-                            <a href="/sprint-3/manage/artefacts/add/12345">Add link</a>
-                        </p>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="artefact-url">URL of the artefact</label>
+                        <div id="artefact-url-hint" class="govuk-hint">Make sure it starts with https://</div>
+                        <input class="govuk-input" id="artefact-url" name="artefact-url" type="text">
                     </div>
 
-                {% endif %}
+                       <div class="govuk-form-group">
+                        <label class="govuk-label" for="artefact-title">Title</label>
+                        <div id="artefact-title-hint" class="govuk-hint">For example: User journey map</div>
+                        <input class="govuk-input" id="artefact-title" name="artefact-title" type="text">
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Add link</button>
+
+                </form>
 
             </div>
         </div>

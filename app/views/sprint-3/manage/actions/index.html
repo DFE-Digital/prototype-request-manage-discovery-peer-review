@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Files – {{serviceName}} –  Request and manage a discovery peer review
+Actions and history – {{serviceName}} –  Request and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Manage"%}
@@ -11,11 +11,11 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
     <div class="govuk-phase-banner">
         <p class="govuk-phase-banner__content">
             <strong class="govuk-tag govuk-phase-banner__content__tag">
-      alpha
-    </strong>
+    alpha
+</strong>
             <span class="govuk-phase-banner__text">
-      This is a prototype – it is not a real service.
-    </span>
+    This is a prototype – it is not a real service.
+</span>
         </p>
     </div>
 
@@ -71,63 +71,54 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                         <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
                         </li>
-                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
- {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+                        <li class="dfeuk-vertical-nav__section-item">
+                            
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
                         </li>
-                        <li class="dfeuk-vertical-nav__section-item">
+                        <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/actions/12345">Actions and history</a>
                         </li>
                     </ul>
                 </nav>
             </div>
             <div class="govuk-grid-column-two-thirds">
-                <h2 class="govuk-heading-m">Supporting artefacts</h2>
+                <h2 class="govuk-heading-m">Actions and history</h2>
+                <p class="govuk-body">History of actions and tasks on this review.</p>
 
-                <p>You can add links to supporting artefacts for your peer review.</p>
+                <div class="dfeuk-timeline">
+                    <ol>
+                        <li>
+                            <h3 class="govuk-heading-m">Email sent to james.cheetham@education.gov.uk</h3>
+                            <p class="govuk-body-s">By: System on 12 January 2023 at 15:14</p>
+                                 <details class="govuk-details" data-module="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">Details</span>
+                                </summary>
+                                <div class="govuk-details__text">The email confirms that the review request has been accepted. The email asks the recipient to access the request in the service and select a date for the review from the options added by Mike Dunn.</div>
+                            </details>
+                        </li>
+                        <li>
+                            <h3 class="govuk-heading-m">Review date options added</h3>
+                            <p class="govuk-body-s">By: Mike Dunn on 12 January 2023 at 15:14</p>
+                        </li>
+                        <li>
+                            <h3 class="govuk-heading-m">Review request approved</h3>
+                            <p class="govuk-body-s">By: Mike Dunn on 12 January 2023 at 15:12</p>
+                        </li>
+                        <li>
+                            <h3 class="govuk-heading-m">Review request submitted</h3>
+                            <p class="govuk-body-s">By: James Cheetham on 12 January 2023 at 11:34</p>                           
+                        </li>
 
-                {% if artefacts.length%}
+                    </ol>
 
-                    <table class="govuk-table">
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Artefact</th>
-                                <th scope="col" class="govuk-table__header">Added on</th>
-                                <th scope="col" class="govuk-table__header">Added By</th>
-                                <th scope="col" class="govuk-table__header">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                            {% for a in artefacts %}
-                                <tr class="govuk-table__row">
-                                    <th scope="row" class="govuk-table__header">
-                                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
-                                    </th>
-                                    <td class="govuk-table__cell">{{a.addedBy}}</td>
-                                    <td class="govuk-table__cell">{{a.addedOn}}</td>
-                                    <td class="govuk-table__cell">
-                                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <p>
-                        <a href="/sprint-3/manage/artefacts/add/12345">Add another link</a>
-                    </p>
-
-                {% else %}
-                    <div class="govuk-inset-text">
-                        <p>No links have been added</p>
-                        <p>
-                            <a href="/sprint-3/manage/artefacts/add/12345">Add link</a>
-                        </p>
-                    </div>
-
-                {% endif %}
+                </div>
 
             </div>
         </div>
 
     {% endblock %}
+
+
+
