@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Request – {{serviceName}} –  Request and manage a discovery peer review
+Request – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Overview"%}
@@ -25,18 +25,18 @@ Request – {{serviceName}} –  Request and manage a discovery peer review
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Request a discovery peer review</h1>
+        <h1 class="govuk-heading-xl">Book a discovery peer review</h1>
 
-        <p>Use this service if you want to request a discovery phase peer review.</p>
 
          <p>You can use this service to:</p>
 
          <ul class="govuk-list govuk-list--bullet">
-            <li>make a new request for a discovery phase peer review</li>
-            <li>provide some basic information about what your discovery is</li>
-            <li>select some dates that you'd like to have the peer review on</li>
+            <li>book an end of discovery peer review</li>
+            <li>provide a summary of the project in discovery</li>
+            <li>update the project details, for example, the name of a discovery</li>
          </ul>
 
+  <p>You can book a discovery peer review for your own project, or on behalf of a team</p>
 
          <a href="/sprint-3/request/service/" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
   Start now
@@ -47,7 +47,14 @@ Request – {{serviceName}} –  Request and manage a discovery peer review
 
                 <h2 class="govuk-heading-l">Before you start</h2>
 
-        <p>Check the <a href="/sprint-3/manage/">manage</a> page to see if a request has already been submitted for your discovery.</p>
+        <p>You need your:</p>
+
+         <ul class="govuk-list govuk-list--bullet">
+            <li>project name</li>
+            <li>project code</li>
+         </ul>
+
+        <p>You can check the <a href="/sprint-3/manage/">manage</a> page to see if a request has already been submitted for your discovery.</p>
 
                     <h3 class="govuk-heading-m">If you need help using this service</h3>
 

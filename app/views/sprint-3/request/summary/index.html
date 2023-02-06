@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Discovery purpose – {{serviceName}} –  Request and manage a discovery peer review
+Discovery purpose – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -35,7 +35,7 @@ Discovery purpose – {{serviceName}} –  Request and manage a discovery peer r
                             <h1 class="govuk-label-wrapper">
                                 <label class="govuk-label govuk-label--l" for="purpose">Discovery purpose</label>
                             </h1>
-                            <div id="purpose-hint" class="govuk-hint">Help people understand what your discovery is about</div>
+                            <div id="purpose-hint" class="govuk-hint">Tell us what your discovery is about</div>
                             <textarea class="govuk-textarea govuk-js-character-count" id="purpose" name="purpose" rows="5" aria-describedby="purpose-info purpose-hint">{{data['purpose']}}</textarea>
                         </div>
                         <div id="purpose-info" class="govuk-hint govuk-character-count__message">You can enter up to 300 characters</div>

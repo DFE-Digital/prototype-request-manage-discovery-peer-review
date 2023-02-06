@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-When did you start discovery? – {{serviceName}} –  Request and manage a discovery peer review
+When did you start discovery? – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -34,7 +34,7 @@ When did you start discovery? – {{serviceName}} –  Request and manage a disc
             <fieldset class="govuk-fieldset" aria-describedby="disco-end-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
-        Do you have a planned end date for your discovery?
+        Do you have a planned end date for discovery?
       </h1>
               </legend>
               <div id="disco-end-hint" class="govuk-hint">
@@ -44,7 +44,7 @@ When did you start discovery? – {{serviceName}} –  Request and manage a disc
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="disco-end" name="disco-end" type="radio" value="Yes" data-aria-controls="conditional-disco-end" {{ checked('disco-end','Yes') }}>
                   <label class="govuk-label govuk-radios__label" for="disco-end">
-          Yes
+          Yes, the project has a planned end date for discovery
         </label>
                 </div>
                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-disco-end">
@@ -90,7 +90,7 @@ When did you start discovery? – {{serviceName}} –  Request and manage a disc
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="disco-end-2" name="disco-end" type="radio" value="No" data-aria-controls="conditional-disco-end-2"  {{ checked('disco-end','No') }}>
                   <label class="govuk-label govuk-radios__label" for="disco-end-2">
-          No
+          No, the project does not have a planned end date for discovery
         </label>
                 </div>
 

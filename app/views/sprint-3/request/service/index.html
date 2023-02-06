@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-What is the name of your discovery? – {{serviceName}} –  Request and manage a discovery peer review
+Discovery name – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -31,11 +31,11 @@ What is the name of your discovery? – {{serviceName}} –  Request and manage 
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
                             <label class="govuk-label govuk-label--l" for="title">
-      What is the name of your discovery?
+      Discovery name
     </label>
                         </h1>
                         <div id="title-hint" class="govuk-hint">
-    This can be changed in future if you develop and name a service in a future phase.
+    This can be changed if you develop a service at alpha
   </div>
                         <input class="govuk-input" id="title" name="title" type="text" value={{data['title']}}>
                     </div>
