@@ -1095,3 +1095,13 @@
 }
 
 
+.dfeuk-header__navigation-link {
+  color: $color_dfeuk-blue !important;
+}
+
+
+.dfeuk-header__navigation-link {
+  @include mq($from: desktop) {
+  color: $color_dfeuk-white !important;
+  }
+}
