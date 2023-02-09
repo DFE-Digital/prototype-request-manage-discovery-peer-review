@@ -30,15 +30,15 @@ Discovery purpose – {{serviceName}} –  Book and manage a discovery peer revi
 
                 <form action="/sprint-3/request/start-date" method="get">
 
-                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="300">
+                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="500">
                         <div class="govuk-form-group">
                             <h1 class="govuk-label-wrapper">
                                 <label class="govuk-label govuk-label--l" for="purpose">Discovery purpose</label>
                             </h1>
-                            <div id="purpose-hint" class="govuk-hint">Tell us about your discovery. This will help us to arrange a panel with the most relevant experience for your review</div>
+                            <div id="purpose-hint" class="govuk-hint">Tell us the background to your discovery. For example, if it's part of a wider service. This will help us to arrange a review panel with the most relevant experience</div>
                             <textarea class="govuk-textarea govuk-js-character-count" id="purpose" name="purpose" rows="5" aria-describedby="purpose-info purpose-hint">{{data['purpose']}}</textarea>
                         </div>
-                        <div id="purpose-info" class="govuk-hint govuk-character-count__message">You can enter up to 300 characters</div>
+                        <div id="purpose-info" class="govuk-hint govuk-character-count__message">You can enter up to 500 characters</div>
                     </div>
 
                     <button class="govuk-button" data-module="govuk-button">Save and continue</button>
