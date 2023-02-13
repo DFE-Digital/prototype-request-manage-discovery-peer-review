@@ -41,23 +41,69 @@ router.post('/sprint-3/request/process-request', function (req, res) {
   res.redirect('/sprint-3/request/submitted')
 })
 
+router.get('/sprint-3/request/dates', function (req, res) {
+  // Whats todays date?
+
+  var today = new Date();
+
+  // What are the weeks 5-10 from now?
+
+  var weeks5 = getMonday(addWeeksToDate(new Date(), 5).toISOString())
+  var weeks6 = getMonday(addWeeksToDate(new Date(), 6).toISOString())
+  var weeks7 = getMonday(addWeeksToDate(new Date(), 7).toISOString())
+  var weeks8 = getMonday(addWeeksToDate(new Date(), 8).toISOString())
+  var weeks9 = getMonday(addWeeksToDate(new Date(), 9).toISOString())
+  var weeks10 = getMonday(addWeeksToDate(new Date(), 10).toISOString())
+
+  //Get monday of the week
+
+  let dates = [];
+
+  dates.push({ week:weeks5.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  dates.push({ week:weeks6.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  dates.push({ week:weeks7.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  dates.push({ week:weeks8.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  dates.push({ week:weeks9.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  dates.push({ week:weeks10.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+
+  console.log(dates)
+  res.render('sprint-3/request/dates/index.html', { dates })
+})
+
+
+function addWeeksToDate(date, weeks) {
+  console.log("Adding " + weeks + " weeks to " + date)
+  console.log(date)
+  date.setDate(date.getDate() + 7 * weeks);
+  return date;
+}
+
+function getMonday(d) {
+  d = new Date(d);
+  var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6:1);
+  return new Date(d.setDate(diff));
+}
+
+
+
 router.get('/sprint-3/manage/', function (req, res) {
   res.render('sprint-3/manage/index.html')
 })
 
 router.get('/sprint-3/manage/team/:id', function (req, res) {
-    var artefacts = []
-    if (req.session.data['artefacts'] !== undefined) {
-      artefacts = req.session.data['artefacts']
-    }
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
   res.render('sprint-3/manage/team/index.html', { artefacts })
 })
 
 router.get('/sprint-3/manage/review/:id', function (req, res) {
-    var artefacts = []
-    if (req.session.data['artefacts'] !== undefined) {
-      artefacts = req.session.data['artefacts']
-    }
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
   res.render('sprint-3/manage/review/index.html', { artefacts })
 })
 
@@ -71,18 +117,18 @@ router.get('/sprint-3/manage/files/:id', function (req, res) {
 })
 
 router.get('/sprint-3/manage/actions/:id', function (req, res) {
-    var artefacts = []
-    if (req.session.data['artefacts'] !== undefined) {
-      artefacts = req.session.data['artefacts']
-    }
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
   res.render('sprint-3/manage/actions/index.html', { artefacts })
 })
 
 router.get('/sprint-3/manage/artefacts/add/:id', function (req, res) {
-    var artefacts = []
-    if (req.session.data['artefacts'] !== undefined) {
-      artefacts = req.session.data['artefacts']
-    }
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
   res.render('sprint-3/manage/artefacts/add.html', { artefacts })
 })
 
@@ -91,7 +137,7 @@ router.post('/sprint-3/manage/artefacts/add/:id', function (req, res) {
 
   let date_ob = new Date()
   let date = ('0' + date_ob.getDate()).slice(-2)
-  let month = date_ob.toLocaleString('default', { month: 'short' });
+  let month = date_ob.toLocaleString('default', { month: 'short' })
   let year = date_ob.getFullYear()
   let hours = date_ob.getHours()
   let minutes = date_ob.getMinutes()
@@ -108,7 +154,7 @@ router.post('/sprint-3/manage/artefacts/add/:id', function (req, res) {
     appid: id,
     url: req.session.data['artefact-url'],
     title: req.session.data['artefact-title'],
-    addedOn: (date + " " + month + " " + year + " at " + hours + ":" + minutes),
+    addedOn: date + ' ' + month + ' ' + year + ' at ' + hours + ':' + minutes,
     addedBy: 'Andy Jones',
     id: uuidv4(),
   })
@@ -124,9 +170,11 @@ router.post('/sprint-3/manage/artefacts/add/:id', function (req, res) {
 
 // Make sure this is after any routes for /manage
 router.get('/sprint-3/manage/:id', function (req, res) {
-    var artefacts = []
-    if (req.session.data['artefacts'] !== undefined) {
-      artefacts = req.session.data['artefacts']
-    }
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
   res.render('sprint-3/manage/entry/index.html', { artefacts })
 })
+
+

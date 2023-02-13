@@ -1,0 +1,59 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Weeks – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+  <div class="govuk-phase-banner">
+    <p class="govuk-phase-banner__content">
+      <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+      <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+    </p>
+  </div>
+
+  <a href="/sprint-3/request/end-date" class="govuk-back-link">Back</a>
+
+  {% endblock%}
+
+  {% block content %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <form action="/sprint-3/request/portfolio" method="get">
+
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="reviewWeek-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">What weeks, this might need to be a more complex page for guidance then the option to select. </h1>
+              </legend>
+              <div id="reviewWeek-hint" class="govuk-hint">Discovery peer reviews happen Monday to Wednesday. Select all the weeks that are suitable for you. These weeks are 5-10 weeks from now.</div>
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+                {%for xdate in dates %}
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}">
+                    <label class="govuk-label govuk-checkboxes__label" for="date_{{loop.index}}">Week beginning {{xdate.week}}
+                    </label>
+                  </div>
+                {% endfor %}
+
+              </div>
+          </fieldset>
+        </div>
+
+        <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

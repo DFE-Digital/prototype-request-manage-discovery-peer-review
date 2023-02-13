@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
+Who is your business partner?– {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -19,7 +19,7 @@ Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
         </p>
     </div>
 
-    <a href="/sprint-3/request/bp" class="govuk-back-link">Back</a>
+    <a href="/sprint-3/request/portfolio" class="govuk-back-link">Back</a>
 
     {% endblock%}
 
@@ -28,16 +28,16 @@ Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/sprint-3/request/sro" method="get">
+                <form action="/sprint-3/request/dd" method="get">
 
                     <div class="govuk-form-group">
                         <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--l" for="dd">
-      Who is the Deputy Director of the portfolio?
+                            <label class="govuk-label govuk-label--l" for="bp">
+      Who is your business partner?
     </label>
                         </h1>
 
-                        <input class="govuk-input" id="dd" name="dd" type="text" value={{data['dd']}}>
+                        <input class="govuk-input" id="bp" name="bp" type="text" value={{data['bp']}}>
                     </div>
 
                     <button class="govuk-button" data-module="govuk-button">

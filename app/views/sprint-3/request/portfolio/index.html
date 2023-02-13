@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Portfolio – {{serviceName}} –  Book and manage a discovery peer review
+ Which portfolio or arms length body is the discovery for? – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Request"%}
@@ -19,7 +19,7 @@ Portfolio – {{serviceName}} –  Book and manage a discovery peer review
         </p>
     </div>
 
-    <a href="/sprint-3/request/end-date" class="govuk-back-link">Back</a>
+    <a href="/sprint-3/request/dates" class="govuk-back-link">Back</a>
 
     {% endblock%}
 
@@ -28,13 +28,13 @@ Portfolio – {{serviceName}} –  Book and manage a discovery peer review
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/sprint-3/request/dd" method="get">
+                <form action="/sprint-3/request/bp" method="get">
 
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 class="govuk-fieldset__heading">
-        Which portfolio is the discovery for?
+        Which portfolio or arms length body is the discovery for?
       </h1>
                             </legend>
                                <div id="disco-end-hint" class="govuk-hint">
@@ -77,14 +77,21 @@ Portfolio – {{serviceName}} –  Book and manage a discovery peer review
           Skills Group
         </label>
                                 </div>
+                                <div class="govuk-radios__divider">or</div>
                                  <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="portfolio-6" name="portfolio" type="radio" value="STA"{{ checked('portfolio','STA') }} >
+                                    <input class="govuk-radios__input" id="portfolio-6" name="portfolio" type="radio" value="Standards and Testing Agency"{{ checked('portfolio','Standards and Testing Agency') }} >
                                     <label class="govuk-label govuk-radios__label" for="portfolio-6">
           Standards and Testing Agency
         </label>
                                 </div>
                                  <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="portfolio-7" name="portfolio" type="radio" value="TRA" {{ checked('portfolio','TRA') }} >
+                                    <input class="govuk-radios__input" id="portfolio-6a" name="portfolio" type="radio" value="Student Loans Company" {{ checked('portfolio','Student Loans Company') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-6a">
+          Student Loans Company
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-7" name="portfolio" type="radio" value="Teaching Regulation Agency" {{ checked('portfolio','Teaching Regulation Agency') }} >
                                     <label class="govuk-label govuk-radios__label" for="portfolio-7">
           Teaching Regulation Agency
         </label>
