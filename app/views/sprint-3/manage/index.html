@@ -23,21 +23,43 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
 
     {% block content %}
 
-        <div class="govuk-grid-row">
+      <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
+                            <span class="dfeuk-vertical-nav--count">1</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/12345">New requests</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">7</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Active</a>
+                        </li>
+                        
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">32</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Completed</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">2</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Cancelled</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             <div class="govuk-grid-column-three-quarters">
+               
+                  <h1 class="govuk-heading-l">New requests</h1>
 
-                <h1 class="govuk-heading-l">Manage discovery peer reviews</h1>
-
-                <table class="dfeuk-table dfeuk-table-responsive">
+                   <table class="dfeuk-table dfeuk-table-responsive">
                     <thead class="dfeuk-table__head">
                         <tr class="dfeuk-table__row">
-                            <th scope="col" class="dfeuk-table__header">Code</th>
+                            <th scope="col" class="dfeuk-table__header">Request</th>
                             <th scope="col" class="dfeuk-table__header">Discovery</th>
                             <th scope="col" class="dfeuk-table__header">Portfolio</th>
                             <th scope="col" class="dfeuk-table__header">Booked by</th>
-                            <th scope="col" class="dfeuk-table__header">Review date</th>
-                            <th scope="col" class="dfeuk-table__header">Design</th>
-                            <th scope="col" class="dfeuk-table__header">Research</th>
+                            <th scope="col" class="dfeuk-table__header">Submitted</th>
                         </tr>
                     </thead>
                     <tbody class="dfeuk-table__body">
@@ -46,12 +68,19 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
                             <td class="dfeuk-table__cell">School 4 day week</td>
                             <td class="dfeuk-table__cell">Schools</td>
                             <td class="dfeuk-table__cell">James Cheetham</td>
-                            <td class="dfeuk-table__cell">12 April 2023</td>
-                            <td class="dfeuk-table__cell">Andy Jones</td>
-                            <td class="dfeuk-table__cell">Tom Adams</td>
+                            <td class="dfeuk-table__cell">12 Feb 2023</td>
                         </tr>
                     </tbody>
                 </table>
+
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+
+              
+
 
             </div>
         </div>
