@@ -160,6 +160,25 @@ function getMonday(d) {
   return new Date(d.setDate(diff))
 }
 
+
+
+
+// New
+
+router.get('/sprint-3/new/12345', function (req, res) {
+  res.render('sprint-3/new/index.html')
+})
+
+
+
+
+
+
+
+
+
+// Manage
+
 router.get('/sprint-3/manage/', function (req, res) {
   res.render('sprint-3/manage/index.html')
 })
@@ -249,3 +268,10 @@ router.get('/sprint-3/manage/:id', function (req, res) {
   }
   res.render('sprint-3/manage/entry/index.html', { artefacts })
 })
+
+
+
+
+
+
+
