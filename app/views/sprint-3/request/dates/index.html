@@ -40,7 +40,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
 
                 {%for xdate in dates %}
                   <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}">
+                    <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}" {{ checked('reviewWeek',xdate.week) }} >
                     <label class="govuk-label govuk-checkboxes__label" for="date_{{loop.index}}">Week beginning {{xdate.week}}
                     </label>
                   </div>
