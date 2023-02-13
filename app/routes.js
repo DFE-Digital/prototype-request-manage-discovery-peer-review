@@ -46,7 +46,8 @@ router.get('/sprint-3/request/dd', function (req, res) {
 
 
 
-  res.render('sprint-3/request/dd/index.html', {})
+
+  res.render('sprint-3/request/dd/index.html', {  })
 })
 
 router.get('/sprint-3/request/dates', function (req, res) {
