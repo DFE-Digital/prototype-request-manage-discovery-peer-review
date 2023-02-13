@@ -6,6 +6,12 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
+const { Client } = require('@microsoft/microsoft-graph-client')
+  const {
+    TokenCredentialAuthenticationProvider,
+  } = require('@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials')
+  const { DeviceCodeCredential } = require('@azure/identity')
+
 var NotifyClient = require('notifications-node-client').NotifyClient,
   notify = new NotifyClient(process.env.NOTIFYAPIKEY)
 
@@ -41,10 +47,40 @@ router.post('/sprint-3/request/process-request', function (req, res) {
   res.redirect('/sprint-3/request/submitted')
 })
 
+router.get('/sprint-3/request/dd', function (req, res) {
+  
+
+  const credential = new DeviceCodeCredential(tenantId, clientId, clientSecret)
+  const authProvider = new TokenCredentialAuthenticationProvider(credential, {
+    scopes: [scopes],
+  })
+
+  const client = Client.initWithMiddleware({
+    debugLogging: true,
+    authProvider,
+    // Use the authProvider object to create the class.
+  })
+
+  res.render('sprint-3/request/dd/index.html', { dds })
+})
+
 router.get('/sprint-3/request/dates', function (req, res) {
   // Whats todays date?
 
-  var today = new Date();
+  var today = new Date()
+
+  // What date have they put as an end date?
+
+  var endDateString =
+    req.session.data['disco-end-year'] +
+    '-' +
+    req.session.data['disco-end-month'] +
+    '-' +
+    req.session.data['disco-end-day']
+
+  var endDateEstimated = new Date(endDateString)
+
+  console.log(endDateEstimated)
 
   // What are the weeks 5-10 from now?
 
@@ -57,35 +93,76 @@ router.get('/sprint-3/request/dates', function (req, res) {
 
   //Get monday of the week
 
-  let dates = [];
+  let dates = []
 
-  dates.push({ week:weeks5.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
-  dates.push({ week:weeks6.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
-  dates.push({ week:weeks7.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
-  dates.push({ week:weeks8.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
-  dates.push({ week:weeks9.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
-  dates.push({ week:weeks10.toLocaleDateString('en-GB', { day:"numeric", month:"long"})  })
+  // Is estimated end date before end of week????
+
+  if (endDateEstimated >= weeks5) {
+    dates.push({
+      week: weeks5.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
+  if (endDateEstimated >= weeks6) {
+    dates.push({
+      week: weeks6.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
+  if (endDateEstimated >= weeks7) {
+    dates.push({
+      week: weeks7.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
+  if (endDateEstimated >= weeks8) {
+    dates.push({
+      week: weeks8.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
+  if (endDateEstimated >= weeks9) {
+    dates.push({
+      week: weeks9.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
+  if (endDateEstimated >= weeks10) {
+    dates.push({
+      week: weeks10.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  }
 
   console.log(dates)
   res.render('sprint-3/request/dates/index.html', { dates })
 })
 
-
 function addWeeksToDate(date, weeks) {
-  console.log("Adding " + weeks + " weeks to " + date)
+  console.log('Adding ' + weeks + ' weeks to ' + date)
   console.log(date)
-  date.setDate(date.getDate() + 7 * weeks);
-  return date;
+  date.setDate(date.getDate() + 7 * weeks)
+  return date
 }
 
 function getMonday(d) {
-  d = new Date(d);
+  d = new Date(d)
   var day = d.getDay(),
-      diff = d.getDate() - day + (day == 0 ? -6:1);
-  return new Date(d.setDate(diff));
+    diff = d.getDate() - day + (day == 0 ? -6 : 1)
+  return new Date(d.setDate(diff))
 }
-
-
 
 router.get('/sprint-3/manage/', function (req, res) {
   res.render('sprint-3/manage/index.html')
@@ -176,5 +253,3 @@ router.get('/sprint-3/manage/:id', function (req, res) {
   }
   res.render('sprint-3/manage/entry/index.html', { artefacts })
 })
-
-
