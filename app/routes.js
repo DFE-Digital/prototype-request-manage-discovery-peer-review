@@ -6,16 +6,11 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
-const { Client } = require('@microsoft/microsoft-graph-client')
-  const {
-    TokenCredentialAuthenticationProvider,
-  } = require('@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials')
-  const { DeviceCodeCredential } = require('@azure/identity')
-
 var NotifyClient = require('notifications-node-client').NotifyClient,
   notify = new NotifyClient(process.env.NOTIFYAPIKEY)
 
 const { v4: uuidv4 } = require('uuid')
+
 
 // Add your routes here
 
@@ -48,20 +43,10 @@ router.post('/sprint-3/request/process-request', function (req, res) {
 })
 
 router.get('/sprint-3/request/dd', function (req, res) {
-  
 
-  const credential = new DeviceCodeCredential(tenantId, clientId, clientSecret)
-  const authProvider = new TokenCredentialAuthenticationProvider(credential, {
-    scopes: [scopes],
-  })
 
-  const client = Client.initWithMiddleware({
-    debugLogging: true,
-    authProvider,
-    // Use the authProvider object to create the class.
-  })
 
-  res.render('sprint-3/request/dd/index.html', { dds })
+  res.render('sprint-3/request/dd/index.html', {})
 })
 
 router.get('/sprint-3/request/dates', function (req, res) {
@@ -96,6 +81,16 @@ router.get('/sprint-3/request/dates', function (req, res) {
   let dates = []
 
   // Is estimated end date before end of week????
+
+if(req.session.data['disco-end'] === "No"){
+  dates.push({week: weeks5.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+  dates.push({week: weeks6.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+  dates.push({week: weeks7.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+  dates.push({week: weeks8.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+  dates.push({week: weeks9.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+  dates.push({week: weeks10.toLocaleDateString('en-GB', {day: 'numeric', month: 'long',})})
+}
+else{
 
   if (endDateEstimated >= weeks5) {
     dates.push({
@@ -145,7 +140,7 @@ router.get('/sprint-3/request/dates', function (req, res) {
       }),
     })
   }
-
+}
   console.log(dates)
   res.render('sprint-3/request/dates/index.html', { dates })
 })

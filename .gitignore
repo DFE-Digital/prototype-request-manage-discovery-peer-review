@@ -6,6 +6,8 @@ node_modules/
 .env
 migrate.log
 usage-data-config.json
+auth-code/config/customConfig.json
+bin
 
 # General ignores
 .DS_Store
