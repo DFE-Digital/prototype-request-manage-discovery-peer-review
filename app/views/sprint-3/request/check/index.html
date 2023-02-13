@@ -67,6 +67,15 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 <a class="govuk-link" href="/sprint-3/request/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                             </dd>
                         </div>
+
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Requested week</dt>
+                            <dd class="govuk-summary-list__value">{{data['reviewWeek']}}
+                               </dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a class="govuk-link" href="/sprint-3/request/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
+                            </dd>
+                        </div>
                         <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Portfolio or <abbr title="Arms length body">ALB</abbr></dt>
                                 <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
