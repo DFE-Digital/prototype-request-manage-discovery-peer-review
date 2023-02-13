@@ -47,22 +47,22 @@ router.post('/sprint-3/request/process-request', function (req, res) {
   res.redirect('/sprint-3/request/submitted')
 })
 
-router.get('/sprint-3/request/dd', function (req, res) {
+// router.get('/sprint-3/request/dd', function (req, res) {
   
 
-  const credential = new DeviceCodeCredential(tenantId, clientId, clientSecret)
-  const authProvider = new TokenCredentialAuthenticationProvider(credential, {
-    scopes: [scopes],
-  })
+//   const credential = new DeviceCodeCredential(tenantId, clientId, clientSecret)
+//   const authProvider = new TokenCredentialAuthenticationProvider(credential, {
+//     scopes: [scopes],
+//   })
 
-  const client = Client.initWithMiddleware({
-    debugLogging: true,
-    authProvider,
-    // Use the authProvider object to create the class.
-  })
+//   const client = Client.initWithMiddleware({
+//     debugLogging: true,
+//     authProvider,
+//     // Use the authProvider object to create the class.
+//   })
 
-  res.render('sprint-3/request/dd/index.html', { dds })
-})
+//   res.render('sprint-3/request/dd/index.html', { dds })
+// })
 
 router.get('/sprint-3/request/dates', function (req, res) {
   // Whats todays date?
