@@ -28,10 +28,10 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-          <h1 class="govuk-heading-l">Select some timescales for having the peer review</h1>
+          <h1 class="govuk-heading-l">Select when you would like your discovery peer review</h1>
 
 {% if data['disco-end'] === "Yes"%}
-<p class="govuk-body">Based on your anticipated end date of {{data['disco-end-day']}}/{{data['disco-end-month']}}/{{data['disco-end-year']}} we are suggesting the following weeks for your peer review.</p>
+<p class="govuk-body">Based on your planned end date of {{data['disco-end-day']}}/{{data['disco-end-month']}}/{{data['disco-end-year']}}, we suggest the following weeks for your peer review.</p>
 {% else %}
 <p class="govuk-body">As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now.</p>
 {% endif %}
@@ -44,7 +44,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                Select dates
               </legend>
-              <div id="reviewWeek-hint" class="govuk-hint">Select all the weeks that are suitable for you.</div>
+              <div id="reviewWeek-hint" class="govuk-hint">Select all weeks that are suitable for you.</div>
               <div class="govuk-checkboxes" data-module="govuk-checkboxes">
 
                 {%for xdate in dates %}
