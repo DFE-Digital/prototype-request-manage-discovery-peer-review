@@ -216,6 +216,15 @@ router.get('/sprint-3/manage/review/submitted', function (req, res) {
   res.render('sprint-3/manage/review/submitted/index.html', { artefacts })
 })
 
+router.get('/sprint-3/manage/review/12345-2', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/index2.html', { artefacts })
+})
+
+
 router.get('/sprint-3/manage/review/:id', function (req, res) {
   var artefacts = []
   if (req.session.data['artefacts'] !== undefined) {
@@ -223,6 +232,8 @@ router.get('/sprint-3/manage/review/:id', function (req, res) {
   }
   res.render('sprint-3/manage/review/index.html', { artefacts })
 })
+
+
 
 
 router.get('/sprint-3/manage/review/edit-outcome/:id', function (req, res) {
