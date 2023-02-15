@@ -86,38 +86,66 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
 
                 <h2 class="govuk-heading-m">Peer review</h2>
                 <p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
-
-                <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-                    <div class="govuk-notification-banner__header">
-                        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-                    </div>
-                    <div class="govuk-notification-banner__content">
-                        <p class="govuk-notification-banner__heading">Panel has completed all sections of the report.</p>
-                        <p>When you're ready, you can submit the report to the Service Assessment Team to check and for it to be sent to the service team.</p>
-                        <form action="/sprint-3/manage/review/submitted" method="get">
-                            <button class="govuk-button" data-module="govuk-button">Submit report</button>
-                            </form>
-                    </div>
-                </div>
-
-                 <div class="govuk-summary-card" id="outcome">
+                <div class="govuk-summary-card" id="outcome">
                     <div class="govuk-summary-card__title-wrapper">
                         <h2 class="govuk-summary-card__title">Panel outcome</h2>
-                        <ul class="govuk-summary-card__actions">
-                            <li class="govuk-summary-card__action">
-                                 <a class="govuk-link" href="/sprint-3/manage/review/edit-outcome/12345/#outcome">
-          Edit<span class="govuk-visually-hidden"> outcome</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="govuk-summary-card__content">
-                        <p>The panel have given this discovery a <strong class="dfeuk-tag dfeuk-tag--{{data['outcome-rag'] | lower}}">{{data['outcome-rag' | lower]}}</strong> status.</p>
                        
                     </div>
-                </div>
+                    <div class="govuk-summary-card__content">
 
-              
+                        <form action="/sprint-3/manage/review/12345">
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset" aria-describedby="outcome-rag-hint">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                        <h3 class="govuk-fieldset__heading">
+        What is the outcome of the peer review
+      </h3>
+                                    </legend>
+                                    <div id="outcome-rag-hint" class="govuk-hint">
+      Discovery peer reviews don't give a Met or Not met, instead we use a Red, Amber, Green (RAG) status an an overall indicator of a good discovery.
+    </div>
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag" name="outcome-rag" type="radio" value="Red" aria-describedby="outcome-rag-item-hint" {{ checked('outcome-rag','Red') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag">
+          Red
+        </label>
+                                            <div id="outcome-rag-item-hint" class="govuk-hint govuk-radios__hint">
+          There are some serious concerns or recommendations the team need to adress before continuing.
+        </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag-2" name="outcome-rag" type="radio" value="Amber" aria-describedby="outcome-rag-2-item-hint"{{ checked('outcome-rag','Amber') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag-2">
+          Amber
+        </label>
+                                            <div id="outcome-rag-2-item-hint" class="govuk-hint govuk-radios__hint">
+          There are some recommendations but the team can continue and evidence improvements in their Alpha assessment or another peer review.
+        </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag-3" name="outcome-rag" type="radio" value="Green" aria-describedby="outcome-rag-3-item-hint"{{ checked('outcome-rag','Green') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag-3">
+          Green
+        </label>
+                                            <div id="outcome-rag-3-item-hint" class="govuk-hint govuk-radios__hint">
+          Nothing of concern the teams needs to address.
+        </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="govuk-button-group">
+                                <button class="govuk-button" data-module="govuk-button">
+    Save
+  </button>
+                                <a class="govuk-link" href="/sprint-3/manage/review/12345">Cancel</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
 
                 <div class="govuk-summary-card" id="comments">
                     <div class="govuk-summary-card__title-wrapper">

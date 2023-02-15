@@ -1,0 +1,47 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Report submitted – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Request"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <div class="govuk-panel govuk-!-margin-bottom-5 govuk-panel--confirmation govuk-!-text-align-left">
+                    <h1 class="govuk-panel__title">Peer review report submitted</h1>
+                    <div class="govuk-panel__body">The Service Assessment Team have been notified</div>
+                </div>
+
+                <p>Thank you for taking part in this peer review. You can now <a href="/sprint-3/reporting/report/12345">view the report</a>.</p>
+
+                <h2 class="govuk-heading-l">What happens next</h2>
+
+                <p>The Service Assessment Team will check the report and send it on to the service team.</p>
+                <p>The service team can challenge details in the report, they have 5 days to do this from within the <a href="/sprint-3/reporting/report/12345">report page</a>.</p>
+
+                <p>
+                    <a href="/sprint-3/manage/">Return to the overview page</a>.</p>
+
+            </div>
+        </div>
+
+    {% endblock %}

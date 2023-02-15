@@ -170,7 +170,24 @@ router.get('/sprint-3/new/12345', function (req, res) {
 })
 
 
+router.get('/sprint-3/new/12345-2', function (req, res) {
+  res.render('sprint-3/new/index-2.html')
+})
 
+
+router.get('/sprint-3/new/12345-3', function (req, res) {
+  res.render('sprint-3/new/index-3.html')
+})
+
+
+
+
+// Reporting
+
+router.get('/sprint-3/reporting/report/:id', function (req, res) {
+ 
+  res.render('sprint-3/reporting/report.html', {  })
+})
 
 
 
@@ -191,12 +208,62 @@ router.get('/sprint-3/manage/team/:id', function (req, res) {
   res.render('sprint-3/manage/team/index.html', { artefacts })
 })
 
+router.get('/sprint-3/manage/review/submitted', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/submitted/index.html', { artefacts })
+})
+
 router.get('/sprint-3/manage/review/:id', function (req, res) {
   var artefacts = []
   if (req.session.data['artefacts'] !== undefined) {
     artefacts = req.session.data['artefacts']
   }
   res.render('sprint-3/manage/review/index.html', { artefacts })
+})
+
+
+router.get('/sprint-3/manage/review/edit-outcome/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/edit-outcome/index.html', { artefacts })
+})
+
+
+router.get('/sprint-3/manage/review/edit-summary/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/edit-summary/index.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/review/edit-comments/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/edit-comments/index.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/review/edit-done-well/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/edit-done-well/index.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/review/edit-improve/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/review/edit-improve/index.html', { artefacts })
 })
 
 router.get('/sprint-3/manage/files/:id', function (req, res) {
