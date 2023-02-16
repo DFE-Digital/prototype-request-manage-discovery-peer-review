@@ -27,15 +27,6 @@ router.post('/sprint-3/request/process-request', function (req, res) {
     .then((response) => console.log(response))
     .catch((err) => console.error(err))
 
-  notify
-    .sendEmail(process.env.SATTemplateId, process.env.recipient2, {
-      personalisation: {
-        title: req.session.data['title'],
-        summary: req.session.data['purpose'],
-      },
-    })
-    .then((response) => console.log(response))
-    .catch((err) => console.error(err))
 
   // This is the URL the users will be redirected to once the email
   // has been sent
@@ -209,12 +200,63 @@ router.get('/sprint-3/manage/team/:id', function (req, res) {
 })
 
 
-router.get('/sprint-3/manage/team/edit-ur-panel/:id', function (req, res) {
+router.get('/sprint-3/manage/panel/:id', function (req, res) {
   var artefacts = []
   if (req.session.data['artefacts'] !== undefined) {
     artefacts = req.session.data['artefacts']
   }
-  res.render('sprint-3/manage/team/edit-ur-panel.html', { artefacts })
+  res.render('sprint-3/manage/panel/index.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/tasks/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/tasks/index.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/tasks/:id/2', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/tasks/index-2.html', { artefacts })
+})
+
+router.get('/sprint-3/manage/tasks/:id/3', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/tasks/index-3.html', { artefacts })
+})
+
+
+router.get('/sprint-3/manage/panel/edit-ur-panel/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/panel/edit-ur-panel.html', { artefacts })
+})
+
+router.post('/sprint-3/manage/panel/edit-ur-panel/:id', function (req, res) {
+  notify
+  .sendEmail(process.env.addedtopaneltemplateid, process.env.recipient, {
+    personalisation: {
+      discovery: 'School 4 day week',
+      role: 'user researcher',
+      date: '12 February 2023, 10am to 12pm',
+    },
+  })
+  .then((response) => console.log(response))
+  .catch((err) => console.error(err))
+
+
+// This is the URL the users will be redirected to once the email
+// has been sent
+res.redirect('/sprint-3/manage/panel/'+req.params.id)
 })
 
 
@@ -318,7 +360,7 @@ router.post('/sprint-3/manage/artefacts/add/:id', function (req, res) {
 
   let date_ob = new Date()
   let date = ('0' + date_ob.getDate()).slice(-2)
-  let month = date_ob.toLocaleString('default', { month: 'short' })
+  let month = date_ob.toLocaleString('default', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
   let year = date_ob.getFullYear()
   let hours = date_ob.getHours()
   let minutes = date_ob.getMinutes()
@@ -335,7 +377,7 @@ router.post('/sprint-3/manage/artefacts/add/:id', function (req, res) {
     appid: id,
     url: req.session.data['artefact-url'],
     title: req.session.data['artefact-title'],
-    addedOn: date + ' ' + month + ' ' + year + ' at ' + hours + ':' + minutes,
+    addedOn: month,
     addedBy: 'Andy Jones',
     id: uuidv4(),
   })

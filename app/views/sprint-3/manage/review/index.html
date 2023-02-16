@@ -61,19 +61,20 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/new/12345-2">Tasks</a>
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and review panel</a>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/panel/12345">Review panel</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-
-                            {% if artefacts.length%}
-                                <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
-                            {% endif %}
+                            
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
@@ -112,7 +113,11 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                         </ul>
                     </div>
                     <div class="govuk-summary-card__content">
-                        <p>The panel have given this discovery a <strong class="dfeuk-tag dfeuk-tag--{{data['outcome-rag'] | lower}}">{{data['outcome-rag' | lower]}}</strong> status.</p>
+                        {% if data['outcome-rag']%} <p>The panel have given this discovery a <strong class="dfeuk-tag dfeuk-tag--{{data['outcome-rag'] | lower}}">{{data['outcome-rag' | lower]}}</strong> status.</p>
+                       
+                        {% else%}
+                         <p>The panel has not yet given a status for the peer review.</p>
+                        {% endif%}
                        
                     </div>
                 </div>

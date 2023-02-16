@@ -19,8 +19,6 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
         </p>
     </div>
 
-    
-
     {% endblock%}
 
     {% block content %}
@@ -59,24 +57,26 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
         </div>
 
         <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-one-quarter">
+            <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                         <li class="dfeuk-vertical-nav__section-item">
-                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/panel/12345">Review panel</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            
-                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+
+                            {% if artefacts.length%}
+                                <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
+                            {% endif %}
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
@@ -86,16 +86,16 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
                 </nav>
             </div>
             <div class="govuk-grid-column-three-quarters">
-                <h2 class="govuk-heading-m">Discovery team</h2>
-                <p class="govuk-body">The team working on this discovery</p>
+                <h2 class="govuk-heading-m">Review panel</h2>
+                <p class="govuk-body">Details of the panel of peer reviewers and any observers.</p>
 
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">Discovery team</h2>
-                           <ul class="govuk-summary-card__actions">
+                        <h2 class="govuk-summary-card__title">Peer review panel</h2>
+                        <ul class="govuk-summary-card__actions">
                             <li class="govuk-summary-card__action">
-                               <a class="govuk-link" href="#">
-          Add another role<span class="govuk-visually-hidden"> to the team</span>
+                                <a class="govuk-link" href="#">
+          Add another role<span class="govuk-visually-hidden"> to the panel</span>
                                 </a>
                             </li>
                         </ul>
@@ -105,35 +105,80 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">User research</dt>
                                 <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                    {% if data['ur-panel']%}{{data['ur-panel']}}{% else%}
+                                        <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                    {% endif %}
                                 </dd>
                                 <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> user research</span></a>
+                                    <a class="govuk-link" href="/sprint-3/manage/panel/edit-ur-panel/12345">Change<span class="govuk-visually-hidden"> user research</span></a>
                                 </dd>
                             </div>
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Design</dt>
-                                <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Product manager/owner</dt>
-                                <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                                </dd>
+                                <dd class="govuk-summary-list__value">Andy Jones </dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
                                 </dd>
                             </div>
                         </dl>
+
                     </div>
                 </div>
 
-            
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Observers</h2>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Observer 1</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 1</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Observer 2</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 2</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Observer 3</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 3</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Observer 4</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 4</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Observer 5</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 5</span></a>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
 
             </div>
         </div>

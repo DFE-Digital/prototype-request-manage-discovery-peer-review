@@ -58,15 +58,18 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
 
         </div>
 
-        <div class="govuk-grid-row">
+             <div class="govuk-grid-row">
                         <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                         <li class="dfeuk-vertical-nav__section-item">
-                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/new/12345-2">Tasks</a>
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and review panel</a>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/panel/12345">Review panel</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
@@ -82,47 +85,11 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
                     </ul>
                 </nav>
             </div>
-            <div class="govuk-grid-column-three-quarters">
-                <h2 class="govuk-heading-m">Team and review panel</h2>
-                <p class="govuk-body">This page will detail who the team are and the panel</p>
+      <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-m">Review panel</h2>
+                <p class="govuk-body">Details of the panel of peer reviewers and any observers.</p>
 
-                <div class="govuk-summary-card">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">Discovery team</h2>
-                    </div>
-                    <div class="govuk-summary-card__content">
-                        <dl class="govuk-summary-list">
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">User research</dt>
-                                <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> user research</span></a>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Design</dt>
-                                <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
-                                </dd>
-                            </div>
-                            <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Product manager/owner</dt>
-                                <dd class="govuk-summary-list__value">
-                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                                </dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
-
+             
                 <div class="govuk-summary-card">
                     <div class="govuk-summary-card__title-wrapper">
                         <h2 class="govuk-summary-card__title">Peer review panel</h2>
@@ -130,7 +97,7 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
                     <div class="govuk-summary-card__content">
 
 
-                          <form action="/sprint-3/manage/team/12345" method="get">
+                          <form action="/sprint-3/manage/panel/edit-ur-panel/12345" method="post">
 
                     <div class="govuk-form-group">
                             <label class="govuk-label" for="ur-panel">Panel member for user research</label>
@@ -245,7 +212,7 @@ Team – {{serviceName}} –  Request and manage a discovery peer review
                                 <button class="govuk-button" data-module="govuk-button">
     Save
   </button>
-                                <a class="govuk-link" href="/sprint-3/manage/team/12345">Cancel</a>
+                                <a class="govuk-link" href="/sprint-3/manage/panel/12345">Cancel</a>
                             </div>
                 </form>
 

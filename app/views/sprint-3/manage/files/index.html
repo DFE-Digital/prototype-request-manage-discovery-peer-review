@@ -63,16 +63,20 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                         <li class="dfeuk-vertical-nav__section-item">
-                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/new/12345-2">Tasks</a>
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and review panel</a>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/panel/12345">Review panel</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
- {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+                            
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
@@ -103,8 +107,8 @@ Files – {{serviceName}} –  Request and manage a discovery peer review
                                     <th scope="row" class="govuk-table__header">
                                         <a href="{{a.url}}" target="_blank">{{a.title}}</a>
                                     </th>
-                                    <td class="govuk-table__cell">{{a.addedBy}}</td>
                                     <td class="govuk-table__cell">{{a.addedOn}}</td>
+                                    <td class="govuk-table__cell">{{a.addedBy}}</td>
                                     <td class="govuk-table__cell">
                                         <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
                                     </td>
