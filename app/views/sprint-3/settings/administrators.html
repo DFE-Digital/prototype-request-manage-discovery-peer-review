@@ -1,0 +1,115 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Assessors – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Settings"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings">Overview</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings/administrators">Administrators</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/discovery">Lead assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item ">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings/assessors">Assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/alpha">Junior assessors</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-half">
+                        <h1 class="govuk-heading-l">Administrators</h1>
+
+                    </div>
+                    <div class="govuk-grid-column-one-half govuk-!-text-align-right">
+                        <a href="/" class="govuk-button govuk-!-margin-bottom-0">Add administrator</a>
+                        <a href="/" class="govuk-button  govuk-button--secondary govuk-!-margin-bottom-0">Export to Excel</a>
+                    </div>
+                    <div class="govuk-grid-column-full">
+                        <details class="govuk-details" data-module="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="govuk-details__summary-text">
+      What can administrators do?
+    </span>
+                            </summary>
+                            <div class="govuk-details__text">
+                                <p>Administrators can:</p>
+                                <ul>
+                                    <li>View and manage peer reviews and service assessments</li>
+                                    <li>View, add, edit, and delete assessors</li>
+                                    <li>View and manage settings for this service</li>
+                                    <li>Primary administrators can add and remove other administrators</li>
+                                    <li>Administrators cannot add or remove other administrators</li>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <table class="govuk-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Job</th>
+                            <th scope="col" class="govuk-table__header">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">
+                                <a href="">Mike Dunn</a>
+                            </th>
+                            <td class="govuk-table__cell">Service Assessment team</td>
+                            <td class="govuk-table__cell">Primary administrator</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">
+                                <a href="">Gary Perkins</a>
+                            </th>
+                            <td class="govuk-table__cell">Spend Control Manager</td>
+                            <td class="govuk-table__cell">Primary administrator</td>
+                        </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header">
+                                <a href="">Andy Jones</a>
+                            </th>
+                            <td class="govuk-table__cell">Head of Design Profession</td>
+                            <td class="govuk-table__cell">Administrator</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    {% endblock %}

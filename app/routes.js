@@ -208,6 +208,17 @@ router.get('/sprint-3/manage/team/:id', function (req, res) {
   res.render('sprint-3/manage/team/index.html', { artefacts })
 })
 
+
+router.get('/sprint-3/manage/team/edit-ur-panel/:id', function (req, res) {
+  var artefacts = []
+  if (req.session.data['artefacts'] !== undefined) {
+    artefacts = req.session.data['artefacts']
+  }
+  res.render('sprint-3/manage/team/edit-ur-panel.html', { artefacts })
+})
+
+
+
 router.get('/sprint-3/manage/review/submitted', function (req, res) {
   var artefacts = []
   if (req.session.data['artefacts'] !== undefined) {
