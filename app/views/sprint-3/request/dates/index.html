@@ -31,7 +31,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
   {% if data['disco-end'] === "Yes" and not dates.length %}
          <h1 class="govuk-heading-l">Your discovery end date is less than 5 weeks away</h1>
         {% else %}
-         <h1 class="govuk-heading-l">Select some timescales for having the peer review</h1>
+         <h1 class="govuk-heading-l">When would you like your discovery peer review?</h1>
         {% endif %}
 
         
@@ -51,7 +51,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                Select dates
               </legend>
-                <div id="reviewWeek-hint" class="govuk-hint">Select all the weeks that are suitable for you.</div>
+                <div id="reviewWeek-hint" class="govuk-hint">Select all weeks that are suitable for you.</div>
                 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
 
                   {%for xdate in dates %}
