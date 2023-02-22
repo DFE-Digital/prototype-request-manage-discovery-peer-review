@@ -1,0 +1,77 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Weeks – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Book"%}
+
+{% block beforeContent %}
+
+  <div class="govuk-phase-banner">
+    <p class="govuk-phase-banner__content">
+      <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+      <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+    </p>
+  </div>
+
+  <a href="/sprint-3/request/end-date" class="govuk-back-link">Back</a>
+
+  {% endblock%}
+
+  {% block content %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+  {% if data['disco-end'] === "Yes" and not dates.length %}
+         <h1 class="govuk-heading-l">Your discovery end date is less than 5 weeks away</h1>
+        {% else %}
+         <h1 class="govuk-heading-l">Select some timescales for having the peer review</h1>
+        {% endif %}
+
+        
+
+        {% if data['disco-end'] === "Yes" and dates.length %}
+          <p class="govuk-body">Based on your anticipated end date of {{data['disco-end-day']}}/{{data['disco-end-month']}}/{{data['disco-end-year']}} we are suggesting the following weeks for your peer review.</p>
+        {% elseif data['disco-end'] === "Yes" and not dates.length%}
+          <p class="govuk-body">Your end date is within 5 weeks, you can submit a request and the Service Assessment Team will contact you.</p>
+        {% else %}
+          <p class="govuk-body">As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now.</p>
+        {% endif %}
+
+        <form action="/sprint-3/request/portfolio" method="get">
+          {% if dates.length %}
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset" aria-describedby="reviewWeek-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+               Select dates
+              </legend>
+                <div id="reviewWeek-hint" class="govuk-hint">Select all the weeks that are suitable for you.</div>
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+
+                  {%for xdate in dates %}
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}" {{ checked('reviewWeek',xdate.week) }} >
+                      <label class="govuk-label govuk-checkboxes__label" for="date_{{loop.index}}">Week beginning {{xdate.week}}
+                      </label>
+                    </div>
+                  {% endfor %}
+
+                </div>
+              </fieldset>
+            </div>
+            <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+          {% else %}
+            <button class="govuk-button" data-module="govuk-button">Continue</button>
+          {% endif %}
+        </form>
+
+      </div>
+    </div>
+
+  {% endblock %}

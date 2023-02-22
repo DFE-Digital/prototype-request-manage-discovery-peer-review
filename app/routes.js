@@ -14,6 +14,21 @@ const { v4: uuidv4 } = require('uuid')
 
 // Add your routes here
 
+
+
+
+
+router.get('/sprint-3/request/start-date', function (req, res) {
+  if(process.env.abtest === "b"){
+    res.redirect('/sprint-3/request/start-date/b')
+  }
+else{
+    res.redirect('/sprint-3/request/start-date/index')
+  }
+  
+})
+
+
 router.post('/sprint-3/request/process-request', function (req, res) {
   // Send some emails through Notify
 

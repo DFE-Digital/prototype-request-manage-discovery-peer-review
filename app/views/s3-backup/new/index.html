@@ -1,0 +1,192 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>School 4 day week</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>12345</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Booked by</span><br/>James Gunn</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--grey">Pre-review</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-two-thirds">
+
+                <h1 class="govuk-heading-l">Tasks</h1>
+                <p>Tasks associated with managing the peer review.</p>
+
+                <ol class="app-task-list">
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">1. </span> Check
+          </h2>
+                        <ul class="app-task-list__items">
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="eligibility-status">
+                  Check for duplicates
+                </a>
+                                </span>
+                                <strong class="govuk-tag app-task-list__tag" id="eligibility-status">Completed</strong>
+                            </li>
+                             <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="list-convictions-status">
+                  IT project code
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                            </li>
+                             <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="list-convictions-status">
+                  Date options for review
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                               <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="list-convictions-status">
+                  Select date for review
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">2. </span> Prepare
+          </h2>
+                        <ul class="app-task-list__items">
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="company-information-status">
+                  Service team people
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="contact-details-status">
+                  Review panel details
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                           
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="contact-details-status">
+                  Observers
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                           
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">3. </span> Review
+          </h2>
+                        <ul class="app-task-list__items">
+                            <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                    <a href="#" aria-describedby="contact-details-status">
+                  Add artefacts and additional links to files
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="contact-details-status">In progress</strong>
+                            </li>
+                             <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                                  
+                  Review panel comments and feedback
+                </a>
+                                </span>
+                                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong>
+                            </li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <h2 class="app-task-list__section">
+                            <span class="app-task-list__section-number">4. </span> Complete
+          </h2>
+                        <ul class="app-task-list__items">
+                           
+
+                             <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                Submit review
+              </span>
+                                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong>
+                            </li>
+
+                             <li class="app-task-list__item">
+                                <span class="app-task-list__task-name">
+                Service team acceptance
+              </span>
+                                <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong>
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+
+    {% endblock %}

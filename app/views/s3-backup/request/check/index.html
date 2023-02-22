@@ -58,26 +58,11 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     <a class="govuk-link" href="/sprint-3/request/code">Change<span class="govuk-visually-hidden"> code</span></a>
                                 </dd>
                             </div>
-
-
-
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Start date</dt>
-                                <dd class="govuk-summary-list__value">
-                                    {% if data['disco-start'] and data['disco-start'] === "Yes"  %}
-                                    {{data['disco-start']}}
-                                    <br/>
-
-                                    {{data['disco-start-day']}}
+                                <dd class="govuk-summary-list__value">{{data['disco-start-day']}}
                                     {{data['disco-start-month']}}
-                                    {{data['disco-start-year']}}
-                                    {% elseif data['disco-start'] and data['disco-start'] === "No"  %}
-                                  No
-                                  {% else %}
-                                           {{data['disco-start-day']}}
-                                    {{data['disco-start-month']}}
-                                    {{data['disco-start-year']}}
-                                    {% endif %}</dd>
+                                    {{data['disco-start-year']}}</dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="/sprint-3/request/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                                 </dd>
