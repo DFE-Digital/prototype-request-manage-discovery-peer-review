@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Who is your business partner?– {{serviceName}} –  Book and manage a discovery peer review
+Do you have a delivery manager? – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Book"%}
@@ -19,7 +19,7 @@ Who is your business partner?– {{serviceName}} –  Book and manage a discover
         </p>
     </div>
 
-    <a href="/sprint-3/request/portfolio" class="govuk-back-link">Back</a>
+    <a href="/sprint-3/request/sro" class="govuk-back-link">Back</a>
 
     {% endblock%}
 
@@ -28,16 +28,35 @@ Who is your business partner?– {{serviceName}} –  Book and manage a discover
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/sprint-3/request/dd" method="get">
+                <form action="/sprint-3/request/delivery" method="get">
 
-                    <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--l" for="bp">
- Who is the business partner of the portfolio?
+  <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="dm-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+      Do you know who your business partner is?
+      </h1>
+              </legend>
+              <div id="bp-hint" class="govuk-hint">
+      Select one option.
+    </div>
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="bp" name="bp" type="radio" value="Yes" data-aria-controls="conditional-bp" {{ checked('bp','Yes') }}>
+                  <label class="govuk-label govuk-radios__label" for="bp">
+          Yes
+        </label>
+                </div>
+                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-bp">
+
+                   <div class="govuk-form-group">
+                       
+                            <label class="govuk-label" for="bp-name">
+      Name of business partner
     </label>
-                        </h1>
+                       
 
-                             <select class="govuk-select govuk-!-width-one-half auto" id="bp" name="bp">
+                                                <select class="govuk-select govuk-!-width-one-half auto" id="bp-name" name="bp-name">
                             <option value="">Select a person</option>
                             <option value="Adam Taylor">Adam Taylor</option>
                             <option value="Alan Hearn">Alan Hearn</option>
@@ -143,6 +162,20 @@ Who is your business partner?– {{serviceName}} –  Book and manage a discover
                         </select>
                     </div>
 
+                </div>
+           
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="bp-2" name="bp" type="radio" value="No" data-aria-controls="conditional-bp-2"  {{ checked('bp','No') }}>
+                  <label class="govuk-label govuk-radios__label" for="bp-2">
+          No
+        </label>
+                </div>
+                    
+
+              </div>
+            </fieldset>
+          </div>
+
                     <button class="govuk-button" data-module="govuk-button">
   Save and continue
 </button>
@@ -153,10 +186,11 @@ Who is your business partner?– {{serviceName}} –  Book and manage a discover
 
     {% endblock %}
 
-    {% block scripts %}
+
+                {% block scripts %}
   {{ super() }}
   
   <script>
-            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["bp"] }}', selectElement: document.querySelector('.auto')})
+            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["dm-name"] }}', selectElement: document.querySelector('.auto')})
         </script>
 {% endblock %}

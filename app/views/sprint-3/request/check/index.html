@@ -28,15 +28,14 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                 <h1 class="govuk-heading-l">Check your answers before submitting your request to book a discovery peer review</h1>
+                <h1 class="govuk-heading-l">Check your answers before submitting your request to book a discovery peer review</h1>
 
-                 <h2 class="govuk-heading-m">Discovery details</h2>
-
+                <h2 class="govuk-heading-m">Discovery details</h2>
 
                 <form action="/sprint-3/request/process-request" method="post">
 
                     <dl class="govuk-summary-list">
-                        
+
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Discovery name</dt>
                             <dd class="govuk-summary-list__value">{{data['title']}}</dd>
@@ -51,93 +50,101 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 <a class="govuk-link" href="/sprint-3/request/summary">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
                             </dd>
                         </div>
-                         <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Project code</dt>
-                                <dd class="govuk-summary-list__value">{{data['code']}} 
-                                    {% if data['code'] === "Yes"%}<br/>{{data['code_']}}{% endif%}</dd>
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Project code</dt>
+                            <dd class="govuk-summary-list__value">{{data['code']}}
+                                {% if data['code'] === "Yes"%}<br/>{{data['code_']}}{% endif%}</dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="/sprint-3/request/code">Change<span class="govuk-visually-hidden"> code</span></a>
                                 </dd>
                             </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Start date</dt>
-                            <dd class="govuk-summary-list__value">{{data['disco-start-day']}} {{data['disco-start-month']}} {{data['disco-start-year']}}</dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/sprint-3/request/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
-                            </dd>
-                        </div>
-                        
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Planned end date</dt>
-                            <dd class="govuk-summary-list__value">{{data['disco-end']}}
-                                {% if data['disco-end'] === "Yes"%}<br/>{{data['disco-start-day']}} {{data['disco-start-month']}} {{data['disco-start-year']}}{% endif%}</dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/sprint-3/request/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
-                            </dd>
-                        </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Start date</dt>
+                                <dd class="govuk-summary-list__value">{{data['disco-start-day']}}
+                                    {{data['disco-start-month']}}
+                                    {{data['disco-start-year']}}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/sprint-3/request/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                                </dd>
+                            </div>
 
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Requested week(s)</dt>
-                            <dd class="govuk-summary-list__value"> <ul class="govuk-list">
-{% for item in data['reviewWeek' | split(",")] %}
-  <li>{{ item }}</li>
-{% endfor %}
-</ul>
-                               </dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/sprint-3/request/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Portfolio or <abbr title="Arms length body">ALB</abbr></dt>
-                                <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/portfolio">Change<span class="govuk-visually-hidden"> portfolio or arms length body of team doing the discovery</span></a>
-                                </dd>
-                            </div>   <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Business partner</dt>
-                                <dd class="govuk-summary-list__value">{{data['bp']}}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/bp">Change<span class="govuk-visually-hidden"> business partner</span></a>
-                                </dd>
-                            </div>
-                        <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Deputy Director</dt>
-                                <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
-                                </dd>
-                            </div>
-                        <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">SRO same as DD</dt>
-                                <dd class="govuk-summary-list__value">{{data['sro']}} 
-                                    {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
-                                </dd>
-                            </div>
-                        <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Delivery manager</dt>
-                                <dd class="govuk-summary-list__value">{{data['dm']}} 
-                                    {% if data['dm'] === "Yes"%}<br/>{{data['dm-name']}}{% endif%}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/delivery">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
-                                </dd>
-                            </div>
-                        <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Product owner or manager</dt>
-                                <dd class="govuk-summary-list__value">{{data['pm']}} 
-                                    {% if data['pm'] === "Yes"%}<br/>{{data['pm-name']}}{% endif%}</dd>
-                                <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/sprint-3/request/product">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
-                                </dd>
-                            </div>
-                    </dl>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Planned end date</dt>
+                                <dd class="govuk-summary-list__value">{{data['disco-end']}}
+                                    {% if data['disco-end'] === "Yes"%}<br/>{{data['disco-start-day']}}
+                                        {{data['disco-start-month']}}
+                                        {{data['disco-start-year']}}{% endif%}</dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="/sprint-3/request/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                                    </dd>
+                                </div>
 
-                    <button class="govuk-button" data-module="govuk-button">Submit request</button>
-                </form>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Requested week(s)</dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul class="govuk-list">
+                                            {% for item in data['reviewWeek' | split(",")] %}
+                                                <li>{{ item }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="/sprint-3/request/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
+                                    </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Portfolio or Arms length body</dt>
+                                    <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="/sprint-3/request/portfolio">Change<span class="govuk-visually-hidden"> portfolio or arms length body of team doing the discovery</span></a>
+                                    </dd>
+                                </div>
 
-            </div>
-        </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Deputy Director</dt>
+                                    <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="/sprint-3/request/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
+                                    </dd>
+                                </div>
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">Serive responsible owner same as Deputy Director</dt>
+                                    <dd class="govuk-summary-list__value">{{data['sro']}}
+                                        {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
+                                        <dd class="govuk-summary-list__actions">
+                                            <a class="govuk-link" href="/sprint-3/request/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
+                                        </dd>
+                                    </div>
+                                    <div class="govuk-summary-list__row">
+                                        <dt class="govuk-summary-list__key">Business partner</dt>
+                                        <dd class="govuk-summary-list__value">
+                                            {% if data['bp'] === "Yes"%}<br/>{{data['bp-name']}}{% endif%}</dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <a class="govuk-link" href="/sprint-3/request/bp">Change<span class="govuk-visually-hidden"> business partner</span></a>
+                                            </dd>
+                                        </div>
+                                        <div class="govuk-summary-list__row">
+                                            <dt class="govuk-summary-list__key">Delivery manager</dt>
+                                            <dd class="govuk-summary-list__value">{{data['dm']}}
+                                                {% if data['dm'] === "Yes"%}<br/>{{data['dm-name']}}{% endif%}</dd>
+                                                <dd class="govuk-summary-list__actions">
+                                                    <a class="govuk-link" href="/sprint-3/request/delivery">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
+                                                </dd>
+                                            </div>
+                                            <div class="govuk-summary-list__row">
+                                                <dt class="govuk-summary-list__key">Product owner or manager</dt>
+                                                <dd class="govuk-summary-list__value">{{data['pm']}}
+                                                    {% if data['pm'] === "Yes"%}<br/>{{data['pm-name']}}{% endif%}</dd>
+                                                    <dd class="govuk-summary-list__actions">
+                                                        <a class="govuk-link" href="/sprint-3/request/product">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
+                                                    </dd>
+                                                </div>
+                                            </dl>
 
-    {% endblock %}
+                                            <button class="govuk-button" data-module="govuk-button">Submit request</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            {% endblock %}
