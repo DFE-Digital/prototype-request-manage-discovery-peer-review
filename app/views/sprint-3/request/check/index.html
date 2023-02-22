@@ -60,6 +60,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                             </div>
 
 
+{% set dstartDate = (data['disco-start-month']+"/"+data['disco-start-day']+"/"+data['disco-start-year']) %}
 
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Start date</dt>
@@ -68,27 +69,22 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     {{data['disco-start']}}
                                     <br/>
 
-                                    {{data['disco-start-day']}}
-                                    {{data['disco-start-month']}}
-                                    {{data['disco-start-year']}}
+                                    {{dstartDate | date('D MMMM YYYY')}}
                                     {% elseif data['disco-start'] and data['disco-start'] === "No"  %}
                                   No
                                   {% else %}
-                                           {{data['disco-start-day']}}
-                                    {{data['disco-start-month']}}
-                                    {{data['disco-start-year']}}
+                                          {{dstartDate | date('D MMMM YYYY')}}
                                     {% endif %}</dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="/sprint-3/request/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                                 </dd>
                             </div>
 
+{% set denddate = (data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']) %}
                             <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Planned end date</dt>
                                 <dd class="govuk-summary-list__value">{{data['disco-end']}}
-                                    {% if data['disco-end'] === "Yes"%}<br/>{{data['disco-start-day']}}
-                                        {{data['disco-start-month']}}
-                                        {{data['disco-start-year']}}{% endif%}</dd>
+                                    {% if data['disco-end'] === "Yes"%}<br/> {{denddate | date('D MMMM YYYY')}}{% endif%}</dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link" href="/sprint-3/request/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                                     </dd>
@@ -108,7 +104,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     </dd>
                                 </div>
                                 <div class="govuk-summary-list__row">
-                                    <dt class="govuk-summary-list__key">Portfolio or Arms length body</dt>
+                                    <dt class="govuk-summary-list__key">Portfolio or arms length body</dt>
                                     <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link" href="/sprint-3/request/portfolio">Change<span class="govuk-visually-hidden"> portfolio or arms length body of team doing the discovery</span></a>
@@ -116,14 +112,14 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 </div>
 
                                 <div class="govuk-summary-list__row">
-                                    <dt class="govuk-summary-list__key">Deputy Director</dt>
+                                    <dt class="govuk-summary-list__key">Deputy director</dt>
                                     <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link" href="/sprint-3/request/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
                                     </dd>
                                 </div>
                                 <div class="govuk-summary-list__row">
-                                    <dt class="govuk-summary-list__key">Serive responsible owner same as Deputy Director</dt>
+                                    <dt class="govuk-summary-list__key">Service responsible owner same as deputy director</dt>
                                     <dd class="govuk-summary-list__value">{{data['sro']}}
                                         {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
                                         <dd class="govuk-summary-list__actions">
@@ -132,7 +128,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     </div>
                                     <div class="govuk-summary-list__row">
                                         <dt class="govuk-summary-list__key">Business partner</dt>
-                                        <dd class="govuk-summary-list__value">
+                                        <dd class="govuk-summary-list__value">{{data['bp']}}
                                             {% if data['bp'] === "Yes"%}<br/>{{data['bp-name']}}{% endif%}</dd>
                                             <dd class="govuk-summary-list__actions">
                                                 <a class="govuk-link" href="/sprint-3/request/bp">Change<span class="govuk-visually-hidden"> business partner</span></a>
