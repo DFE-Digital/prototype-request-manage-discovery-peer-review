@@ -31,6 +31,35 @@ async function getDataByID(id) {
 
 // BOOK
 
+router.post('/book/service', function (req, res) {
+  base('Reviews').create(
+    [
+      {
+        fields: {
+          Name: req.session.data['title'],
+          Status: 'Draft',
+          RequestedBy: 'Andy Jones',
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.id)
+        req.session.data['draftID'] = record.id
+        return res.redirect('/book/summary')
+      })
+    },
+  )
+
+
+  
+})
+
 router.get('/book/start-date', function (req, res) {
   if (process.env.abtest === 'b') {
     res.redirect('/book/start-date/b')
@@ -493,6 +522,51 @@ router.get('/report/:id', function (req, res) {
       })
     }),
   )
+})
+
+// MANAGE
+
+router.get('/manage/', function (req, res) {
+  res.redirect('/manage/new')
+})
+
+/// Gets view by status of the requests
+/// For example: /admin/rejected
+
+router.get('/manage/:status', function (req, res) {
+  var type = req.params.status
+
+  axios
+    .all([
+      getData('Draft'),
+      getData('New'),
+      getData('Rejected'),
+      getData('Active'),
+      getData('Completed'),
+      getData('Cancelled'),
+    ])
+    .then(
+      axios.spread(
+        (
+          draftrecords,
+          newrecords,
+          rejectedrecords,
+          activerecords,
+          completedrecords,
+          cancelledrecords,
+        ) => {
+          res.render('manage/index.html', {
+            draftrecords,
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+            type,
+          })
+        },
+      ),
+    )
 })
 
 // Old Sprint 3 stuff

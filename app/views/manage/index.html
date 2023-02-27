@@ -1,0 +1,106 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                          <li class="dfeuk-vertical-nav__section-item  {%if type === "draft" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{draftrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/draft">Draft</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item  {%if type === "new" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{newrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/new">New</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item {%if type === "active" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{activerecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/active">Active</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item {%if type === "completed" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{completedrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/completed">Completed</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item {%if type === "cancelled" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{cancelledrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/cancelled">Cancelled</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item {%if type === "rejected" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                            <span class="dfeuk-vertical-nav--count">{{rejectedrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/manage/rejected">Rejected</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+        
+                <h1 class="govuk-heading-l">Your {{type}} bookings</h1>
+
+                  {% if type === "draft" and draftrecords.length %}
+                  <p>Select a draft to continue with booking a discovery peer review.</p>
+                    {% include "./_draft.html" %}
+                {% elseif type === "draft" and draftrecords.length === 0%}
+                    <p>There are no draft requests.</p>
+                {% endif %}
+
+                {% if type === "new" and newrecords.length %}
+                    {% include "./_new.html" %}
+                {% elseif type === "new" and newrecords.length === 0%}
+                    <p>There are no new requests.</p>
+                {% endif %}
+
+                {% if type === "active" and activerecords.length %}
+                    {% include "./_active.html" %}
+                {% elseif type === "active" and activerecords.length === 0%}
+                    <p>There are no active reviews.</p>
+                {% endif %}
+
+                {% if type === "completed" and completedrecords.length %}
+                    {% include "./_completed.html" %}
+                {% elseif type === "completed" and completedrecords.length === 0%}
+                    <p>There are no completed reviews.</p>
+                {% endif %}
+
+                {% if type === "rejected" and rejectedrecords.length %}
+                    {% include "./_rejected.html" %}
+                {% elseif type === "rejected" and rejectedrecords.length === 0%}
+                    <p>There are no rejected requests.</p>
+                {% endif %}
+
+                {% if type === "cancelled" and cancelledrecords.length %}
+                    {% include "./_cancelled.html" %}
+                {% elseif type === "cancelled" and cancelledrecords.length === 0%}
+                    <p>There are no cancelled requests.</p>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endblock %}
