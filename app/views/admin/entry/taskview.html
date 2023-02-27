@@ -32,6 +32,19 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
+
+                    {% if entry.fields.Status === "Complete"%}
+                        <ul class="dfeuk-vertical-nav__section">
+
+                            <li class="dfeuk-vertical-nav__section-item">
+                                <a class="dfeuk-vertical-nav__link " href="/report/{{entry.fields.ID}}">View report</a>
+                            </li>
+
+                        </ul>
+
+                        <h2 class="govuk-heading-m">Manage</h2>
+                    {% endif %}
+
                     <ul class="dfeuk-vertical-nav__section">
 
                         {% if entry.fields.Status === "New"%}
@@ -44,7 +57,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
 
                         {% else %}
 
-                            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' or view === 'providedates' or view === 'adddateoption' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
                             </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' %}dfeuk-vertical-nav__section-item--current{% endif%}">
@@ -71,6 +84,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                             </li>
 
                         {% endif %}
+
                     </ul>
                 </nav>
             </div>

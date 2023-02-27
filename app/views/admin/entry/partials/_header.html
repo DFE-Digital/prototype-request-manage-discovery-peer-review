@@ -12,7 +12,7 @@
     </div>
     <div class="govuk-grid-column-one-quarter">
         <p class="govuk-body">
-            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+            <span class="govuk-!-font-weight-bold">Review date</span><br/>{% if entry.fields.ReviewDate %}{{entry.fields.ReviewDate | date('D MMMM YYYY')}}{% else%}No date set{%endif%}</p>
     </div>
     <div class="govuk-grid-column-one-quarter">
         <p class="govuk-body">

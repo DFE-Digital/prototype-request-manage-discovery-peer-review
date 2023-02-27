@@ -59,6 +59,14 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
+      Report published
+    </dt>
+                        <dd class="govuk-summary-list__value">
+                            {{entry.fields.PublishedDate | date('D MMMM YYYY')}}
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
       Requested by
     </dt>
                         <dd class="govuk-summary-list__value">
@@ -104,56 +112,46 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
                 <p class="formatted-content">{{entry.fields.Description}}</p>
 
                 <h2 class="govuk-heading-l">Panel summary</h2>
-                {% if data['review-comments']%}
-                    <p style="white-space: pre-wrap;">{{data['review-comments'] | safe}}</p>
-                    {% else%}
-                    <p>No details provided</p>
-                    {% endif%}
-                    <h2 class="govuk-heading-l">What the team has done well</h2>
-                    {% if data['review-done-well']%}
-                        <p style="white-space: pre-wrap;">{{data['review-done-well'] | safe}}</p>
-                        {% else%}
-                        <p>No details provided</p>
-                        {% endif%}
+                <p class="formatted-content">{{entry.fields.ReviewComments}}</p>
 
-                        <h2 class="govuk-heading-l">What the team can improve</h2>
-                        {% if data['review-improve']%}
-                            <p style="white-space: pre-wrap;">{{data['review-improve'] | safe}}</p>
-                            {% else%}
-                            <p>No details provided</p>
-                            {% endif%}
+                <h2 class="govuk-heading-l">What the team has done well</h2>
 
-                        </div>
+                <p class="formatted-content">{{entry.fields.ReviewDoneWell}}</p>
 
-                        <div class="govuk-grid-column-one-third">
+                <h2 class="govuk-heading-l">What the team can improve</h2>
+                <p class="formatted-content">{{entry.fields.ReviewImprove}}</p>
 
-                            <aside class="govuk-related-navigation">
+            </div>
 
-                                <h2 class="govuk-heading-m">Share and export</h2>
+            <div class="govuk-grid-column-one-third">
 
-                                <a href="">Download as a Word document</a>
+                <aside class="govuk-related-navigation">
 
-                                <h2 class="govuk-heading-m govuk-!-margin-top-7">Actions</h2>
+                    <h2 class="govuk-heading-m">Export</h2>
 
-                                <p>Once the panel submit the report, the SA+ team will see:</p>
+                    <a href="/data/example.docx">Download as a Word document</a>
 
-                                <p>Accept and send to service team.</p>
-                                <a href="" class="govuk-button" role="button">Accept and send to service team</a>
+                    {# <h2 class="govuk-heading-m govuk-!-margin-top-7">Actions</h2>
 
-                                <p>Reopen and edit or send back to the review panel for amendments</p>
-                                <a href="" class="govuk-button" role="button">Reopen</a>
+                    <p>Once the panel submit the report, the SA+ team will see:</p>
 
-                                <p>Once sent to the team, the requestor will see:</p>
+                    <p>Accept and send to service team.</p>
+                    <a href="" class="govuk-button" role="button">Accept and send to service team</a>
 
-                                <p>You have until 22 February to challenge something in this report.</p>
-                                <a href="" class="govuk-button" role="button">Open a challenge</a>
-                                <p>Accept the report as final. If you don't challenge the report, it will be accepted automatically on 23 February.</p>
-                                <a href="" class="govuk-button" role="button">Accept the report</a>
+                    <p>Reopen and edit or send back to the review panel for amendments</p>
+                    <a href="" class="govuk-button" role="button">Reopen</a>
 
-                            </aside>
+                    <p>Once sent to the team, the requestor will see:</p>
 
-                        </div>
+                    <p>You have until 22 February to challenge something in this report.</p>
+                    <a href="" class="govuk-button" role="button">Open a challenge</a>
+                    <p>Accept the report as final. If you don't challenge the report, it will be accepted automatically on 23 February.</p>
+                    <a href="" class="govuk-button" role="button">Accept the report</a> #}
 
-                    </div>
+                </aside>
 
-                {% endblock %}
+            </div>
+
+        </div>
+
+    {% endblock %}

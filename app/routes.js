@@ -29,7 +29,6 @@ async function getDataByID(id) {
     .firstPage()
 }
 
-
 // BOOK
 
 router.get('/book/start-date', function (req, res) {
@@ -168,8 +167,6 @@ router.get('/book/dates', function (req, res) {
 router.post('/book/process-request', function (req, res) {
   // Send some emails through Notify
 
-
-
   // Create AirTable entry
 
   var endDate = null
@@ -192,6 +189,11 @@ router.post('/book/process-request', function (req, res) {
       '/' +
       req.session.data['disco-start-year']
   }
+
+  var requestedWeeks = ''
+
+  requestedWeeks = req.session.data['reviewWeek'].toString()
+
   base('Reviews').create(
     [
       {
@@ -211,7 +213,7 @@ router.post('/book/process-request', function (req, res) {
           ProductManagerYN: req.session.data['pm'],
           ProjectCode: req.session.data['code_'],
           ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: '--' + req.session.data['reviewWeek'],
+          RequestedWeeks: requestedWeeks,
           SROName: req.session.data['sro-name'],
           SROSameAsDD: req.session.data['sro'],
           StartDate: startDate,
@@ -221,6 +223,7 @@ router.post('/book/process-request', function (req, res) {
         },
       },
     ],
+    { typecast: true },
     function (err, records) {
       if (err) {
         console.error(err)
@@ -229,23 +232,21 @@ router.post('/book/process-request', function (req, res) {
       records.forEach(function (record) {
         console.log(record.fields.ID)
 
-   
-          notify
-            .sendEmail(process.env.SATTemplateId, process.env.recipient, {
-              personalisation: {
-                title: req.session.data['title'],
-                summary: req.session.data['purpose'],
-                id: record.fields.ID
-              },
-            })
-            .then((response) => console.log('Notification: ' + response.statusText))
-            .catch((err) => console.error(err))
-        
+        notify
+          .sendEmail(process.env.SATTemplateId, process.env.recipient, {
+            personalisation: {
+              title: req.session.data['title'],
+              summary: req.session.data['purpose'],
+              id: record.fields.ID,
+            },
+          })
+          .then((response) =>
+            console.log('Notification: ' + response.statusText),
+          )
+          .catch((err) => console.error(err))
       })
     },
   )
-
-
 
   // This is the URL the users will be redirected to once the email
   // has been sent
@@ -314,7 +315,7 @@ router.get('/admin/entry/:id', function (req, res) {
   )
 })
 
-/// Gets a view for a given ID based on vertical nav select 
+/// Gets a view for a given ID based on vertical nav select
 /// For example, submission, tasks, peer review, supporting artefacts
 /// /admin/entry/submission/1
 router.get('/admin/entry/:view/:id', function (req, res) {
@@ -341,8 +342,7 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
 
   // Task action
   // Update the status of the review
-  if (view === 'updateoutcome'){
-
+  if (view === 'updateoutcome') {
     var outcome = req.body.outcomerag
 
     base('Reviews').update(
@@ -350,7 +350,7 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
         {
           id: entry,
           fields: {
-            Outcome: outcome
+            Outcome: outcome,
           },
         },
       ],
@@ -366,39 +366,34 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     )
 
     return res.redirect('/admin/entry/review/' + id)
-
   }
 
+  // Update the status of the review
+  if (view === 'updatecomments') {
+    var comments = req.body.review_comments
 
-
-    // Update the status of the review
-    if (view === 'updatecomments'){
-
-      var comments = req.body.review_comments
-  
-      base('Reviews').update(
-        [
-          {
-            id: entry,
-            fields: {
-              ReviewComments: comments
-            },
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewComments: comments,
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('ReviewComments'))
-          })
         },
-      )
-  
-      return res.redirect('/admin/entry/review/' + id)
-  
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ReviewComments'))
+        })
+      },
+    )
+
+    return res.redirect('/admin/entry/review/' + id)
+  }
 
   if (view === 'process') {
     // This is the first task to accept or reject.
@@ -469,11 +464,7 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
   }
 })
 
-
-
-
 // Reports
-
 
 /// Gets view of reports
 /// For example: /reports
@@ -481,55 +472,30 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
 router.get('/reports', function (req, res) {
   var type = req.params.status
 
-  axios
-    .all([
-      getData('Completed')
-    ])
-    .then(
-      axios.spread(
-        (
-          entries
-        ) => {
-          res.render('reports/index.html', {
-            entries
-          })
-        },
-      ),
-    )
+  axios.all([getData('Completed')]).then(
+    axios.spread((entries) => {
+      res.render('reports/index.html', {
+        entries,
+      })
+    }),
+  )
 })
-
 
 // Gets a report for a given ID
 router.get('/report/:id', function (req, res) {
   var id = req.params.id
 
-  axios
-    .all([
-      getDataByID(id)
-    ])
-    .then(
-      axios.spread(
-        (
-          entryx
-        ) => {
-entry = entryx[0]
-          return res.render('reports/report.html', {
-            entry
-          })
-        },
-      ),
-    )
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      return res.render('reports/report.html', {
+        entry,
+      })
+    }),
+  )
 })
 
-
-
-
-
-
-
 // Old Sprint 3 stuff
-
-
 
 router.get('/sprint-3/request/start-date', function (req, res) {
   if (process.env.abtest === 'b') {
@@ -594,7 +560,7 @@ router.post('/sprint-3/request/process-request', function (req, res) {
           ProductManagerYN: req.session.data['pm'],
           ProjectCode: req.session.data['code_'],
           ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: '--' + req.session.data['reviewWeek'],
+          RequestedWeeks: req.session.data['reviewWeek'],
           SROName: req.session.data['sro-name'],
           SROSameAsDD: req.session.data['sro'],
           StartDate: startDate,
