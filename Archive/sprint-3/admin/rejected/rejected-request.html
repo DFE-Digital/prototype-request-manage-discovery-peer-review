@@ -1,0 +1,74 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+admin – {{serviceName}} –  Book and admin a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Admin"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+       <a href="/sprint-3/admin/rejected/" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>Schools need pencils</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>IT18681</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Booked by</span><br/>Wade Wilson</p>
+                    </div>
+                   
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--red">Rejected</strong>
+                        </p>
+                    </div> <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Rejected date</span><br/>{{x|date('D MMMM YYYY')}}</p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+          
+            <div class="govuk-grid-column-three-quarters">
+
+                <p>This request was rejected on {{x|date('D MMMM YYYY')}}, by the Service Assessment Team. An email was automatically sent to Wade Wilson confirming the reason for rejection.</p>
+
+                <h2 class="govuk-heading-m">Reason for rejection</h2>
+                <div class="dfeuk-inset-text"><p>{{data['reject_reason']}}</p></div>
+
+                <a href="/sprint-3/admin/rejected/" class="govuk-link">Return to admin view</a>
+            </div>
+        </div>
+
+    {% endblock %}

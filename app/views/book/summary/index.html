@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Discovery purpose – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Book"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/book/service" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/book/code" method="get">
+
+                    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="500">
+                        <div class="govuk-form-group">
+                            <h1 class="govuk-label-wrapper">
+                                <label class="govuk-label govuk-label--l" for="purpose">What is the purpose of your discovery?</label>
+                            </h1>
+                            <div id="purpose-hint" class="govuk-hint">Tell us the background to your discovery. For example, if it's part of a wider service or based on policy intent. This will help us to arrange a review panel with the most relevant experience</div>
+                            <textarea class="govuk-textarea govuk-js-character-count" id="purpose" name="purpose" rows="5" aria-describedby="purpose-info purpose-hint">{{data['purpose']}}</textarea>
+                        </div>
+                        <div id="purpose-info" class="govuk-hint govuk-character-count__message">You can enter up to 500 characters</div>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

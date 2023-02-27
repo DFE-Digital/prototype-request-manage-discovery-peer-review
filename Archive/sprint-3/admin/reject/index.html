@@ -1,0 +1,111 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Admin"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>Schools need pencils</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>IT18681</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Booked by</span><br/>Wade Wilson</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--blue">New</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/admin/new/tasks/IT18681">Tasks</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/admin/new/submission/IT18681">Submission</a>
+                        </li>
+                        
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+               
+
+
+<form action="/sprint-3/admin/new/reject/IT18681" method="post">
+
+
+<div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+  <div class="govuk-form-group">
+    <h2 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--l" for="reject_reason">
+        Why are you rejecting this request for a peer review?
+      </label>
+    </h2>
+    <div id="reject_reason-hint" class="govuk-hint">
+      This will be sent to Wade Wilson, telling them the request has been rejected.
+    </div>
+    <textarea class="govuk-textarea govuk-js-character-count" id="reject_reason" name="reject_reason" rows="5" aria-describedby="reject_reason-info reject_reason-hint"></textarea>
+  </div>
+  <div id="reject_reason-info" class="govuk-hint govuk-character-count__message">
+    You can enter up to 200 characters
+  </div>
+</div>
+
+    <div class="govuk-button-group">
+        <button  name="action" value="delete" class="govuk-button govuk-button--warning"  data-module="govuk-button">Reject request</button> <a href="/sprint-3/admin/new/submission/IT18681" class="govuk-link">Cancel and return to submission</a>
+    </div>
+    </form>
+                    
+                
+
+               
+          
+
+            </div>
+        </div>
+
+    {% endblock %}

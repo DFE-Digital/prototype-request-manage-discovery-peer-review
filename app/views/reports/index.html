@@ -1,0 +1,86 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Reporting – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Reports"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
+                            <span class="dfeuk-vertical-nav--count">1</span>
+                            <a class="dfeuk-vertical-nav__link " href="/reports">Recent</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">1</span>
+                            <a class="dfeuk-vertical-nav__link " href="/reports/discovery">Discovery reports</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">0</span>
+                            <a class="dfeuk-vertical-nav__link " href="/reports/alpha">Alpha reports</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">0</span>
+                            <a class="dfeuk-vertical-nav__link " href="/reports/beta">Beta reports</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">0</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/live">Live reports</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+                <span class="govuk-caption-l">Peer review and assessment reports</span>
+                <h1 class="govuk-heading-l">Recently published</h1>
+
+              <table class="dfeuk-table dfeuk-table-responsive">
+    <thead class="dfeuk-table__head">
+        <tr class="dfeuk-table__row">
+            <th scope="col" class="dfeuk-table__header">Request</th>
+            <th scope="col" class="dfeuk-table__header">Service</th>
+            <th scope="col" class="dfeuk-table__header">Type</th>
+            <th scope="col" class="dfeuk-table__header">Outcome</th>
+            <th scope="col" class="dfeuk-table__header">Published</th>
+        </tr>
+    </thead>
+    <tbody class="dfeuk-table__body">
+        {% for record in entries %}
+            <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                    <a href="/report/{{record.fields.ID}}">PR-{{record.fields.ID}}</a>
+                </th>
+                <td class="dfeuk-table__cell">{{record.fields.Name}}</td>
+                <td class="dfeuk-table__cell">Discovery peer review</td>
+                <td class="dfeuk-table__cell"><strong class="dfeuk-tag dfeuk-tag--{{record.fields.Outcome | lower}}">{{record.fields.Outcome}}</strong></td>
+                <td class="dfeuk-table__cell">{{record.fields.PublishedDate | date('D MMM YYYY')}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+            </div>
+        </div>
+
+    {% endblock %}

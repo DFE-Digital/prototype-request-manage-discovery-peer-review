@@ -1,0 +1,102 @@
+<h2 class="govuk-heading-l">Peer review</h2>
+<p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
+
+{# <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">Panel has completed all sections of the report.</p>
+        <p>When you're ready, you can submit the report to the Service Assessment Team to check and for it to be sent to the service team.</p>
+        <form action="/sprint-3/manage/review/submitted" method="get">
+            <button class="govuk-button" data-module="govuk-button">Submit report</button>
+        </form>
+    </div>
+</div> #}
+
+<div class="govuk-summary-card" id="outcome">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Panel outcome</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="/admin/entry/editoutcome/{{entry.fields.ID}}/#outcome">
+          Edit<span class="govuk-visually-hidden"> outcome</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="govuk-summary-card__content">
+        {% if entry.fields.Outcome%}
+            <p>The panel have given an outcome of <strong class="dfeuk-tag dfeuk-tag--{{entry.fields.Outcome | lower}}">{{entry.fields.Outcome}}</strong>
+            </p>
+            {% else%}
+            <p>The panel has not yet entered an outcome.</p>
+            {% endif%}
+        </div>
+    </div>
+
+    <div class="govuk-summary-card" id="comments">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Panel comments</h2>
+            <ul class="govuk-summary-card__actions">
+                <li class="govuk-summary-card__action">
+                    <a class="govuk-link" href="/admin/entry/editcomments/{{entry.fields.ID}}/#comments">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="govuk-summary-card__content formatted-content">
+            {% if entry.fields.ReviewComments%}
+       
+                <p>{{entry.fields.ReviewComments}}</p>
+             
+                {% else%}
+                <p>The panel has not entered any comments.</p>
+                {% endif%}
+            </div>
+        </div>
+
+        <div class="govuk-summary-card" id="done-well">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">What the team has done well</h2>
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action">
+                        <a class="govuk-link" href="/admin/entry/editdonewell/{{entry.fields.ID}}/#comments">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="govuk-summary-card__content">
+                {% if entry.fields.ReviewDoneWell%}
+                    <p>{{entry.fields.ReviewDoneWell}}</p>
+                    {% else%}
+                    <p>The panel has not entered any comments.</p>
+                    {% endif%}
+                </div>
+            </div>
+
+            <div class="govuk-summary-card" id="improve">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title">What the team can improve</h2>
+                    <ul class="govuk-summary-card__actions">
+                        <li class="govuk-summary-card__action">
+                           <a class="govuk-link" href="/admin/entry/editimprove/{{entry.fields.ID}}/#comments">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-summary-card__content">
+                    {% if entry.fields.ReviewImprove%}
+                        <p>{{entry.fields.ReviewImprove}}</p>
+                        {% else%}
+                        <p>The panel has not entered any comments.</p>
+                        {% endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

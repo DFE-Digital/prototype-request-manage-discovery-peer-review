@@ -1,0 +1,26 @@
+<table class="dfeuk-table dfeuk-table-responsive">
+    <thead class="dfeuk-table__head">
+        <tr class="dfeuk-table__row">
+            <th scope="col" class="dfeuk-table__header">Request</th>
+            <th scope="col" class="dfeuk-table__header">Service</th>
+            <th scope="col" class="dfeuk-table__header">Type</th>
+            <th scope="col" class="dfeuk-table__header">Requestor</th>
+            <th scope="col" class="dfeuk-table__header">Review Date</th>
+            <th scope="col" class="dfeuk-table__header">Outcome</th>
+        </tr>
+    </thead>
+    <tbody class="dfeuk-table__body">
+        {% for record in completedrecords %}
+            <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                    <a href="/admin/entry/{{record.fields.ID}}">PR-{{record.fields.ID}}</a>
+                </th>
+                <td class="dfeuk-table__cell">{{record.fields.Name}}</td>
+                <td class="dfeuk-table__cell">Discovery peer review</td>
+                <td class="dfeuk-table__cell">{{record.fields.RequestedBy}}</td>
+                <td class="dfeuk-table__cell">{{record.fields.ReviewDate | date('D MMM YYYY')}}</td>
+                <td class="dfeuk-table__cell"><strong class="govuk-tag govuk-tag--{%if record.fields.Outcome ==='Amber' %}yellow{% else%}{{record.fields.Outcome |lower}}{% endif%}">{{record.fields.Outcome}}</strong></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

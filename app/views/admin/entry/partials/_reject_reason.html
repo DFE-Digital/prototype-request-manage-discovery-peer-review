@@ -1,0 +1,24 @@
+<form action="/admin/action/reject/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+    <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="200">
+        <div class="govuk-form-group">
+            <h2 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--l" for="reject_reason">
+        Why are you rejecting this request for a peer review?
+      </label>
+            </h2>
+            <div id="reject_reason-hint" class="govuk-hint">
+      This will be sent to Wade Wilson, telling them the request has been rejected.
+    </div>
+            <textarea class="govuk-textarea govuk-js-character-count" id="reject_reason" name="reject_reason" rows="5" aria-describedby="reject_reason-info reject_reason-hint"></textarea>
+        </div>
+        <div id="reject_reason-info" class="govuk-hint govuk-character-count__message">
+    You can enter up to 200 characters
+  </div>
+    </div>
+
+    <div class="govuk-button-group">
+        <button  name="action" value="reject" class="govuk-button govuk-button--warning"  data-module="govuk-button">Reject request</button>
+        <a href="/admin/entry/submission/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
+</form>

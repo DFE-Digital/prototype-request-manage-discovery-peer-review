@@ -1,0 +1,109 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Files – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>School 4 day week</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>12345</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Requestor</span><br/>James Gunn</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--blue">Pre-review</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+                       <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and review panel</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/actions/12345">Actions and history</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-m">Add a link to an artefact</h2>
+
+                <form action="/sprint-3/manage/artefacts/add/12345" method="post">
+
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="artefact-url">URL of the artefact</label>
+                        <div id="artefact-url-hint" class="govuk-hint">Make sure it starts with https://</div>
+                        <input class="govuk-input" id="artefact-url" name="artefact-url" type="text">
+                    </div>
+
+                       <div class="govuk-form-group">
+                        <label class="govuk-label" for="artefact-title">Title</label>
+                        <div id="artefact-title-hint" class="govuk-hint">For example: User journey map</div>
+                        <input class="govuk-input" id="artefact-title" name="artefact-title" type="text">
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Add link</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}

@@ -1429,3 +1429,17 @@ label {
   }
 
 }
+
+.govuk-button--white {
+  background: $color_dfeuk-white;
+  color: $color_dfeuk-black !important;
+
+  &:hover {
+    background: $color_dfeuk-grey-2;
+    color: $color_dfeuk-black !important;
+  }
+}
+
+.formatted-content > p, p.formatted-content{
+  white-space: pre-line;
+}

@@ -1,0 +1,88 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+ Do you know your project code? – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Book"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    <a href="/book/summary" class="govuk-back-link">Back</a>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/book/start-date" method="get">
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="code-hint">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+       Do you know your project code?
+      </h1>
+                            </legend>
+                            <div id="code-hint" class="govuk-hint">
+      This code is sometimes called a project ID. It starts with IT followed by numbers, for example IT1234
+    </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="code" name="code" type="radio" value="Yes" data-aria-controls="conditional-code" {{ checked('code','Yes') }}>
+                                    <label class="govuk-label govuk-radios__label" for="code">
+          Yes
+        </label>
+                                </div>
+                                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-code">
+
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label" for="code_">
+    Project code
+  </label>
+                                        <input class="govuk-input" id="code_" name="code_" type="text" value="{{data['code_']}}">
+                                    </div>
+
+                                </div>
+
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="code-2" name="code" type="radio" value="No" data-aria-controls="conditional-code-2"  {{ checked('code','No') }}>
+                                    <label class="govuk-label govuk-radios__label" for="code-2">
+          No
+        </label>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">
+  Save and continue
+</button>
+                </form>
+
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+
+        <script>
+            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["code-name"] }}', selectElement: document.querySelector('.auto')})
+        </script>
+    {% endblock %}

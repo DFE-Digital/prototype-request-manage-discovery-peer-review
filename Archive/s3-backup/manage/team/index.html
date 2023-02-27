@@ -1,0 +1,141 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Team – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>School 4 day week</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>12345</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Requestor</span><br/>James Gunn</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--blue">Pre-review</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Discovery team</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/panel/12345">Review panel</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            
+                             {% if artefacts.length%} <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span> {% endif %}
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/actions/12345">Actions and history</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-m">Discovery team</h2>
+                <p class="govuk-body">The team working on this discovery</p>
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Discovery team</h2>
+                           <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                               <a class="govuk-link" href="#">
+          Add another role<span class="govuk-visually-hidden"> to the team</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">User research</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> user research</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Design</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Product manager/owner</dt>
+                                <dd class="govuk-summary-list__value">
+                                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                                </dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+            
+
+            </div>
+        </div>
+
+    {% endblock %}

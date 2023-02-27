@@ -1,0 +1,72 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+      <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                           <li class="dfeuk-vertical-nav__section-item ">
+                            <span class="dfeuk-vertical-nav--count">1</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/">Drafts</a>
+                        </li>
+                      
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">2</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/active">Active</a>
+                        </li>
+                        
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">0</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/completed">Completed</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <span class="dfeuk-vertical-nav--count">0</span>
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/cancelled">Cancelled</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+               
+                  <h1 class="govuk-heading-l">Cancelled</h1>
+
+                  <p>These are no cancelled reviews.</p>
+
+                  
+
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+
+              
+
+
+            </div>
+        </div>
+
+    {% endblock %}

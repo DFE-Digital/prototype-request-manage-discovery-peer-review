@@ -1,0 +1,222 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Files – {{serviceName}} –  Request and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>School 4 day week</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>12345</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Requestor</span><br/>James Gunn</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--blue">Pre-review</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/tasks/12345">Tasks</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/team/12345">Team and review panel</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/review/12345">Peer review</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+
+                            {% if artefacts.length%}
+                                <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
+                            {% endif %}
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/files/12345">Supporting artefacts</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/manage/actions/12345">Actions and history</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+
+                <h2 class="govuk-heading-m">Peer review</h2>
+                <p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
+                <div class="govuk-summary-card" id="outcome">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Panel outcome</h2>
+                       
+                    </div>
+                    <div class="govuk-summary-card__content">
+
+                        <form action="/sprint-3/manage/review/12345">
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset" aria-describedby="outcome-rag-hint">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                        <h3 class="govuk-fieldset__heading">
+        What is the outcome of the peer review
+      </h3>
+                                    </legend>
+                                    <div id="outcome-rag-hint" class="govuk-hint">
+      Discovery peer reviews don't give a Met or Not met, instead we use a Red, Amber, Green (RAG) status an an overall indicator of a good discovery.
+    </div>
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag" name="outcome-rag" type="radio" value="Red" aria-describedby="outcome-rag-item-hint" {{ checked('outcome-rag','Red') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag">
+          Red
+        </label>
+                                            <div id="outcome-rag-item-hint" class="govuk-hint govuk-radios__hint">
+          There are some serious concerns or recommendations the team need to adress before continuing.
+        </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag-2" name="outcome-rag" type="radio" value="Amber" aria-describedby="outcome-rag-2-item-hint"{{ checked('outcome-rag','Amber') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag-2">
+          Amber
+        </label>
+                                            <div id="outcome-rag-2-item-hint" class="govuk-hint govuk-radios__hint">
+          There are some recommendations but the team can continue and evidence improvements in their Alpha assessment or another peer review.
+        </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="outcome-rag-3" name="outcome-rag" type="radio" value="Green" aria-describedby="outcome-rag-3-item-hint"{{ checked('outcome-rag','Green') }}>
+                                            <label class="govuk-label govuk-radios__label" for="outcome-rag-3">
+          Green
+        </label>
+                                            <div id="outcome-rag-3-item-hint" class="govuk-hint govuk-radios__hint">
+          Nothing of concern the teams needs to address.
+        </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="govuk-button-group">
+                                <button class="govuk-button" data-module="govuk-button">
+    Save
+  </button>
+                                <a class="govuk-link" href="/sprint-3/manage/review/12345">Cancel</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card" id="comments">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Panel comments</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="/sprint-3/manage/review/edit-comments/12345/#comments">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        {% if data['review-comments']%}
+                            <p style="white-space: pre-wrap;">{{data['review-comments'] | safe}}</p>
+                            {% else%}
+                            <p>This is meaningless 4-blocker root-and-branch review, for staff engagement i need to pee and then go to another meeting make it more corporate please.</p>
+                            <p>Big data usabiltiy. Out of scope turn the crank we need more paper. Conversational content incentivize adoption drink from the firehose ping me, let's take this conversation offline, or tread it daily.</p>
+                            <p>Three-martini lunch vertical integration work identify pain points productize. Diversify kpis what's the status on the deliverables for eow?, or can I just chime in on that one, nor five-year strategic plan parallel path make it a priority but what's the real problem we're trying to solve here?.</p>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card" id="done-well">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">What the team has done well</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="/sprint-3/manage/review/edit-done-well/12345/#done-well">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        {% if data['review-done-well']%}
+                            <p style="white-space: pre-wrap;">{{data['review-done-well'] | safe}}</p>
+                            {% else%}
+                            <p>This is meaningless 4-blocker root-and-branch review, for staff engagement i need to pee and then go to another meeting make it more corporate please.</p>
+                            <p>Big data usabiltiy. Out of scope turn the crank we need more paper. Conversational content incentivize adoption drink from the firehose ping me, let's take this conversation offline, or tread it daily.</p>
+                            <p>Three-martini lunch vertical integration work identify pain points productize. Diversify kpis what's the status on the deliverables for eow?, or can I just chime in on that one, nor five-year strategic plan parallel path make it a priority but what's the real problem we're trying to solve here?.</p>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="govuk-summary-card" id="improve">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">What the team can improve</h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="/sprint-3/manage/review/edit-improve/12345/#improve">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        {% if data['review-improve']%}
+                            <p style="white-space: pre-wrap;">{{data['review-improve'] | safe}}</p>
+                            {% else%}
+                            <p>This is meaningless 4-blocker root-and-branch review, for staff engagement i need to pee and then go to another meeting make it more corporate please.</p>
+                            <p>Big data usabiltiy. Out of scope turn the crank we need more paper. Conversational content incentivize adoption drink from the firehose ping me, let's take this conversation offline, or tread it daily.</p>
+                            <p>Three-martini lunch vertical integration work identify pain points productize. Diversify kpis what's the status on the deliverables for eow?, or can I just chime in on that one, nor five-year strategic plan parallel path make it a priority but what's the real problem we're trying to solve here?.</p>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    {% endblock %}

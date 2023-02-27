@@ -1,0 +1,139 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+admin – {{serviceName}} –  Book and admin a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Admin"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+                    <span class="govuk-caption-l">Discovery peer review</span>{{record.fields.DiscoveryName}}</h1>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Reference</span><br/>{{record.fields.ID}}</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Booked by</span><br/>Wade Wilson</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+                    </div>
+                    <div class="govuk-grid-column-one-quarter">
+                        <p class="govuk-body">
+                            <span class="govuk-!-font-weight-bold">Status</span><br/>
+                            <strong class="govuk-tag govuk-tag--blue">{{record.fields.Status}}</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            </div>
+
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                   <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/admin/new/tasks/IT18681">Tasks</a>
+                        </li>
+                         <li class="dfeuk-vertical-nav__section-item">
+                             <a class="dfeuk-vertical-nav__link " href="/sprint-3/admin/new/submission/IT18681">Submission</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+ <h2 class="govuk-heading-l">Tasks</h2>
+
+                <table class="govuk-table">
+                  
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Task</th>
+                            <th scope="col" class="govuk-table__header">Assigned to</th>
+                            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__header"><a href="/sprint-3/admin/new/submission/IT18681">Check submission and accept or reject</a></th>
+                            <td class="govuk-table__cell">Service Assurance Team</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Not started</strong></td>
+                        </tr>
+                         {# <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Provide date options</th>
+                            <td class="govuk-table__cell">Service Assurance Team</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Select date for review</th>
+                            <td class="govuk-table__cell">James Gunn</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Update details of the service team</th>
+                            <td class="govuk-table__cell">James Gunn</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Request panel volunteers</th>
+                             <td class="govuk-table__cell">Service Assurance Team</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Provide artefacts and links</th>
+                             <td class="govuk-table__cell">James Gunn</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Complete review</th>
+                             <td class="govuk-table__cell">Becky Morton</td>
+                           <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Submit review</th>
+                             <td class="govuk-table__cell">Becky Morton</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr>
+                         <tr class="govuk-table__row">
+                            <th scope="row" class="govuk-table__cell">Accept review</th>
+                             <td class="govuk-table__cell">James Gunn</td>
+                            <td class="govuk-table__cell govuk-table__header--numeric"><strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong></td>
+                        </tr> #}
+                    </tbody>
+                </table>
+
+                {{record | dump}}
+
+            </div>
+        </div>
+
+    {% endblock %}

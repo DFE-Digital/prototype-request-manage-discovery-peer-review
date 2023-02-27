@@ -1,0 +1,26 @@
+<h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+    <span class="govuk-caption-l">Discovery peer review</span>{{entry.fields.Name}}</h1>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Reference</span><br/>PR-{{entry.fields.ID}}</p>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Booked by</span><br/>Wade Wilson</p>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Review date</span><br/>No date selected</p>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Status</span><br/>
+            {% if entry.fields.Status === "New"%} <strong class="govuk-tag govuk-tag--blue">{{entry.fields.Status}}</strong>{% else %}  <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>{% endif%}
+          
+        </p>
+    </div>
+</div>
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
