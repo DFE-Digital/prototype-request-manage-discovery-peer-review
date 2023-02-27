@@ -17,18 +17,14 @@ https://prototype-kit.service.gov.uk/docs/how-to-use-layouts
   { title: "Reports", url: "/reports/" },
   { title: "Settings", url: "/settings/" }
 ] %}
-{% endif%}
-
-{% if data['usertype'] === 'reviewer'%}
+{% elseif data['usertype'] === 'reviewer'%}
 {% set mainNav = [
   { title: "Overview", url: "/" },
   { title: "Manage", url: "/manage/" },
   { title: "Reports", url: "/reports/" },
   { title: "Settings", url: "/settings/" }
 ] %}
-{% endif%}
-
-{% if data['usertype'] === 'team'%}
+{% elseif %}
 {% set mainNav = [
   { title: "Overview", url: "/" },
   { title: "Book", url: "/book/" },
