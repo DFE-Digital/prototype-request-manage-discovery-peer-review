@@ -29,35 +29,54 @@ async function getDataByID(id) {
     .firstPage()
 }
 
+// Gets a record by the main ID
+async function getEntryByPrimaryID(id) {
+  return await base('Reviews').find(id)
+}
+
 // BOOK
+router.get('/book', function (req, res) {
+  req.session.data = {}
+  return res.render('book/index')
+})
 
+// Saves the draft on submission of the service name
 router.post('/book/service', function (req, res) {
-  base('Reviews').create(
-    [
-      {
-        fields: {
-          Name: req.session.data['title'],
-          Status: 'Draft',
-          RequestedBy: 'Andy Jones',
+  // Do we have a record in session?
+
+  if (req.session.data['draftID']) {
+
+    if(req.session.data['cya'] === 'true')
+    {
+      return res.redirect('/book/check')
+    }
+
+    return res.redirect('/book/summary')
+  } else {
+    base('Reviews').create(
+      [
+        {
+          fields: {
+            Name: req.session.data['title'],
+            Status: 'Draft',
+            RequestedBy: 'Andy Jones',
+          },
         },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.id)
+          req.session.data['draftID'] = record.id
+          return res.redirect('/book/summary')
+        })
       },
-    ],
-    { typecast: true },
-    function (err, records) {
-      if (err) {
-        console.error(err)
-        return
-      }
-      records.forEach(function (record) {
-        console.log(record.id)
-        req.session.data['draftID'] = record.id
-        return res.redirect('/book/summary')
-      })
-    },
-  )
-
-
-  
+    )
+  }
 })
 
 router.get('/book/start-date', function (req, res) {
@@ -192,6 +211,13 @@ router.get('/book/dates', function (req, res) {
   res.render('book/dates/index.html', { dates })
 })
 
+// Check page
+router.get('/book/check', function (req, res) {
+  // We want to know if people have got to this page so that the "change" route sends them back here and not to the next page in the jouurney
+  req.session.data['cya'] = 'true'
+  return res.render('book/check/index')
+})
+
 // On post create AirTable entry and send Notify message to submittor
 router.post('/book/process-request', function (req, res) {
   // Send some emails through Notify
@@ -225,7 +251,6 @@ router.post('/book/process-request', function (req, res) {
 
   var draftID = req.session.data['draftID']
 
-
   base('Reviews').update(
     [
       {
@@ -255,7 +280,8 @@ router.post('/book/process-request', function (req, res) {
           RequestedBy: 'Callum Mckay',
         },
       },
-    ], { typecast: true },
+    ],
+    { typecast: true },
     function (err, records) {
       if (err) {
         console.error(err)
@@ -280,59 +306,59 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
-  // base('Reviews').create(
-  //   [
-  //     {
-  //       fields: {
-  //         AssignedTo: 'Service Assessment Team',
-  //         BusinessPartnerName: req.session.data['bp-name'],
-  //         BusinessPartnerYN: req.session.data['bp'],
-  //         DeliveryManagerName: req.session.data['dm-name'],
-  //         DeliveryManagerYN: req.session.data['dm'],
-  //         DeputyDirector: req.session.data['dd'],
-  //         Description: req.session.data['purpose'],
-  //         Name: req.session.data['title'],
-  //         EndDate: endDate,
-  //         EndDateYN: req.session.data['disco-end'],
-  //         Portfolio: req.session.data['portfolio'],
-  //         ProductManagerName: req.session.data['pm-name'],
-  //         ProductManagerYN: req.session.data['pm'],
-  //         ProjectCode: req.session.data['code_'],
-  //         ProjectCodeYN: req.session.data['code'],
-  //         RequestedWeeks: requestedWeeks,
-  //         SROName: req.session.data['sro-name'],
-  //         SROSameAsDD: req.session.data['sro'],
-  //         StartDate: startDate,
-  //         StartDateYN: req.session.data['disco-start'],
-  //         Status: 'New',
-  //         RequestedBy: 'Callum Mckay',
-  //       },
-  //     },
-  //   ],
-  //   { typecast: true },
-  //   function (err, records) {
-  //     if (err) {
-  //       console.error(err)
-  //       return
-  //     }
-  //     records.forEach(function (record) {
-  //       console.log(record.fields.ID)
+  base('Reviews').create(
+    [
+      {
+        fields: {
+          AssignedTo: 'Service Assessment Team',
+          BusinessPartnerName: req.session.data['bp-name'],
+          BusinessPartnerYN: req.session.data['bp'],
+          DeliveryManagerName: req.session.data['dm-name'],
+          DeliveryManagerYN: req.session.data['dm'],
+          DeputyDirector: req.session.data['dd'],
+          Description: req.session.data['purpose'],
+          Name: req.session.data['title'],
+          EndDate: endDate,
+          EndDateYN: req.session.data['disco-end'],
+          Portfolio: req.session.data['portfolio'],
+          ProductManagerName: req.session.data['pm-name'],
+          ProductManagerYN: req.session.data['pm'],
+          ProjectCode: req.session.data['code_'],
+          ProjectCodeYN: req.session.data['code'],
+          RequestedWeeks: requestedWeeks,
+          SROName: req.session.data['sro-name'],
+          SROSameAsDD: req.session.data['sro'],
+          StartDate: startDate,
+          StartDateYN: req.session.data['disco-start'],
+          Status: 'New',
+          RequestedBy: 'Callum Mckay',
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
 
-  //       notify
-  //         .sendEmail(process.env.SATTemplateId, process.env.recipient, {
-  //           personalisation: {
-  //             title: req.session.data['title'],
-  //             summary: req.session.data['purpose'],
-  //             id: record.fields.ID,
-  //           },
-  //         })
-  //         .then((response) =>
-  //           console.log('Notification: ' + response.statusText),
-  //         )
-  //         .catch((err) => console.error(err))
-  //     })
-  //   },
-  // )
+        notify
+          .sendEmail(process.env.SATTemplateId, process.env.recipient, {
+            personalisation: {
+              title: req.session.data['title'],
+              summary: req.session.data['purpose'],
+              id: record.fields.ID,
+            },
+          })
+          .then((response) =>
+            console.log('Notification: ' + response.statusText),
+          )
+          .catch((err) => console.error(err))
+      })
+    },
+  )
 
   // This is the URL the users will be redirected to once the email
   // has been sent
@@ -584,8 +610,9 @@ router.get('/report/:id', function (req, res) {
 // MANAGE
 
 router.get('/manage/', function (req, res) {
-  res.redirect('/manage/new')
+  res.redirect('/manage/draft')
 })
+
 
 /// Gets view by status of the requests
 /// For example: /admin/rejected
@@ -612,18 +639,64 @@ router.get('/manage/:status', function (req, res) {
           completedrecords,
           cancelledrecords,
         ) => {
-          res.render('manage/index.html', {
-            draftrecords,
-            newrecords,
-            rejectedrecords,
-            activerecords,
-            completedrecords,
-            cancelledrecords,
-            type,
-          })
+
+        
+            res.render('manage/index.html', {
+              draftrecords,
+              newrecords,
+              rejectedrecords,
+              activerecords,
+              completedrecords,
+              cancelledrecords,
+              type,
+            })
+          
+
+         
         },
       ),
     )
+})
+
+// Gets a report for a given ID
+router.get('/manage/draft/:record', function (req, res) {
+  var id = req.params.record
+
+  axios.all([getEntryByPrimaryID(id)]).then(
+    axios.spread((entry) => {
+      console.log(entry)
+
+      // Load the draft into session
+      req.session.data['draftID'] = entry.id
+      req.session.data['title'] = entry.fields.Name
+      req.session.data['purpose'] = entry.fields.Description
+
+      // AssignedTo: 'Service Assessment Team',
+      //     BusinessPartnerName: ,
+      //     BusinessPartnerYN: req.session.data['bp'],
+      //     DeliveryManagerName: req.session.data['dm-name'],
+      //     DeliveryManagerYN: req.session.data['dm'],
+      //     DeputyDirector: req.session.data['dd'],
+      //     Description: req.session.data['purpose'],
+      //     Name: req.session.data['title'],
+      //     EndDate: endDate,
+      //     EndDateYN: req.session.data['disco-end'],
+      //     Portfolio: req.session.data['portfolio'],
+      //     ProductManagerName: req.session.data['pm-name'],
+      //     ProductManagerYN: req.session.data['pm'],
+      //     ProjectCode: req.session.data['code_'],
+      //     ProjectCodeYN: req.session.data['code'],
+      //     RequestedWeeks: requestedWeeks,
+      //     SROName: req.session.data['sro-name'],
+      //     SROSameAsDD: req.session.data['sro'],
+      //     StartDate: startDate,
+      //     StartDateYN: req.session.data['disco-start'],
+      //     Status: 'New',
+      //     RequestedBy: 'Callum Mckay',
+
+      return res.redirect('/book/check')
+    }),
+  )
 })
 
 // Old Sprint 3 stuff

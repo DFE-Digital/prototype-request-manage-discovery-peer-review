@@ -11,7 +11,7 @@
         {% for record in draftrecords %}
             <tr class="dfeuk-table__row">
                 <th scope="row" class="dfeuk-table__header">
-                    <a href="/manage/entry/{{record.fields.ID}}">PR-{{record.fields.ID}}</a>
+                    <a href="/manage/draft/{{record.id}}">PR-{{record.fields.ID}}</a>
                 </th>
                 <td class="dfeuk-table__cell">{{record.fields.Name}}</td>
                 <td class="dfeuk-table__cell">Discovery peer review</td>
