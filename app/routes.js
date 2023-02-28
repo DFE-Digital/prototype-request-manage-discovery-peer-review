@@ -247,7 +247,9 @@ router.post('/book/process-request', function (req, res) {
 
   var requestedWeeks = ''
 
-  requestedWeeks = req.session.data['reviewWeek'].toString()
+
+
+  requestedWeeks = req.session.data['reviewWeek'] ? req.session.data['reviewWeek'].toString() : ''
 
   var draftID = req.session.data['draftID']
 
