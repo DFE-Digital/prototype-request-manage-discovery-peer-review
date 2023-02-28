@@ -223,9 +223,13 @@ router.post('/book/process-request', function (req, res) {
 
   requestedWeeks = req.session.data['reviewWeek'].toString()
 
-  base('Reviews').create(
+  var draftID = req.session.data['draftID']
+
+
+  base('Reviews').update(
     [
       {
+        id: draftID,
         fields: {
           AssignedTo: 'Service Assessment Team',
           BusinessPartnerName: req.session.data['bp-name'],
@@ -251,8 +255,7 @@ router.post('/book/process-request', function (req, res) {
           RequestedBy: 'Callum Mckay',
         },
       },
-    ],
-    { typecast: true },
+    ], { typecast: true },
     function (err, records) {
       if (err) {
         console.error(err)
@@ -276,6 +279,60 @@ router.post('/book/process-request', function (req, res) {
       })
     },
   )
+
+  // base('Reviews').create(
+  //   [
+  //     {
+  //       fields: {
+  //         AssignedTo: 'Service Assessment Team',
+  //         BusinessPartnerName: req.session.data['bp-name'],
+  //         BusinessPartnerYN: req.session.data['bp'],
+  //         DeliveryManagerName: req.session.data['dm-name'],
+  //         DeliveryManagerYN: req.session.data['dm'],
+  //         DeputyDirector: req.session.data['dd'],
+  //         Description: req.session.data['purpose'],
+  //         Name: req.session.data['title'],
+  //         EndDate: endDate,
+  //         EndDateYN: req.session.data['disco-end'],
+  //         Portfolio: req.session.data['portfolio'],
+  //         ProductManagerName: req.session.data['pm-name'],
+  //         ProductManagerYN: req.session.data['pm'],
+  //         ProjectCode: req.session.data['code_'],
+  //         ProjectCodeYN: req.session.data['code'],
+  //         RequestedWeeks: requestedWeeks,
+  //         SROName: req.session.data['sro-name'],
+  //         SROSameAsDD: req.session.data['sro'],
+  //         StartDate: startDate,
+  //         StartDateYN: req.session.data['disco-start'],
+  //         Status: 'New',
+  //         RequestedBy: 'Callum Mckay',
+  //       },
+  //     },
+  //   ],
+  //   { typecast: true },
+  //   function (err, records) {
+  //     if (err) {
+  //       console.error(err)
+  //       return
+  //     }
+  //     records.forEach(function (record) {
+  //       console.log(record.fields.ID)
+
+  //       notify
+  //         .sendEmail(process.env.SATTemplateId, process.env.recipient, {
+  //           personalisation: {
+  //             title: req.session.data['title'],
+  //             summary: req.session.data['purpose'],
+  //             id: record.fields.ID,
+  //           },
+  //         })
+  //         .then((response) =>
+  //           console.log('Notification: ' + response.statusText),
+  //         )
+  //         .catch((err) => console.error(err))
+  //     })
+  //   },
+  // )
 
   // This is the URL the users will be redirected to once the email
   // has been sent
