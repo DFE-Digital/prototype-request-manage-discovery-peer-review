@@ -91,7 +91,7 @@
                         </td>
                     </tr>
                     <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% endif%}</th>
+                        <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}</th>
                         <td class="dfeuk-table__cell">Wade Wilson</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
                             {% if entry.fields.Status === "New"%}
