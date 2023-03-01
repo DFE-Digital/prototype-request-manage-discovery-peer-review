@@ -1070,6 +1070,23 @@ router.get('/manage/', function (req, res) {
   res.redirect('/manage/draft')
 })
 
+// Gets a report for a given ID
+router.get('/manage/draft/:record', function (req, res) {
+  var id = req.params.record
+
+  axios.all([getEntryByPrimaryID(id)]).then(
+    axios.spread((entry) => {
+      console.log(entry)
+
+      // Load the draft into session
+      req.session.data['draftID'] = entry.id
+      req.session.data['title'] = entry.fields.Name
+
+      return res.redirect('/book/check')
+    }),
+  )
+})
+
 /// Gets view by status of the requests
 /// For example: /admin/rejected
 
@@ -1109,46 +1126,7 @@ router.get('/manage/:status', function (req, res) {
     )
 })
 
-// Gets a report for a given ID
-router.get('/manage/draft/:record', function (req, res) {
-  var id = req.params.record
 
-  axios.all([getEntryByPrimaryID(id)]).then(
-    axios.spread((entry) => {
-      console.log(entry)
-
-      // Load the draft into session
-      req.session.data['draftID'] = entry.id
-      req.session.data['title'] = entry.fields.Name
-      req.session.data['purpose'] = entry.fields.Description
-
-      // AssignedTo: 'Service Assessment Team',
-      //     BusinessPartnerName: ,
-      //     BusinessPartnerYN: req.session.data['bp'],
-      //     DeliveryManagerName: req.session.data['dm-name'],
-      //     DeliveryManagerYN: req.session.data['dm'],
-      //     DeputyDirector: req.session.data['dd'],
-      //     Description: req.session.data['purpose'],
-      //     Name: req.session.data['title'],
-      //     EndDate: endDate,
-      //     EndDateYN: req.session.data['disco-end'],
-      //     Portfolio: req.session.data['portfolio'],
-      //     ProductManagerName: req.session.data['pm-name'],
-      //     ProductManagerYN: req.session.data['pm'],
-      //     ProjectCode: req.session.data['code_'],
-      //     ProjectCodeYN: req.session.data['code'],
-      //     RequestedWeeks: requestedWeeks,
-      //     SROName: req.session.data['sro-name'],
-      //     SROSameAsDD: req.session.data['sro'],
-      //     StartDate: startDate,
-      //     StartDateYN: req.session.data['disco-start'],
-      //     Status: 'New',
-      //     RequestedBy: 'Callum Mckay',
-
-      return res.redirect('/book/check')
-    }),
-  )
-})
 
 // Old Sprint 3 stuff
 
