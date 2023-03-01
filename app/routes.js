@@ -1009,6 +1009,18 @@ router.get('/manage/', function (req, res) {
   res.redirect('/manage/draft')
 })
 
+router.get('/manage/entry/:id', function (req, res) {
+  var id = req.params.id
+  var view = 'new'
+
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      res.render('manage/entry/taskview.html', { entry, view })
+    }),
+  )
+})
+
 // Gets a report for a given ID
 router.get('/manage/draft/:record', function (req, res) {
   var id = req.params.record
@@ -1064,6 +1076,25 @@ router.get('/manage/:status', function (req, res) {
       ),
     )
 })
+
+
+// Gets entry for submission list
+router.get('/manage/entry/:view/:id', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      res.render('manage/entry/taskview.html', { entry, view })
+    }),
+  )
+})
+
+
+
+
+
 
 // Old Sprint 3 stuff
 

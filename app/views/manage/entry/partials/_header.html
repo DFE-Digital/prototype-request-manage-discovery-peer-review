@@ -1,0 +1,44 @@
+<h1 class="govuk-heading-l govuk-!-margin-bottom-5">
+    <span class="govuk-caption-l">Discovery peer review</span>{{entry.fields.Name}}</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+      View summary
+    </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p>{{entry.fields.Description}}</p>
+            </div>
+        </details>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Reference</span><br/>PR-{{entry.fields.ID}}</p>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Booked by</span><br/>Wade Wilson</p>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Review date</span><br/>
+            {% if entry.fields.ReviewDate %}{{entry.fields.ReviewDate | date('D MMMM YYYY')}}{% else%}No date set{%endif%}</p>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+            <p class="govuk-body">
+                <span class="govuk-!-font-weight-bold">Status</span><br/>
+                {% if entry.fields.Status === "New"%}
+                    <strong class="govuk-tag govuk-tag--blue">{{entry.fields.Status}}</strong>
+                {% else %}
+                    <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>{% endif%}
+
+                </p>
+            </div>
+        </div>
+
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
