@@ -4,20 +4,19 @@
             <th scope="col" class="dfeuk-table__header">Service</th>
             <th scope="col" class="dfeuk-table__header">Type</th>
             <th scope="col" class="dfeuk-table__header">Requestor</th>
-            <th scope="col" class="dfeuk-table__header">Submitted</th>
+            <th scope="col" class="dfeuk-table__header">Rejected date</th>
         </tr>
     </thead>
     <tbody class="dfeuk-table__body">
-        {% for record in newrecords %}
+        {% for record in rejectedrecords %}
             <tr class="dfeuk-table__row">
-                <th scope="row" class="dfeuk-table__header">
+             <th scope="row" class="dfeuk-table__header">
                     <a href="/manage/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
                 </th>
                 <td class="dfeuk-table__cell">Discovery peer review</td>
                 <td class="dfeuk-table__cell">{{record.fields.RequestedBy}}</td>
-                <td class="dfeuk-table__cell">{{today|date('D MMM YYYY')}}</td>
+                <td class="dfeuk-table__cell">{{record.fields.RejectedDate | date('D MMM YYYY')}}</td>
             </tr>
         {% endfor %}
-
     </tbody>
 </table>

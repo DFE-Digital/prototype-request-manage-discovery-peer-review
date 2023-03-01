@@ -87,63 +87,60 @@ router.get('/settings/', function (req, res) {
   )
 })
 
-
 router.get('/settings/add-user', function (req, res) {
   req.session.data = {}
   return res.render('settings/add-user.html')
-  })
+})
 
-  router.post('/settings/add-user', function (req, res) {
-    var name = req.body['person']
-    var role = req.session.data['userrole']
-    var profession = req.body['profession']
-    var xgov = req.body['crossgov']
-  
-    console.log(name)
-    console.log(role)
-    console.log(profession)
-    console.log(xgov)
-  
-    var containsLead = role.includes('Lead assessor')
-    var containsAdmin = role.includes('Administrator')
-    var containsAss = role.includes('Assessor')
-    var containsJnr = role.includes('Junior assessor')
-  
-    var rolead = containsAdmin ? 'Administrator' : null
-  
-    console.log(rolead)
-  
-    base('Assessors').create(
-      [
-        {
-          fields: {
-            Name: name,
-            AssessorRole: profession,
-            CrossGovAssessor: xgov,
-            Administrator: containsAdmin,
-            Lead: containsLead,
-            Assessor: containsAss,
-            Junior: containsJnr,
-            Role: rolead,
-          },
+router.post('/settings/add-user', function (req, res) {
+  var name = req.body['person']
+  var role = req.session.data['userrole']
+  var profession = req.body['profession']
+  var xgov = req.body['crossgov']
+
+  console.log(name)
+  console.log(role)
+  console.log(profession)
+  console.log(xgov)
+
+  var containsLead = role.includes('Lead assessor')
+  var containsAdmin = role.includes('Administrator')
+  var containsAss = role.includes('Assessor')
+  var containsJnr = role.includes('Junior assessor')
+
+  var rolead = containsAdmin ? 'Administrator' : null
+
+  console.log(rolead)
+
+  base('Assessors').create(
+    [
+      {
+        fields: {
+          Name: name,
+          AssessorRole: profession,
+          CrossGovAssessor: xgov,
+          Administrator: containsAdmin,
+          Lead: containsLead,
+          Assessor: containsAss,
+          Junior: containsJnr,
+          Role: rolead,
         },
-      ],
-      { typecast: true },
-      function (err, records) {
-        if (err) {
-          console.error(err)
-          return
-        }
-        records.forEach(function (record) {
-          console.log(record.fields.ID)
-        })
       },
-    )
-  
-    return res.redirect('/settings')
-  })
-  
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+      })
+    },
+  )
 
+  return res.redirect('/settings')
+})
 
 router.get('/settings/administrators', function (req, res) {
   axios.all([getPeople('Administrators')]).then(
@@ -195,10 +192,9 @@ router.get('/settings/cross-gov', function (req, res) {
   )
 })
 
-
 // BOOK
 router.get('/book', function (req, res) {
- // req.session.data = {}
+  // req.session.data = {}
   return res.render('book/index')
 })
 
@@ -415,7 +411,7 @@ router.post('/book/process-request', function (req, res) {
 
   var sroName = req.session.data['sro-name']
 
-  if(req.session.data['sro'] === "Yes"){
+  if (req.session.data['sro'] === 'Yes') {
     sroName = req.session.data['dd']
   }
 
@@ -474,7 +470,7 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
- 
+  req.session.data = {}
   // This is the URL the users will be redirected to once the email
   // has been sent
   res.redirect('/book/submitted')
@@ -584,7 +580,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('ProjectCode')) 
+          console.log(record.get('ProjectCode'))
         })
       },
     )
@@ -606,7 +602,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('DeputyDirector')) 
+          console.log(record.get('DeputyDirector'))
         })
       },
     )
@@ -628,7 +624,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('DeliveryManagerName')) 
+          console.log(record.get('DeliveryManagerName'))
         })
       },
     )
@@ -650,7 +646,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('ProductManagerName')) 
+          console.log(record.get('ProductManagerName'))
         })
       },
     )
@@ -672,30 +668,26 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('BusinessPartnerName')) 
+          console.log(record.get('BusinessPartnerName'))
         })
       },
     )
   }
-
-
-
 
   if (view === 'start-date') {
-
     startDate =
-    req.session.data['disco-start-month'] +
-    '/' +
-    req.session.data['disco-start-day'] +
-    '/' +
-    req.session.data['disco-start-year']
-    
+      req.session.data['disco-start-month'] +
+      '/' +
+      req.session.data['disco-start-day'] +
+      '/' +
+      req.session.data['disco-start-year']
+
     base('Reviews').update(
       [
         {
           id: entry,
           fields: {
-            StartDate: startDate
+            StartDate: startDate,
           },
         },
       ],
@@ -705,28 +697,26 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('StartDate')) 
+          console.log(record.get('StartDate'))
         })
       },
     )
   }
-
 
   if (view === 'end-date') {
-
     endDate =
-    req.session.data['disco-end-month'] +
-    '/' +
-    req.session.data['disco-end-day'] +
-    '/' +
-    req.session.data['disco-end-year']
-    
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+
     base('Reviews').update(
       [
         {
           id: entry,
           fields: {
-            EndDate: endDate
+            EndDate: endDate,
           },
         },
       ],
@@ -736,12 +726,11 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('EndDate')) 
+          console.log(record.get('EndDate'))
         })
       },
     )
   }
-
 
   if (view === 'sro') {
     base('Reviews').update(
@@ -759,7 +748,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('SROName')) 
+          console.log(record.get('SROName'))
         })
       },
     )
@@ -781,7 +770,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('Portfolio')) 
+          console.log(record.get('Portfolio'))
         })
       },
     )
@@ -793,7 +782,6 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 // Saves the team page value change
 // EG: /admin/entry/amend-team/ur/1/fdvi3fr34f34g45
 router.post('/admin/entry/amend-team/:view/:id/:entry', function (req, res) {
-
   var id = req.params.id
   var view = req.params.view
   var entry = req.params.entry
@@ -816,12 +804,11 @@ router.post('/admin/entry/amend-team/:view/:id/:entry', function (req, res) {
           return
         }
         records.forEach(function (record) {
-          console.log(record.get('ProjectCode')) 
+          console.log(record.get('ProjectCode'))
         })
       },
     )
   }
-
 
   return res.redirect('/admin/entry/team/' + id)
 })
@@ -977,10 +964,9 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
 
 // Demo View
 
-router.get('/analysis', function(req, res){
+router.get('/analysis', function (req, res) {
   axios.all([getData('Grid view')]).then(
     axios.spread((entries) => {
-      
       res.render('analysis/index.html', { entries })
     }),
   )
@@ -1078,8 +1064,6 @@ router.get('/manage/:status', function (req, res) {
       ),
     )
 })
-
-
 
 // Old Sprint 3 stuff
 
