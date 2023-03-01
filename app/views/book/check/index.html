@@ -121,9 +121,15 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                         </dd>
                                     </div>
                                     <div class="govuk-summary-list__row">
+<<<<<<< HEAD
+                                        <dt class="govuk-summary-list__key">Senior responsible owner same as deputy director</dt>
+                                        <dd class="govuk-summary-list__value">{{data['sro']}}
+                                            {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
+=======
                                         <dt class="govuk-summary-list__key">Senior responsible officer</dt>
                                         <dd class="govuk-summary-list__value">
                                            {{data['sro-name']}}</dd>
+>>>>>>> f68aa5a131e8f7de5fdda5f170f4eefee1c80a1b
                                             <dd class="govuk-summary-list__actions">
                                                 <a class="govuk-link" href="/book/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
                                             </dd>
