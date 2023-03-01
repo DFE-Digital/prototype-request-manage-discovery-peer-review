@@ -97,8 +97,14 @@
                                 <a href="/manage/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a></th>
                             <td class="dfeuk-table__cell">Wade Wilson</td>
                             <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+
+                                {% if team.length %}
+<strong class="govuk-tag govuk-tag--green">{{team.length}} {% if team.length !== 1 %}people{% else%}person{%endif%} added</strong>
+                                {% else %}
+<strong class="govuk-tag govuk-tag--grey">No people added</strong>
+                                {% endif %}
                               
-                                    <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+                                    
                               
                             </td>
                         </tr>

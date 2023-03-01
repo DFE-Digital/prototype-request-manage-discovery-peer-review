@@ -1032,10 +1032,10 @@ router.get('/manage/entry/:id', function (req, res) {
   var id = req.params.id
   var view = 'new'
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
+  axios.all([getDataByID(id), getTeam(id)]).then(
+    axios.spread((entryx, team) => {
       entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, view })
+      res.render('manage/entry/taskview.html', { entry, team, view })
     }),
   )
 })
