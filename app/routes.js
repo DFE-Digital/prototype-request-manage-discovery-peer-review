@@ -26,12 +26,26 @@ async function getPeople(viewName) {
   return await base('Assessors').select({ view: viewName }).all()
 }
 
+async function getTeam(id) {
+  return await base('ReviewTeam')
+    .select({ view: 'People', filterByFormula: `{ReviewID} = "${id}"` })
+    .firstPage()
+}
+
 // Gets a record by an ID
 async function getDataByID(id) {
   return await base('Reviews')
     .select({ maxRecords: 1, filterByFormula: `{ID} = "${id}"` })
     .firstPage()
 }
+
+async function getPerson(id) {
+  return await base('ReviewTeam')
+    .select({ maxRecords: 1, filterByFormula: `{ID} = "${id}"` })
+    .firstPage()
+}
+
+
 
 // Gets a record by the main ID
 async function getEntryByPrimaryID(id) {
@@ -1088,13 +1102,318 @@ router.get('/manage/entry/:view/:id', function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
+  axios.all([getDataByID(id), getTeam(id)]).then(
+    axios.spread((entryx, team) => {
       entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, view })
+      res.render('manage/entry/taskview.html', { entry, team, view })
     }),
   )
 })
+
+
+/// Gets a view for a given ID based on vertical nav select
+/// For example, submission, tasks, peer review, supporting artefacts
+/// /manage/entry/submission/1
+router.get('/manage/entry/amend/:view/:id/:entry', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+  var entry = req.params.entry
+  var personid = req.params.id
+
+  console.log('/manage/entry/amend/' + view + '/' + id + '/' + entry)
+
+  axios.all([getDataByID(id), getPerson(entry)]).then(
+    axios.spread((entryx, person) => {
+      entry = entryx[0]
+      res.render('manage/entry/amend/submissionvalue.html', { entry, person, view })
+    }),
+  )
+})
+
+
+// Saves the submission list value change
+router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+  var entry = req.params.entry
+
+  // update entry
+
+  if (view === 'add-team-member') {
+    base('ReviewTeam').create(
+      [
+        {
+          fields: {
+            Name: req.body.team_,
+            ReviewID: parseInt(id),
+            Role: req.body.roleinteam
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+          
+        })
+      },
+    )
+    return res.redirect('/manage/entry/team/'+id)
+  }
+
+  if (view === 'remove-team-member') {
+    base('ReviewTeam').destroy(
+      [
+        entry
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+          
+        })
+      },
+    )
+    return res.redirect('/manage/entry/team/'+id)
+  }
+
+  if (view === 'code') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProjectCode: req.body.code_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+  }
+
+  if (view === 'dd') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            DeputyDirector: req.body.dd,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('DeputyDirector'))
+        })
+      },
+    )
+  }
+
+  if (view === 'delivery') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            DeliveryManagerName: req.body.dm_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('DeliveryManagerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'product') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProductManagerName: req.body.pm_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProductManagerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'bp') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            BusinessPartnerName: req.body.bp_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('BusinessPartnerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'start-date') {
+    startDate =
+      req.session.data['disco-start-month'] +
+      '/' +
+      req.session.data['disco-start-day'] +
+      '/' +
+      req.session.data['disco-start-year']
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            StartDate: startDate,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('StartDate'))
+        })
+      },
+    )
+  }
+
+  if (view === 'end-date') {
+    endDate =
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            EndDate: endDate,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('EndDate'))
+        })
+      },
+    )
+  }
+
+  if (view === 'sro') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            SROName: req.body.sroname_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('SROName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'portfolio') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Portfolio: req.body.portfolio,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Portfolio'))
+        })
+      },
+    )
+  }
+
+  return res.redirect('/manage/entry/submission/' + id)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

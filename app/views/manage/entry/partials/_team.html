@@ -1,46 +1,40 @@
 <h2 class="govuk-heading-l">Discovery team</h2>
-<p class="govuk-body">The team working on this discovery</p>
+<p class="govuk-body">The team working on this discovery and taking part in the peer review</p>
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
         <h2 class="govuk-summary-card__title">Discovery team</h2>
         <ul class="govuk-summary-card__actions">
             <li class="govuk-summary-card__action">
-                <a class="govuk-link" href="#">
-          Add another role<span class="govuk-visually-hidden"> to the team</span>
+                <a class="govuk-link" href="/manage/entry/amend/add-team-member/{{entry.fields.ID}}/{{entry.id}}">
+          Add people<span class="govuk-visually-hidden"> to the team</span>
                 </a>
             </li>
         </ul>
     </div>
     <div class="govuk-summary-card__content">
+{% if not team.length %}
+
+<p>No team members have been added to the review.</p>
+<p><a href="https://dfe-standards-manual-prototype.herokuapp.com/service-assurance/prepare-for-a-discovery-peer-review/who-should-attend-a-peer-review" target="_blank">Guidance for who should attend a peer review.</a></p>
+
+{% else %}
+
         <dl class="govuk-summary-list">
+
+            {% for person in team %}
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">User research</dt>
+                <dt class="govuk-summary-list__key">{{person.fields.Name}}</dt>
                 <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                   {{person.fields.Role}}
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/admin/entry/amend-team/ur/{{entry.fields.ID}}/{{entry.id}}">Change<span class="govuk-visually-hidden"> user research</span></a>
+                    <a class="govuk-link" href="/manage/entry/amend/remove-team-member/{{entry.fields.ID}}/{{person.fields.ID}}">Remove<span class="govuk-visually-hidden"> {{person.fields.Name}}</span></a>
                 </dd>
             </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Design</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Product manager/owner</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> design</span></a>
-                </dd>
-            </div>
+            {% endfor %}
+            
         </dl>
+        {% endif%}
     </div>
 </div>
