@@ -27,26 +27,26 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
             <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
-                        <li class="dfeuk-vertical-nav__section-item  {%if type === "new" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                        <li class="dfeuk-vertical-nav__section-item  {%if type === 'new' %}dfeuk-vertical-nav__section-item--current{% endif %}">
                             <span class="dfeuk-vertical-nav--count">{{newrecords.length}}</span>
                             <a class="dfeuk-vertical-nav__link " href="/admin/new">New</a>
                         </li>
-                        <li class="dfeuk-vertical-nav__section-item {%if type === "active" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                        <li class="dfeuk-vertical-nav__section-item {%if type === 'active' %}dfeuk-vertical-nav__section-item--current{% endif %}">
                             <span class="dfeuk-vertical-nav--count">{{activerecords.length}}</span>
                             <a class="dfeuk-vertical-nav__link " href="/admin/active">Active</a>
                         </li>
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === "completed" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                        <li class="dfeuk-vertical-nav__section-item {%if type === 'completed' %}dfeuk-vertical-nav__section-item--current{% endif %}">
                             <span class="dfeuk-vertical-nav--count">{{completedrecords.length}}</span>
                             <a class="dfeuk-vertical-nav__link " href="/admin/completed">Completed</a>
                         </li>
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === "cancelled" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                        <li class="dfeuk-vertical-nav__section-item {%if type === 'cancelled' %}dfeuk-vertical-nav__section-item--current{% endif %}">
                             <span class="dfeuk-vertical-nav--count">{{cancelledrecords.length}}</span>
                             <a class="dfeuk-vertical-nav__link " href="/admin/cancelled">Cancelled</a>
                         </li>
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === "rejected" %}dfeuk-vertical-nav__section-item--current{% endif %}">
+                        <li class="dfeuk-vertical-nav__section-item {%if type === 'rejected' %}dfeuk-vertical-nav__section-item--current{% endif %}">
                             <span class="dfeuk-vertical-nav--count">{{rejectedrecords.length}}</span>
                             <a class="dfeuk-vertical-nav__link " href="/admin/rejected">Rejected</a>
                         </li>

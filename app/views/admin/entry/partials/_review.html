@@ -107,7 +107,7 @@
                 {% endif%}
             </div>
             <div class="govuk-summary-card__content">
-                {% if entry.fields.ReviewDoneWell%}
+                {% if entry.fields.ReviewDoneWell !== "\n"%}
                     <p>{{entry.fields.ReviewDoneWell}}</p>
                     {% else%}
                     <p>The panel has not entered any comments.</p>
@@ -129,7 +129,7 @@
                     {% endif%}
                 </div>
                 <div class="govuk-summary-card__content">
-                    {% if entry.fields.ReviewImprove%}
+                    {% if entry.fields.ReviewImprove !== "\n"%}
                         <p>{{entry.fields.ReviewImprove}}</p>
                         {% else%}
                         <p>The panel has not entered any comments.</p>

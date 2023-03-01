@@ -25,7 +25,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                {% include "./partials/_header.html" %}
+                {% include "../partials/_header.html" %}
             </div>
         </div>
 
@@ -51,7 +51,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'new' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
                             </li>
-                            <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' or view === 'reject_reason' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                            <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' or view === 'reject_reason'%}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">Submission</a>
                             </li>
 
@@ -69,15 +69,15 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'panel' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/panel/{{entry.fields.ID}}">Review panel</a>
                             </li>
+                            <li class="dfeuk-vertical-nav__section-item {% if view === 'review' or view === 'editoutcome' or view === 'editcomments' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                                <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Peer review</a>
+                            </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'files' %}dfeuk-vertical-nav__section-item--current{% endif%}">
 
                                 {% if artefacts.length%}
                                     <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
                                 {% endif %}
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/files/{{entry.fields.ID}}">Supporting artefacts</a>
-                            </li>
-                            <li class="dfeuk-vertical-nav__section-item {% if view === 'review' or view === 'editoutcome' or view === 'editcomments' %}dfeuk-vertical-nav__section-item--current{% endif%}">
-                                <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Peer review</a>
                             </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'actions' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/actions/{{entry.fields.ID}}">Actions and history</a>
@@ -95,4 +95,22 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
             </div>
         </div>
 
+    {% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+
+        <script>
+            {% if view === "dd" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.DeputyDirector }}', selectElement: document.querySelector('.auto')})
+            {% elseif view === "delivery" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.DeliveryManagerName }}', selectElement: document.querySelector('.auto')})
+            {% elseif view === "product" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.ProductManagerName }}', selectElement: document.querySelector('.auto')})
+            {% elseif view === "sro" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.SROName }}', selectElement: document.querySelector('.auto')})
+            {% elseif view === "bp" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.BusinessPartnerName }}', selectElement: document.querySelector('.auto')})
+            {% endif %}
+        </script>
     {% endblock %}

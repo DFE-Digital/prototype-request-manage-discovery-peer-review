@@ -1,10 +1,10 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} –  Book and manage a discovery peer review
+Add user – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
-{% set pageSection = "Book"%}
+{% set pageSection = "Settings"%}
 
 {% block beforeContent %}
 
@@ -19,51 +19,23 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
         </p>
     </div>
 
-    <a href="/sprint-3/request/dd" class="govuk-back-link">Back</a>
-
     {% endblock%}
 
     {% block content %}
 
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
 
-                <form action="/sprint-3/request/bp" method="get">
+            <div class="govuk-grid-column-three-quarters">
 
-  <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="sro-hint">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading">
-       Is {{data['dd']}} also the senior responsible officer (SRO)? 
-      </h1>
-              </legend>
-              <div id="sro-hint" class="govuk-hint">
-      Select one option.
-    </div>
-              <div class="govuk-radios" data-module="govuk-radios">
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="sro" name="sro" type="radio" value="Yes" data-aria-controls="conditional-sro" {{ checked('sro','Yes') }}>
-                  <label class="govuk-label govuk-radios__label" for="sro">
-          Yes
-        </label>
-                </div>
-           
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="sro-2" name="sro" type="radio" value="No" data-aria-controls="conditional-sro-2"  {{ checked('sro','No') }}>
-                  <label class="govuk-label govuk-radios__label" for="sro-2">
-          No
-        </label>
-                </div>
-                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-sro-2">
+                <h1 class="govuk-heading-l">Add a person</h1>
+                <form action="/settings/add-user" method="post">
 
-                   <div class="govuk-form-group">
-                       
-                            <label class="govuk-label" for="sro-name">
-      Name of the SRO
-    </label>
-                       
+                    <div class="govuk-form-group">
+                        <legend class="govuk-fieldset__legend">
+      Who are you adding?
+    </legend>
 
-                         <select class="govuk-select govuk-!-width-one-half auto" id="sro-name" name="sro-name">
+                        <select class="govuk-select govuk-!-width-one-half auto" id="person" name="person">
                             <option value="">Select a person</option>
                             <option value="Adam Taylor">Adam Taylor</option>
                             <option value="Alan Hearn">Alan Hearn</option>
@@ -79,7 +51,7 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
                             <option value="Barbara Moss">Barbara Moss</option>
                             <option value="Brian Ashworth">Brian Ashworth</option>
                             <option value="Bridget Hancock">Bridget Hancock</option>
-                           <option value="Callum Mckay">Callum Mckay</option>
+                            <option value="Callum Mckay">Callum Mckay</option>
                             <option value="Caroline Wilkinson">Caroline Wilkinson</option>
                             <option value="Charles Foss">Charles Foss</option>
                             <option value="Charlotte Sankey">Charlotte Sankey</option>
@@ -153,7 +125,7 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
                             <option value="Robert Finch">Robert Finch</option>
                             <option value="Robin Mellor">Robin Mellor</option>
                             <option value="Roger Hood">Roger Hood</option>
-                           <option value="Sam Barton">Sam Barton</option>
+                            <option value="Sam Barton">Sam Barton</option>
                             <option value="Spencer Davis">Spencer Davis</option>
                             <option value="Steve Challoner">Steve Challoner</option>
                             <option value="Steven Brooks">Steven Brooks</option>
@@ -169,15 +141,118 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
                         </select>
                     </div>
 
-                </div>
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="userrole-hint">
+                            <legend class="govuk-fieldset__legend">
+      What roles should they have?
+    </legend>
+                            <div id="userrole-hint" class="govuk-hint">
+      Select all that apply.
+    </div>
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="userrole" name="userrole" type="checkbox" value="Administrator">
+                                    <label class="govuk-label govuk-checkboxes__label" for="userrole">
+          Administrator
+        </label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="userrole-2" name="userrole" type="checkbox" value="Lead assessor">
+                                    <label class="govuk-label govuk-checkboxes__label" for="userrole-2">
+          Lead assessor
+        </label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="userrole-3" name="userrole" type="checkbox" value="Assessor">
+                                    <label class="govuk-label govuk-checkboxes__label" for="userrole-3">
+          Assessor
+        </label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="userrole-4" name="userrole" type="checkbox" value="Junior assessor">
+                                    <label class="govuk-label govuk-checkboxes__label" for="userrole-4">
+          Junior assessor
+        </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
 
-              </div>
-            </fieldset>
-          </div>
+                    <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend">
+      What profession are they an assessor for?
+    </legend>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession" name="profession" type="radio" value="Design">
+        <label class="govuk-label govuk-radios__label" for="profession">
+          Design
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession-2" name="profession" type="radio" value="User Research">
+        <label class="govuk-label govuk-radios__label" for="profession-2">
+          User research
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession-3" name="profession" type="radio" value="Product">
+        <label class="govuk-label govuk-radios__label" for="profession-3">
+          Product
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession-4" name="profession" type="radio" value="Delivery">
+        <label class="govuk-label govuk-radios__label" for="profession-4">
+          Delivery
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession-5" name="profession" type="radio" value="Operations">
+        <label class="govuk-label govuk-radios__label" for="profession-5">
+          Operations
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="profession-6" name="profession" type="radio" value="Technical">
+        <label class="govuk-label govuk-radios__label" for="profession-6">
+          Technical
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</div>
 
-                    <button class="govuk-button" data-module="govuk-button">
-  Save and continue
-</button>
+                    <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="crossgov-hint">
+    <legend class="govuk-fieldset__legend">
+     Are they a cross-government assessor?
+    </legend>
+    <div id="crossgov-hint" class="govuk-hint">
+      You can change this later if you are unsure
+    </div>
+    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="crossgov" name="crossgov" type="radio" value="true">
+        <label class="govuk-label govuk-radios__label" for="crossgov">
+          Yes
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="crossgov-2" name="crossgov" type="radio" value="false">
+        <label class="govuk-label govuk-radios__label" for="crossgov-2">
+          No
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+                    <div class="govuk-button-group">
+                        <button class="govuk-button" data-module="govuk-button">Add person</button>
+                        <a class="govuk-link" href="/settings">Cancel</a>
+                    </div>
                 </form>
 
             </div>
@@ -185,11 +260,10 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
 
     {% endblock %}
 
+    {% block scripts %}
+        {{ super() }}
 
-        {% block scripts %}
-  {{ super() }}
-  
-  <script>
-            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["sro-name"] }}', selectElement: document.querySelector('.auto')})
+        <script>
+            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["person"] }}', selectElement: document.querySelector('.auto')})
         </script>
-{% endblock %}
+    {% endblock %}

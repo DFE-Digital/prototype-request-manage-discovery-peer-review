@@ -1,0 +1,29 @@
+<table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+    <thead class="dfeuk-table__head">
+        <tr class="dfeuk-table__row">
+            <th scope="col" class="dfeuk-table__header">Name</th>
+            <th scope="col" class="dfeuk-table__header">Role</th>
+            <th scope="col" class="dfeuk-table__header">Lead</th>
+            <th scope="col" class="dfeuk-table__header">Assessor</th>
+            <th scope="col" class="dfeuk-table__header">Junior</th>
+            <th scope="col" class="dfeuk-table__header">Cross GOV</th>
+            <th scope="col" class="dfeuk-table__header">Completed</th>
+        </tr>
+    </thead>
+    <tbody class="dfeuk-table__body">
+        {% for person in people %}
+            <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                    <a href="">{{person.fields.Name}}</a>
+                </th>
+                <td class="dfeuk-table__cell">{{person.fields.AssessorRole}}</td>
+                <td class="dfeuk-table__cell">{{person.fields.Lead | BoolToYesBlank}}</td>
+                <td class="dfeuk-table__cell">{{person.fields.Assessor | BoolToYesBlank}}</td>
+                <td class="dfeuk-table__cell">{{person.fields.Junior  | BoolToYesBlank}}</td>
+                <td class="dfeuk-table__cell">{{person.fields.CrossGovAssessor | BoolToYesBlank}}</td>
+                <td class="dfeuk-table__cell dfeuk-table__cell--numeric">{{person.fields.Completed}}</td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>

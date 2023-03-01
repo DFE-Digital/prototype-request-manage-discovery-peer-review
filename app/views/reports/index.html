@@ -24,63 +24,146 @@ Reporting – {{serviceName}} –  Book and manage a discovery peer review
     {% block content %}
 
         <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full govuk-!-margin-bottom-5">
+                <h1 class="govuk-heading-l">Service assurance reports</h1>
+            </div>
             <div class="govuk-grid-column-one-quarter">
-                <nav class="dfeuk-vertical-nav">
-                    <ul class="dfeuk-vertical-nav__section">
-                        <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
-                            <span class="dfeuk-vertical-nav--count">1</span>
-                            <a class="dfeuk-vertical-nav__link " href="/reports">Recent</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item">
-                            <span class="dfeuk-vertical-nav--count">1</span>
-                            <a class="dfeuk-vertical-nav__link " href="/reports/discovery">Discovery reports</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item">
-                            <span class="dfeuk-vertical-nav--count">0</span>
-                            <a class="dfeuk-vertical-nav__link " href="/reports/alpha">Alpha reports</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item">
-                            <span class="dfeuk-vertical-nav--count">0</span>
-                            <a class="dfeuk-vertical-nav__link " href="/reports/beta">Beta reports</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item">
-                            <span class="dfeuk-vertical-nav--count">0</span>
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/live">Live reports</a>
-                        </li>
 
-                    </ul>
-                </nav>
+                <div class="filter-panel">
+
+                    <h2 class="govuk-heading-m">Filter reports</h2>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h3 class="govuk-fieldset__heading">Peer review outcome</h3>
+                            </legend>
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_outcome" name="f_outcome" type="checkbox" value="Red">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_outcome">Red</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_outcome-2" name="f_outcome" type="checkbox" value="Amber">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_outcome-2">Amber</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_outcome-3" name="f_outcome" type="checkbox" value="Green">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_outcome-3">Green</label>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h3 class="govuk-fieldset__heading">Assessment outcome</h3>
+                            </legend>
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_met" name="f_met" type="checkbox" value="Met">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_met">Met</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_met-2" name="f_met" type="checkbox" value="Met with conditions">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_met-2">Met with conditions</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_met-3" name="f_met" type="checkbox" value="Not met">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_met-3">Not met</label>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                <h3 class="govuk-fieldset__heading">Business area</h3>
+                            </legend>
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business" name="f_business" type="checkbox" value="Families">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business">Families</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-2" name="f_business" type="checkbox" value="Funding">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-2">Funding</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-3" name="f_business" type="checkbox" value="Operations and Infrastructure">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-3">Operations and Infrastructure</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-4" name="f_business" type="checkbox" value="Regions">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-4">Regions</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-5" name="f_business" type="checkbox" value="Schools">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-5">Schools</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-6" name="f_business" type="checkbox" value="Skills">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-6">Skills</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-7" name="f_business" type="checkbox" value="STA">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-7">STA</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-8" name="f_business" type="checkbox" value="SLC">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-8">SLC</label>
+                                </div>
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="f_business-9" name="f_business" type="checkbox" value="TRA">
+                                    <label class="govuk-label govuk-checkboxes__label" for="f_business-9">TRA</label>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button class="govuk-button" data-module="govuk-button">Apply filter</button>
+                </div>
+
             </div>
             <div class="govuk-grid-column-three-quarters">
 
-                <span class="govuk-caption-l">Peer review and assessment reports</span>
-                <h1 class="govuk-heading-l">Recently published</h1>
+                <h2 class="govuk-heading-m">{{entries.length}} report{% if entries.length !== 1 %}s{%endif%}</h2>
 
-              <table class="dfeuk-table dfeuk-table-responsive">
-    <thead class="dfeuk-table__head">
-        <tr class="dfeuk-table__row">
-            <th scope="col" class="dfeuk-table__header">Request</th>
-            <th scope="col" class="dfeuk-table__header">Service</th>
-            <th scope="col" class="dfeuk-table__header">Type</th>
-            <th scope="col" class="dfeuk-table__header">Outcome</th>
-            <th scope="col" class="dfeuk-table__header">Published</th>
-        </tr>
-    </thead>
-    <tbody class="dfeuk-table__body">
-        {% for record in entries %}
-            <tr class="dfeuk-table__row">
-                <th scope="row" class="dfeuk-table__header">
-                    <a href="/report/{{record.fields.ID}}">PR-{{record.fields.ID}}</a>
-                </th>
-                <td class="dfeuk-table__cell">{{record.fields.Name}}</td>
-                <td class="dfeuk-table__cell">Discovery peer review</td>
-                <td class="dfeuk-table__cell"><strong class="dfeuk-tag dfeuk-tag--{{record.fields.Outcome | lower}}">{{record.fields.Outcome}}</strong></td>
-                <td class="dfeuk-table__cell">{{record.fields.PublishedDate | date('D MMM YYYY')}}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                    <ul class="dfeuk-document-list">
+                        {% for record in entries %}
+                        
+                        <li class="dfeuk-document-list__item dfeuk-document-list--no-underline ">
+                            <a href="/report/{{record.fields.ID}}" class="dfeuk-document-list__item-title ">{{record.fields.Name}}</a>
+                        
+                        <p class="dfeuk-document-list__item-description ">Discovery peer review report for {{record.fields.Name}}</p>
+                        <ul class="dfeuk-document-list__item-metadata">
+
+                        <li class="gdfeuk-document-list__attribute">
+                    Result: <strong class="govuk-tag govuk-tag--{{record.fields.Outcome | lower}}">{{record.fields.Outcome}}</strong>
+</li>
+                        <li class="gdfeuk-document-list__attribute">
+                    Stage: discovery
+</li> <li class="gdfeuk-document-list__attribute">
+                    Type: peer review
+</li>
+                        <li class="gdfeuk-document-list__attribute">
+                    Reviewed: <time datetime="2022-11-17">{{record.fields.ReviewDate | date('D MMMM YYYY')}}</time>
+                        </li>
+                    </ul>
+                        </li>
+
+                        {% endfor %}
+                    </li>
+
+                   
+
+             
+                </div>
             </div>
-        </div>
 
-    {% endblock %}
+        {% endblock %}

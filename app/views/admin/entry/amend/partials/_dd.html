@@ -1,69 +1,13 @@
-{% extends "layouts/main.html" %}
+<form action="/admin/entry/amend/dd/{{entry.fields.ID}}/{{entry.id}}" method="post">
 
-{% block pageTitle %}
-Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} –  Book and manage a discovery peer review
-{% endblock %}
-
-{% set pageSection = "Book"%}
-
-{% block beforeContent %}
-
-    <div class="govuk-phase-banner">
-        <p class="govuk-phase-banner__content">
-            <strong class="govuk-tag govuk-phase-banner__content__tag">
-      alpha
-    </strong>
-            <span class="govuk-phase-banner__text">
-      This is a prototype – it is not a real service.
-    </span>
-        </p>
-    </div>
-
-    <a href="/sprint-3/request/dd" class="govuk-back-link">Back</a>
-
-    {% endblock%}
-
-    {% block content %}
-
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-
-                <form action="/sprint-3/request/bp" method="get">
-
-  <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="sro-hint">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading">
-       Is {{data['dd']}} also the senior responsible officer (SRO)? 
-      </h1>
-              </legend>
-              <div id="sro-hint" class="govuk-hint">
-      Select one option.
-    </div>
-              <div class="govuk-radios" data-module="govuk-radios">
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="sro" name="sro" type="radio" value="Yes" data-aria-controls="conditional-sro" {{ checked('sro','Yes') }}>
-                  <label class="govuk-label govuk-radios__label" for="sro">
-          Yes
-        </label>
-                </div>
-           
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="sro-2" name="sro" type="radio" value="No" data-aria-controls="conditional-sro-2"  {{ checked('sro','No') }}>
-                  <label class="govuk-label govuk-radios__label" for="sro-2">
-          No
-        </label>
-                </div>
-                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-sro-2">
-
-                   <div class="govuk-form-group">
-                       
-                            <label class="govuk-label" for="sro-name">
-      Name of the SRO
+                    <div class="govuk-form-group">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--l" for="dd">
+      Deputy director
     </label>
-                       
+                        </h1>
 
-                         <select class="govuk-select govuk-!-width-one-half auto" id="sro-name" name="sro-name">
+                        <select class="govuk-select govuk-!-width-one-half auto" id="dd" name="dd">
                             <option value="">Select a person</option>
                             <option value="Adam Taylor">Adam Taylor</option>
                             <option value="Alan Hearn">Alan Hearn</option>
@@ -153,7 +97,7 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
                             <option value="Robert Finch">Robert Finch</option>
                             <option value="Robin Mellor">Robin Mellor</option>
                             <option value="Roger Hood">Roger Hood</option>
-                           <option value="Sam Barton">Sam Barton</option>
+                            <option value="Sam Barton">Sam Barton</option>
                             <option value="Spencer Davis">Spencer Davis</option>
                             <option value="Steve Challoner">Steve Challoner</option>
                             <option value="Steven Brooks">Steven Brooks</option>
@@ -169,27 +113,10 @@ Is {{data['dd']}} the senior responsible Officer (SRO)? – {{serviceName}} – 
                         </select>
                     </div>
 
-                </div>
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+        <a href="/admin/entry/submission/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
 
-              </div>
-            </fieldset>
-          </div>
+</form>
 
-                    <button class="govuk-button" data-module="govuk-button">
-  Save and continue
-</button>
-                </form>
-
-            </div>
-        </div>
-
-    {% endblock %}
-
-
-        {% block scripts %}
-  {{ super() }}
-  
-  <script>
-            accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ data["sro-name"] }}', selectElement: document.querySelector('.auto')})
-        </script>
-{% endblock %}

@@ -8,7 +8,7 @@ https://prototype-kit.service.gov.uk/docs/how-to-use-layouts
 
 
 {% block header %}
-{% if data['usertype'] === 'admin'%}
+
 {% set mainNav = [
   { title: "Overview", url: "/" },
   { title: "Book", url: "/book/" },
@@ -17,22 +17,7 @@ https://prototype-kit.service.gov.uk/docs/how-to-use-layouts
   { title: "Reports", url: "/reports/" },
   { title: "Settings", url: "/settings/" }
 ] %}
-{% elseif data['usertype'] === 'reviewer'%}
-{% set mainNav = [
-  { title: "Overview", url: "/" },
-  { title: "Manage", url: "/manage/" },
-  { title: "Reports", url: "/reports/" },
-  { title: "Settings", url: "/settings/" }
-] %}
-{% else %}
-{% set mainNav = [
-  { title: "Overview", url: "/" },
-  { title: "Book", url: "/book/" },
-  { title: "Manage", url: "/manage/" },
-  { title: "Reports", url: "/reports/" },
-  { title: "Settings", url: "/settings/" }
-] %}
-{% endif%}
+
 
 
 <header class="dfeuk-header" role="banner">

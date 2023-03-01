@@ -1,0 +1,44 @@
+<h2 class="govuk-heading-l">Supporting artefacts</h2>
+
+<p>You can add links to supporting artefacts for your peer review.</p>
+
+{% if artefacts.length%}
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Artefact</th>
+                <th scope="col" class="govuk-table__header">Added on</th>
+                <th scope="col" class="govuk-table__header">Added By</th>
+                <th scope="col" class="govuk-table__header">Action</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            {% for a in artefacts %}
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">
+                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
+                    </th>
+                    <td class="govuk-table__cell">{{a.addedOn}}</td>
+                    <td class="govuk-table__cell">{{a.addedBy}}</td>
+                    <td class="govuk-table__cell">
+                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        <a href="/">Add another link</a>
+    </p>
+
+{% else %}
+    <div class="govuk-inset-text">
+        <p>No links have been added</p>
+        <p>
+            <a href="/">Add link</a>
+        </p>
+    </div>
+
+{% endif %}

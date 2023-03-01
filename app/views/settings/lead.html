@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Settings – {{serviceName}} –  Book and manage a discovery peer review
+Assessors – {{serviceName}} –  Book and manage a discovery peer review
 {% endblock %}
 
 {% set pageSection = "Settings"%}
@@ -27,16 +27,16 @@ Settings – {{serviceName}} –  Book and manage a discovery peer review
             <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
-                        <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
+                        <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/settings">Overview</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
                             <a class="dfeuk-vertical-nav__link " href="/settings/administrators">Administrators</a>
                         </li>
-                        <li class="dfeuk-vertical-nav__section-item">
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
                             <a class="dfeuk-vertical-nav__link " href="/settings/lead">Lead assessors</a>
                         </li>
-                        <li class="dfeuk-vertical-nav__section-item">
+                        <li class="dfeuk-vertical-nav__section-item ">
                             <a class="dfeuk-vertical-nav__link " href="/settings/assessors">Assessors</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
@@ -50,22 +50,16 @@ Settings – {{serviceName}} –  Book and manage a discovery peer review
             </div>
             <div class="govuk-grid-column-three-quarters">
 
-                <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-one-half">
-                             <h1 class="govuk-heading-l">Overview</h1>
-                        </div>
-                          <div class="govuk-grid-column-one-half govuk-!-text-align-right">
-                            <a href="/settings/add-user" class="govuk-button govuk-!-margin-bottom-0">Add assessor</a>
-                            <a href="/" class="govuk-button  govuk-button--secondary govuk-!-margin-bottom-0">Export to Excel</a>
-                        </div>
-                    </div>
-
-
- {% include "./_tableext.html" %}
                
-            </form>
 
+               
+                             <h1 class="govuk-heading-l">Lead assessors</h1>
+                       
+                
+
+                  {% include "./_table.html" %}
+
+            </div>
         </div>
-    </div>
 
-{% endblock %}
+    {% endblock %}
