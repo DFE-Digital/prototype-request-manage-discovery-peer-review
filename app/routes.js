@@ -75,6 +75,8 @@ router.get('/', function (req, res) {
 
 // SETTINGS
 
+// Add user
+
 router.get('/settings/', function (req, res) {
   axios.all([getPeople('All')]).then(
     axios.spread((people) => {
@@ -84,6 +86,64 @@ router.get('/settings/', function (req, res) {
     }),
   )
 })
+
+
+router.get('/settings/add-user', function (req, res) {
+  req.session.data = {}
+  return res.render('settings/add-user.html')
+  })
+
+  router.post('/settings/add-user', function (req, res) {
+    var name = req.body['person']
+    var role = req.session.data['userrole']
+    var profession = req.body['profession']
+    var xgov = req.body['crossgov']
+  
+    console.log(name)
+    console.log(role)
+    console.log(profession)
+    console.log(xgov)
+  
+    var containsLead = role.includes('Lead assessor')
+    var containsAdmin = role.includes('Administrator')
+    var containsAss = role.includes('Assessor')
+    var containsJnr = role.includes('Junior assessor')
+  
+    var rolead = containsAdmin ? 'Administrator' : null
+  
+    console.log(rolead)
+  
+    base('Assessors').create(
+      [
+        {
+          fields: {
+            Name: name,
+            AssessorRole: profession,
+            CrossGovAssessor: xgov,
+            Administrator: containsAdmin,
+            Lead: containsLead,
+            Assessor: containsAss,
+            Junior: containsJnr,
+            Role: rolead,
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+        })
+      },
+    )
+  
+    return res.redirect('/settings')
+  })
+  
+
 
 router.get('/settings/administrators', function (req, res) {
   axios.all([getPeople('Administrators')]).then(
@@ -135,60 +195,6 @@ router.get('/settings/cross-gov', function (req, res) {
   )
 })
 
-// Add user
-
-router.get('/settings/add-user', function (req, res) {
-req.session.data = {}
-})
-router.post('/settings/add-user', function (req, res) {
-  var name = req.body['person']
-  var role = req.session.data['userrole']
-  var profession = req.body['profession']
-  var xgov = req.body['crossgov']
-
-  console.log(name)
-  console.log(role)
-  console.log(profession)
-  console.log(xgov)
-
-  var containsLead = role.includes('Lead assessor')
-  var containsAdmin = role.includes('Administrator')
-  var containsAss = role.includes('Assessor')
-  var containsJnr = role.includes('Junior assessor')
-
-  var rolead = containsAdmin ? 'Administrator' : null
-
-  console.log(rolead)
-
-  base('Assessors').create(
-    [
-      {
-        fields: {
-          Name: name,
-          AssessorRole: profession,
-          CrossGovAssessor: xgov,
-          Administrator: containsAdmin,
-          Lead: containsLead,
-          Assessor: containsAss,
-          Junior: containsJnr,
-          Role: rolead,
-        },
-      },
-    ],
-    { typecast: true },
-    function (err, records) {
-      if (err) {
-        console.error(err)
-        return
-      }
-      records.forEach(function (record) {
-        console.log(record.fields.ID)
-      })
-    },
-  )
-
-  return res.redirect('/settings')
-})
 
 // BOOK
 router.get('/book', function (req, res) {
@@ -468,60 +474,7 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
-  base('Reviews').create(
-    [
-      {
-        fields: {
-          AssignedTo: 'Service Assessment Team',
-          BusinessPartnerName: req.session.data['bp-name'],
-          BusinessPartnerYN: req.session.data['bp'],
-          DeliveryManagerName: req.session.data['dm-name'],
-          DeliveryManagerYN: req.session.data['dm'],
-          DeputyDirector: req.session.data['dd'],
-          Description: req.session.data['purpose'],
-          Name: req.session.data['title'],
-          EndDate: endDate,
-          EndDateYN: req.session.data['disco-end'],
-          Portfolio: req.session.data['portfolio'],
-          ProductManagerName: req.session.data['pm-name'],
-          ProductManagerYN: req.session.data['pm'],
-          ProjectCode: req.session.data['code_'],
-          ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: requestedWeeks,
-          SROName: req.session.data['sro-name'],
-          SROSameAsDD: req.session.data['sro'],
-          StartDate: startDate,
-          StartDateYN: req.session.data['disco-start'],
-          Status: 'New',
-          RequestedBy: 'Callum Mckay',
-        },
-      },
-    ],
-    { typecast: true },
-    function (err, records) {
-      if (err) {
-        console.error(err)
-        return
-      }
-      records.forEach(function (record) {
-        console.log(record.fields.ID)
-
-        notify
-          .sendEmail(process.env.SATTemplateId, process.env.recipient, {
-            personalisation: {
-              title: req.session.data['title'],
-              summary: req.session.data['purpose'],
-              id: record.fields.ID,
-            },
-          })
-          .then((response) =>
-            console.log('Notification: ' + response.statusText),
-          )
-          .catch((err) => console.error(err))
-      })
-    },
-  )
-
+ 
   // This is the URL the users will be redirected to once the email
   // has been sent
   res.redirect('/book/submitted')
