@@ -38,6 +38,11 @@ async function getEntryByPrimaryID(id) {
   return await base('Reviews').find(id)
 }
 
+router.get('/reset', function (req, res) {
+ req.session.data = {}
+ res.redirect('/')
+})
+
 // OVERVIEW (HOMEPAGE)
 
 router.get('/', function (req, res) {
