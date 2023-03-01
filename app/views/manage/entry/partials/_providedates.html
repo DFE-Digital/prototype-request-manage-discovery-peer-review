@@ -1,0 +1,52 @@
+<h2 class="govuk-heading-l">Provide available dates and times</h2>
+
+<p>The team have selected the following weeks as suitable for their peer review:</p>
+
+{% set weeks = entry.fields.RequestedWeeks | split(",")%}
+<ul class="govuk-list">
+    {% for item in weeks %}
+        <li>week beginning {{ item }}</li>
+    {% endfor %}
+</ul>
+
+<h3 class="govuk-heading-m">Add dates and times</h3>
+
+{% if available_dates.length%}
+
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Date</th>
+                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Time</th>
+                <th scope="col" class="govuk-table__header">Action</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            {% for a in available_dates %}
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">
+                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
+                    </th>
+                    <td class="govuk-table__cell">{{a.addedOn}}</td>
+                    <td class="govuk-table__cell">{{a.addedBy}}</td>
+                    <td class="govuk-table__cell">
+                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        <a href="/sprint-3/manage/artefacts/add/12345">Add another date option</a>
+    </p>
+
+{% else %}
+    <div class="govuk-inset-text">
+        <p>No dates have been added</p>
+        <p>
+            <a href="/admin/entry/adddateoption/{{entry.fields.ID}}">Add date option</a>
+        </p>
+    </div>
+
+{% endif %}

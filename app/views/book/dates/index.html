@@ -34,7 +34,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
          <h1 class="govuk-heading-l">When would you like your discovery peer review?</h1>
         {% endif %}
 
-        {% set datex = data['disco-end-day']+"/"+data['disco-end-month']+"/"+data['disco-end-year']%}
+        {% set datex = data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']%}
 
         {% if data['disco-end'] === "Yes" and dates.length %}
           <p class="govuk-body">Based on your anticipated end date of {{datex | date('D MMMM YYYY')}} we suggest the following weeks for your peer review.</p>

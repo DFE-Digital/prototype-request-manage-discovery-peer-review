@@ -52,8 +52,8 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                         </div>
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Project code</dt>
-                            <dd class="govuk-summary-list__value">{{data['code']}}
-                                {% if data['code'] === "Yes"%}<br/>{{data['code_']}}{% endif%}</dd>
+                            <dd class="govuk-summary-list__value">
+                                {% if data['code'] === "Yes"%}{{data['code_']}}{% else%}No{% endif%}</dd>
                                 <dd class="govuk-summary-list__actions">
                                     <a class="govuk-link" href="/book/code">Change<span class="govuk-visually-hidden"> code</span></a>
                                 </dd>
@@ -67,9 +67,6 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     <dt class="govuk-summary-list__key">Start date</dt>
                                     <dd class="govuk-summary-list__value">
                                         {% if data['disco-start'] and data['disco-start'] === "Yes"  %}
-                                            {{data['disco-start']}}
-                                            <br/>
-
                                             {{dstartDate | date('D MMMM YYYY')}}
                                         {% elseif data['disco-start'] and data['disco-start'] === "No"  %}
                                   No
@@ -87,9 +84,9 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 {% set denddate = (data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']) %}
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">Planned end date</dt>
-                                    <dd class="govuk-summary-list__value">{{data['disco-end']}}
-                                        {% if data['disco-end'] === "Yes"%}<br/>
-                                            {{denddate | date('D MMMM YYYY')}}{% endif%}</dd>
+                                    <dd class="govuk-summary-list__value">
+                                        {% if data['disco-end'] === "Yes"%}
+                                            {{denddate | date('D MMMM YYYY')}}{% else%}No{% endif%}</dd>
                                         <dd class="govuk-summary-list__actions">
                                             <a class="govuk-link" href="/book/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                                         </dd>
@@ -124,33 +121,39 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                         </dd>
                                     </div>
                                     <div class="govuk-summary-list__row">
+<<<<<<< HEAD
                                         <dt class="govuk-summary-list__key">Senior responsible owner same as deputy director</dt>
                                         <dd class="govuk-summary-list__value">{{data['sro']}}
                                             {% if data['sro'] === "No"%}<br/>{{data['sro-name']}}{% endif%}</dd>
+=======
+                                        <dt class="govuk-summary-list__key">Senior responsible officer</dt>
+                                        <dd class="govuk-summary-list__value">
+                                           {{data['sro-name']}}</dd>
+>>>>>>> f68aa5a131e8f7de5fdda5f170f4eefee1c80a1b
                                             <dd class="govuk-summary-list__actions">
                                                 <a class="govuk-link" href="/book/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
                                             </dd>
                                         </div>
                                         <div class="govuk-summary-list__row">
                                             <dt class="govuk-summary-list__key">Business partner</dt>
-                                            <dd class="govuk-summary-list__value">{{data['bp']}}
-                                                {% if data['bp'] === "Yes"%}<br/>{{data['bp-name']}}{% endif%}</dd>
+                                            <dd class="govuk-summary-list__value">
+                                                {% if data['bp'] === "Yes"%}<br/>{{data['bp-name']}}{% else%}No{% endif%}</dd>
                                                 <dd class="govuk-summary-list__actions">
                                                     <a class="govuk-link" href="/book/bp">Change<span class="govuk-visually-hidden"> business partner</span></a>
                                                 </dd>
                                             </div>
                                             <div class="govuk-summary-list__row">
                                                 <dt class="govuk-summary-list__key">Delivery manager</dt>
-                                                <dd class="govuk-summary-list__value">{{data['dm']}}
-                                                    {% if data['dm'] === "Yes"%}<br/>{{data['dm-name']}}{% endif%}</dd>
+                                                <dd class="govuk-summary-list__value">
+                                                    {% if data['dm'] === "Yes"%}<br/>{{data['dm-name']}}{% else%}No{% endif%}</dd>
                                                     <dd class="govuk-summary-list__actions">
                                                         <a class="govuk-link" href="/book/delivery">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
                                                     </dd>
                                                 </div>
                                                 <div class="govuk-summary-list__row">
                                                     <dt class="govuk-summary-list__key">Product owner or manager</dt>
-                                                    <dd class="govuk-summary-list__value">{{data['pm']}}
-                                                        {% if data['pm'] === "Yes"%}<br/>{{data['pm-name']}}{% endif%}</dd>
+                                                    <dd class="govuk-summary-list__value">
+                                                        {% if data['pm'] === "Yes"%}<br/>{{data['pm-name']}}{% else%}No{% endif%}</dd>
                                                         <dd class="govuk-summary-list__actions">
                                                             <a class="govuk-link" href="/book/product">Change<span class="govuk-visually-hidden"> delivery manager</span></a>
                                                         </dd>

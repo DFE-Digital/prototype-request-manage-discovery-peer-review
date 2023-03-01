@@ -13,3 +13,10 @@ addFilter('split', function(str, seperator) {
 
 addFilter('date', dateFilter);
 
+addFilter('BoolToYesNo', function(str){
+    return str ? 'Yes' : 'No'
+})
+
+addFilter('BoolToYesBlank', function(str){
+    return str ? 'Yes' : '-'
+})

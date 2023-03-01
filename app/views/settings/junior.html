@@ -1,0 +1,65 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Assessors – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Settings"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/settings">Overview</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/administrators">Administrators</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/lead">Lead assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item ">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/assessors">Assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item dfeuk-vertical-nav__section-item--current">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/junior">Junior assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/cross-gov">Cross-gov assessors</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+               
+
+                    
+                             <h1 class="govuk-heading-l">Junior assessors</h1>
+                        
+                
+
+                 {% include "./_table.html" %}
+
+            </div>
+        </div>
+
+    {% endblock %}

@@ -22,6 +22,10 @@ async function getData(viewName) {
   return await base('Reviews').select({ view: viewName }).all()
 }
 
+async function getPeople(viewName) {
+  return await base('Assessors').select({ view: viewName }).all()
+}
+
 // Gets a record by an ID
 async function getDataByID(id) {
   return await base('Reviews')
@@ -34,9 +38,163 @@ async function getEntryByPrimaryID(id) {
   return await base('Reviews').find(id)
 }
 
+// OVERVIEW (HOMEPAGE)
+
+router.get('/', function (req, res) {
+  axios
+    .all([
+      getData('Draft'),
+      getData('New'),
+      getData('Rejected'),
+      getData('Active'),
+      getData('Completed'),
+      getData('Cancelled'),
+    ])
+    .then(
+      axios.spread(
+        (
+          draftrecords,
+          newrecords,
+          rejectedrecords,
+          activerecords,
+          completedrecords,
+          cancelledrecords,
+        ) => {
+          res.render('index.html', {
+            draftrecords,
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+          })
+        },
+      ),
+    )
+})
+
+// SETTINGS
+
+// Add user
+
+router.get('/settings/', function (req, res) {
+  axios.all([getPeople('All')]).then(
+    axios.spread((people) => {
+      res.render('settings/index.html', {
+        people,
+      })
+    }),
+  )
+})
+
+router.get('/settings/add-user', function (req, res) {
+  req.session.data = {}
+  return res.render('settings/add-user.html')
+})
+
+router.post('/settings/add-user', function (req, res) {
+  var name = req.body['person']
+  var role = req.session.data['userrole']
+  var profession = req.body['profession']
+  var xgov = req.body['crossgov']
+
+  console.log(name)
+  console.log(role)
+  console.log(profession)
+  console.log(xgov)
+
+  var containsLead = role.includes('Lead assessor')
+  var containsAdmin = role.includes('Administrator')
+  var containsAss = role.includes('Assessor')
+  var containsJnr = role.includes('Junior assessor')
+
+  var rolead = containsAdmin ? 'Administrator' : null
+
+  console.log(rolead)
+
+  base('Assessors').create(
+    [
+      {
+        fields: {
+          Name: name,
+          AssessorRole: profession,
+          CrossGovAssessor: xgov,
+          Administrator: containsAdmin,
+          Lead: containsLead,
+          Assessor: containsAss,
+          Junior: containsJnr,
+          Role: rolead,
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+      })
+    },
+  )
+
+  return res.redirect('/settings')
+})
+
+router.get('/settings/administrators', function (req, res) {
+  axios.all([getPeople('Administrators')]).then(
+    axios.spread((people) => {
+      res.render('settings/administrators.html', {
+        people,
+      })
+    }),
+  )
+})
+
+router.get('/settings/lead', function (req, res) {
+  axios.all([getPeople('Lead')]).then(
+    axios.spread((people) => {
+      res.render('settings/lead.html', {
+        people,
+      })
+    }),
+  )
+})
+
+router.get('/settings/junior', function (req, res) {
+  axios.all([getPeople('Junior')]).then(
+    axios.spread((people) => {
+      res.render('settings/junior.html', {
+        people,
+      })
+    }),
+  )
+})
+
+router.get('/settings/assessors', function (req, res) {
+  axios.all([getPeople('Assessors')]).then(
+    axios.spread((people) => {
+      res.render('settings/assessors.html', {
+        people,
+      })
+    }),
+  )
+})
+
+router.get('/settings/cross-gov', function (req, res) {
+  axios.all([getPeople('XGov')]).then(
+    axios.spread((people) => {
+      res.render('settings/xgov.html', {
+        people,
+      })
+    }),
+  )
+})
+
 // BOOK
 router.get('/book', function (req, res) {
-  req.session.data = {}
+  // req.session.data = {}
   return res.render('book/index')
 })
 
@@ -45,9 +203,7 @@ router.post('/book/service', function (req, res) {
   // Do we have a record in session?
 
   if (req.session.data['draftID']) {
-
-    if(req.session.data['cya'] === 'true')
-    {
+    if (req.session.data['cya'] === 'true') {
       return res.redirect('/book/check')
     }
 
@@ -247,11 +403,17 @@ router.post('/book/process-request', function (req, res) {
 
   var requestedWeeks = ''
 
-
-
-  requestedWeeks = req.session.data['reviewWeek'] ? req.session.data['reviewWeek'].toString() : ''
+  requestedWeeks = req.session.data['reviewWeek']
+    ? req.session.data['reviewWeek'].toString()
+    : ''
 
   var draftID = req.session.data['draftID']
+
+  var sroName = req.session.data['sro-name']
+
+  if (req.session.data['sro'] === 'Yes') {
+    sroName = req.session.data['dd']
+  }
 
   base('Reviews').update(
     [
@@ -274,7 +436,7 @@ router.post('/book/process-request', function (req, res) {
           ProjectCode: req.session.data['code_'],
           ProjectCodeYN: req.session.data['code'],
           RequestedWeeks: requestedWeeks,
-          SROName: req.session.data['sro-name'],
+          SROName: sroName,
           SROSameAsDD: req.session.data['sro'],
           StartDate: startDate,
           StartDateYN: req.session.data['disco-start'],
@@ -308,60 +470,7 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
-  base('Reviews').create(
-    [
-      {
-        fields: {
-          AssignedTo: 'Service Assessment Team',
-          BusinessPartnerName: req.session.data['bp-name'],
-          BusinessPartnerYN: req.session.data['bp'],
-          DeliveryManagerName: req.session.data['dm-name'],
-          DeliveryManagerYN: req.session.data['dm'],
-          DeputyDirector: req.session.data['dd'],
-          Description: req.session.data['purpose'],
-          Name: req.session.data['title'],
-          EndDate: endDate,
-          EndDateYN: req.session.data['disco-end'],
-          Portfolio: req.session.data['portfolio'],
-          ProductManagerName: req.session.data['pm-name'],
-          ProductManagerYN: req.session.data['pm'],
-          ProjectCode: req.session.data['code_'],
-          ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: requestedWeeks,
-          SROName: req.session.data['sro-name'],
-          SROSameAsDD: req.session.data['sro'],
-          StartDate: startDate,
-          StartDateYN: req.session.data['disco-start'],
-          Status: 'New',
-          RequestedBy: 'Callum Mckay',
-        },
-      },
-    ],
-    { typecast: true },
-    function (err, records) {
-      if (err) {
-        console.error(err)
-        return
-      }
-      records.forEach(function (record) {
-        console.log(record.fields.ID)
-
-        notify
-          .sendEmail(process.env.SATTemplateId, process.env.recipient, {
-            personalisation: {
-              title: req.session.data['title'],
-              summary: req.session.data['purpose'],
-              id: record.fields.ID,
-            },
-          })
-          .then((response) =>
-            console.log('Notification: ' + response.statusText),
-          )
-          .catch((err) => console.error(err))
-      })
-    },
-  )
-
+  req.session.data = {}
   // This is the URL the users will be redirected to once the email
   // has been sent
   res.redirect('/book/submitted')
@@ -432,6 +541,279 @@ router.get('/admin/entry/:id', function (req, res) {
 /// Gets a view for a given ID based on vertical nav select
 /// For example, submission, tasks, peer review, supporting artefacts
 /// /admin/entry/submission/1
+router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+  var entry = req.params.entry
+
+  console.log('/admin/entry/amend/' + view + '/' + id + '/' + entry)
+
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      res.render('admin/entry/amend/submissionvalue.html', { entry, view })
+    }),
+  )
+})
+
+// Saves the submission list value change
+router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+  var entry = req.params.entry
+
+  // update entry
+
+  if (view === 'code') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProjectCode: req.body.code_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+  }
+
+  if (view === 'dd') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            DeputyDirector: req.body.dd,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('DeputyDirector'))
+        })
+      },
+    )
+  }
+
+  if (view === 'delivery') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            DeliveryManagerName: req.body.dm_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('DeliveryManagerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'product') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProductManagerName: req.body.pm_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProductManagerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'bp') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            BusinessPartnerName: req.body.bp_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('BusinessPartnerName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'start-date') {
+    startDate =
+      req.session.data['disco-start-month'] +
+      '/' +
+      req.session.data['disco-start-day'] +
+      '/' +
+      req.session.data['disco-start-year']
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            StartDate: startDate,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('StartDate'))
+        })
+      },
+    )
+  }
+
+  if (view === 'end-date') {
+    endDate =
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            EndDate: endDate,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('EndDate'))
+        })
+      },
+    )
+  }
+
+  if (view === 'sro') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            SROName: req.body.sroname_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('SROName'))
+        })
+      },
+    )
+  }
+
+  if (view === 'portfolio') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Portfolio: req.body.portfolio,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Portfolio'))
+        })
+      },
+    )
+  }
+
+  return res.redirect('/admin/entry/submission/' + id)
+})
+
+// Saves the team page value change
+// EG: /admin/entry/amend-team/ur/1/fdvi3fr34f34g45
+router.post('/admin/entry/amend-team/:view/:id/:entry', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
+  var entry = req.params.entry
+
+  // update entry
+
+  if (view === 'ur') {
+    base('Team').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProjectCode: req.body.code_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+  }
+
+  return res.redirect('/admin/entry/team/' + id)
+})
+
+// Gets entry for submission list
 router.get('/admin/entry/:view/:id', function (req, res) {
   var id = req.params.id
   var view = req.params.view
@@ -578,6 +960,18 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
   }
 })
 
+// ANALYSIS
+
+// Demo View
+
+router.get('/analysis', function (req, res) {
+  axios.all([getData('Grid view')]).then(
+    axios.spread((entries) => {
+      res.render('analysis/index.html', { entries })
+    }),
+  )
+})
+
 // Reports
 
 /// Gets view of reports
@@ -615,6 +1009,34 @@ router.get('/manage/', function (req, res) {
   res.redirect('/manage/draft')
 })
 
+router.get('/manage/entry/:id', function (req, res) {
+  var id = req.params.id
+  var view = 'new'
+
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      res.render('manage/entry/taskview.html', { entry, view })
+    }),
+  )
+})
+
+// Gets a report for a given ID
+router.get('/manage/draft/:record', function (req, res) {
+  var id = req.params.record
+
+  axios.all([getEntryByPrimaryID(id)]).then(
+    axios.spread((entry) => {
+      console.log(entry)
+
+      // Load the draft into session
+      req.session.data['draftID'] = entry.id
+      req.session.data['title'] = entry.fields.Name
+
+      return res.redirect('/book/check')
+    }),
+  )
+})
 
 /// Gets view by status of the requests
 /// For example: /admin/rejected
@@ -641,65 +1063,38 @@ router.get('/manage/:status', function (req, res) {
           completedrecords,
           cancelledrecords,
         ) => {
-
-        
-            res.render('manage/index.html', {
-              draftrecords,
-              newrecords,
-              rejectedrecords,
-              activerecords,
-              completedrecords,
-              cancelledrecords,
-              type,
-            })
-          
-
-         
+          res.render('manage/index.html', {
+            draftrecords,
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+            type,
+          })
         },
       ),
     )
 })
 
-// Gets a report for a given ID
-router.get('/manage/draft/:record', function (req, res) {
-  var id = req.params.record
 
-  axios.all([getEntryByPrimaryID(id)]).then(
-    axios.spread((entry) => {
-      console.log(entry)
+// Gets entry for submission list
+router.get('/manage/entry/:view/:id', function (req, res) {
+  var id = req.params.id
+  var view = req.params.view
 
-      // Load the draft into session
-      req.session.data['draftID'] = entry.id
-      req.session.data['title'] = entry.fields.Name
-      req.session.data['purpose'] = entry.fields.Description
-
-      // AssignedTo: 'Service Assessment Team',
-      //     BusinessPartnerName: ,
-      //     BusinessPartnerYN: req.session.data['bp'],
-      //     DeliveryManagerName: req.session.data['dm-name'],
-      //     DeliveryManagerYN: req.session.data['dm'],
-      //     DeputyDirector: req.session.data['dd'],
-      //     Description: req.session.data['purpose'],
-      //     Name: req.session.data['title'],
-      //     EndDate: endDate,
-      //     EndDateYN: req.session.data['disco-end'],
-      //     Portfolio: req.session.data['portfolio'],
-      //     ProductManagerName: req.session.data['pm-name'],
-      //     ProductManagerYN: req.session.data['pm'],
-      //     ProjectCode: req.session.data['code_'],
-      //     ProjectCodeYN: req.session.data['code'],
-      //     RequestedWeeks: requestedWeeks,
-      //     SROName: req.session.data['sro-name'],
-      //     SROSameAsDD: req.session.data['sro'],
-      //     StartDate: startDate,
-      //     StartDateYN: req.session.data['disco-start'],
-      //     Status: 'New',
-      //     RequestedBy: 'Callum Mckay',
-
-      return res.redirect('/book/check')
+  axios.all([getDataByID(id)]).then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+      res.render('manage/entry/taskview.html', { entry, view })
     }),
   )
 })
+
+
+
+
+
 
 // Old Sprint 3 stuff
 

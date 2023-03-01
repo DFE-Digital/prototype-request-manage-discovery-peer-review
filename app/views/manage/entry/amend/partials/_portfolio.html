@@ -1,0 +1,81 @@
+<form action="/admin/entry/amend/portfolio/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+
+
+      <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h1 class="govuk-fieldset__heading">
+       Portfolio
+      </h1>
+                            </legend>
+                               <div id="disco-end-hint" class="govuk-hint">
+      Select one option.
+    </div>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio" name="portfolio" type="radio" value="Families Group" {{ checked('portfolio', 'Families Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio">
+          Families Group
+        </label>
+                                </div>
+                                  <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-1" name="portfolio" type="radio" value="Funding Group" {{ checked('portfolio','Funding Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-1">
+          Funding Group
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-2" name="portfolio" type="radio" value="Operations and Infrastructure Group" {{ checked('portfolio','Operations and Infrastructure Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-2">
+          Operations and Infrastructure Group
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-3" name="portfolio" type="radio" value="Regions Group" {{ checked('portfolio','Regions Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-3">
+          Regions Group
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-4" name="portfolio" type="radio" value="Schools Group" {{ checked('portfolio','Schools Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-4">
+          Schools Group
+        </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-5" name="portfolio" type="radio" value="Skills Group" {{ checked('portfolio','Skills Group') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-5">
+          Skills Group
+        </label>
+                                </div>
+                                <div class="govuk-radios__divider">or</div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-6" name="portfolio" type="radio" value="Standards and Testing Agency"{{ checked('portfolio','Standards and Testing Agency') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-6">
+          Standards and Testing Agency
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-6a" name="portfolio" type="radio" value="Student Loans Company" {{ checked('portfolio','Student Loans Company') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-6a">
+          Student Loans Company
+        </label>
+                                </div>
+                                 <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="portfolio-7" name="portfolio" type="radio" value="Teaching Regulation Agency" {{ checked('portfolio','Teaching Regulation Agency') }} >
+                                    <label class="govuk-label govuk-radios__label" for="portfolio-7">
+          Teaching Regulation Agency
+        </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+        <a href="/admin/entry/submission/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
+
+</form>
+

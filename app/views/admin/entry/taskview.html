@@ -69,15 +69,15 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'panel' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/panel/{{entry.fields.ID}}">Review panel</a>
                             </li>
-                            <li class="dfeuk-vertical-nav__section-item {% if view === 'review' or view === 'editoutcome' or view === 'editcomments' %}dfeuk-vertical-nav__section-item--current{% endif%}">
-                                <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Peer review</a>
-                            </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'files' %}dfeuk-vertical-nav__section-item--current{% endif%}">
 
                                 {% if artefacts.length%}
                                     <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
                                 {% endif %}
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/files/{{entry.fields.ID}}">Supporting artefacts</a>
+                            </li>
+                            <li class="dfeuk-vertical-nav__section-item {% if view === 'review' or view === 'editoutcome' or view === 'editcomments' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                                <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Peer review</a>
                             </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'actions' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/actions/{{entry.fields.ID}}">Actions and history</a>

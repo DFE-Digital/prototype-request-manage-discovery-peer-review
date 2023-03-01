@@ -1,0 +1,17 @@
+<form action="/admin/entry/amend/code/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+    <div class="govuk-form-group">
+        <h2 class="govuk-label-wrapper">
+            <label class="govuk-label govuk-label--l" for="more-detail">Project code</label>
+        </h2>
+        <input class="govuk-input govuk-!-width-one-quarter" id="code_" name="code_" type="text" value="{{entry.fields.ProjectCode}}">
+    </div>
+
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+        <a href="/admin/entry/submission/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
+
+</form>
+
+

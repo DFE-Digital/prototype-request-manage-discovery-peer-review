@@ -25,10 +25,192 @@ Overview – {{serviceName}} –  Book and manage a discovery peer review
 
     <div class="govuk-grid-row">
 
-      <div class="govuk-grid-column-full">
+      <div class="govuk-grid-column-two-thirds">
 
-        Service homepage
-       
+        {% if draftrecords.length %}
+          <section id="drafts" class="govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-l">Your draft bookings</h2>
+            <p>Select a draft to continue submitting your request.</p>
+
+            <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+              <thead class="dfeuk-table__head">
+                <tr class="dfeuk-table__row">
+
+                  <th scope="col" class="dfeuk-table__header">Service</th>
+                  <th scope="col" class="dfeuk-table__header">Type</th>
+                  <th scope="col" class="dfeuk-table__header">Started</th>
+                  <th scope="col" class="dfeuk-table__header">Last updated</th>
+                </tr>
+              </thead>
+              <tbody class="dfeuk-table__body">
+                {% for record in draftrecords %}
+                  <tr class="dfeuk-table__row">
+                    <th scope="row" class="dfeuk-table__header">
+                      <a href="/manage/draft/{{record.id}}">{{record.fields.Name}}</a>
+                    </th>
+                    <td class="dfeuk-table__cell">Discovery peer review</td>
+                    <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                    <td class="dfeuk-table__cell">{{record.fields.LastModified|date('D MMM YYYY')}}</td>
+                  </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+
+            <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+          </section>
+
+        {% endif %}
+
+      
+
+
+        <h1 class="govuk-heading-l">Your bookings</h1>
+
+        <p>You don't have any draft or active bookings.</p>
+
+{% if data['usertype'] === "team" %}
+        <table class="dfeuk-table dfeuk-table-responsive govuk-!-margin-bottom-5">
+          <thead class="dfeuk-table__head">
+            <tr class="dfeuk-table__row">
+              <th scope="col" class="dfeuk-table__header">Service</th>
+              <th scope="col" class="dfeuk-table__header">Type</th>
+              <th scope="col" class="dfeuk-table__header">Review date</th>
+              <th scope="col" class="dfeuk-table__header">Status</th>
+            </tr>
+          </thead>
+          <tbody class="dfeuk-table__body">
+            {% for record in myRecords %}
+              <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                  <a href="/manage/{{record.id}}">Pencils for schools</a>
+                </th>
+                <td class="dfeuk-table__cell">Discovery peer review</td>
+                <td class="dfeuk-table__cell">13 Mar 2023</td>
+                <td class="dfeuk-table__cell">
+                  <strong class="govuk-tag govuk-tag--grey">Pre-review</strong>
+                </td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        {% endif %}
+{% if data['usertype'] === "admin" %}
+         <h2 class="govuk-heading-m">New requests</h2>
+
+         {% if newrecords.length %}
+
+        <table class="dfeuk-table dfeuk-table-responsive  govuk-!-margin-bottom-5">
+          <thead class="dfeuk-table__head">
+            <tr class="dfeuk-table__row">
+              <th scope="col" class="dfeuk-table__header">Service</th>
+              <th scope="col" class="dfeuk-table__header">Type</th>
+              <th scope="col" class="dfeuk-table__header">Submitted</th>
+              <th scope="col" class="dfeuk-table__header">Submitted by</th>
+            </tr>
+          </thead>
+          <tbody class="dfeuk-table__body">
+            {% for record in newrecords %}
+              <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                  <a href="/admin/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
+                </th>
+                <td class="dfeuk-table__cell">Discovery peer review</td>
+                <td class="dfeuk-table__cell">{{record.fields.Created | date('D MMM YYYY')}}</td>
+                <td class="dfeuk-table__cell">{{record.fields.RequestedBy}}</td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+        {% else%}
+<p>No new requests</p>
+        {% endif%}
+        
+
+        {% endif %}
+{% if data['usertype'] === "reviewer" %}
+         <h2 class="govuk-heading-m">Teams I'm reviewing</h2>
+
+        <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+          <thead class="dfeuk-table__head">
+            <tr class="dfeuk-table__row">
+              <th scope="col" class="dfeuk-table__header">Service</th>
+              <th scope="col" class="dfeuk-table__header">Type</th>
+              <th scope="col" class="dfeuk-table__header">Review date</th>
+              <th scope="col" class="dfeuk-table__header">Status</th>
+            </tr>
+          </thead>
+          <tbody class="dfeuk-table__body">
+            {% for record in myRecords %}
+              <tr class="dfeuk-table__row">
+                <th scope="row" class="dfeuk-table__header">
+                  <a href="/manage/{{record.id}}">Pencils for schools</a>
+                </th>
+                <td class="dfeuk-table__cell">Discovery peer review</td>
+                <td class="dfeuk-table__cell">13 Mar 2023</td>
+                <td class="dfeuk-table__cell">
+                  <strong class="govuk-tag govuk-tag--grey">Pre-review</strong>
+                </td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+
+        {% endif %}
+
+      </div>
+
+      <div class="govuk-grid-column-one-third">
+
+        <div class="dfeuk-card">
+          <div class="dfeuk-card__content">
+            <h2 class="dfeuk-card__heading dfeuk-heading-m">Book a peer review</h2>
+            <p class="dfeuk-card__description">Use the new service to book a discovery peer review.</p>
+            <p>
+              <a href="/book/">Book <span class="govuk-visually-hidden"> a discovery peer review</span></a>
+            </p>
+          </div>
+        </div>
+
+        <div class="dfeuk-card">
+          <div class="dfeuk-card__content">
+            <h2 class="dfeuk-card__heading dfeuk-heading-m">Unsure if you need a discovery peer review?</h2>
+            <p>
+              <a href="https://dfe-standards-manual-prototype.herokuapp.com/service-assurance" target="_blank">Check <span class="govuk-visually-hidden"> the type of assurance you need</span></a>
+            </p>
+          </div>
+        </div>
+
+        <hr class="govuk-section-break govuk-section-break--visible dfe-bar-thick govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+        <h3 class="govuk-heading-s">Additional guidance across DfE</h3>
+        <ul class="govuk-list govuk-list--spaced">
+          <li>
+            <a href="https://apply-the-service-standard.education.gov.uk/" target="_blank">Apply the Service Standard in DfE</a>
+          </li>
+          <li>
+            <a href="https://user-research.education.gov.uk/" target="_blank">User Research in DfE</a>
+          </li>
+          <li>
+            <a href="https://technical-guidance.education.gov.uk/" target="_blank">DfE Technical Guidance</a>
+          </li>
+          <li>
+            <a href="https://dfe-digital.github.io/architecture/#dfe-architecture" target="_blank">DfE Architecture</a>
+          </li>
+        </ul>
+        <h3 class="govuk-heading-s">GOV.UK resources</h3>
+        <ul class="govuk-list govuk-list--spaced">
+          <li>
+            <a href="https://design-system.service.gov.uk/" target="_blank">GOV.UK Design System</a>
+          </li>
+          <li>
+            <a href="https://www.gov.uk/service-manual" target="_blank">GOV.UK Service Manual</a>
+          </li>
+        </ul>
       </div>
 
     </div>

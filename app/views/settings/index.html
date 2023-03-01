@@ -28,64 +28,41 @@ Settings – {{serviceName}} –  Book and manage a discovery peer review
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                         <li class="dfeuk-vertical-nav__section-item  dfeuk-vertical-nav__section-item--current">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings">Overview</a>
+                            <a class="dfeuk-vertical-nav__link " href="/settings">Overview</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings/administrators">Administrators</a>
+                            <a class="dfeuk-vertical-nav__link " href="/settings/administrators">Administrators</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/discovery">Lead assessors</a>
+                            <a class="dfeuk-vertical-nav__link " href="/settings/lead">Lead assessors</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/settings/assessors">Assessors</a>
+                            <a class="dfeuk-vertical-nav__link " href="/settings/assessors">Assessors</a>
                         </li>
                         <li class="dfeuk-vertical-nav__section-item">
-                            <a class="dfeuk-vertical-nav__link " href="/sprint-3/reporting/alpha">Junior assessors</a>
+                            <a class="dfeuk-vertical-nav__link " href="/settings/junior">Junior assessors</a>
+                        </li>
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <a class="dfeuk-vertical-nav__link " href="/settings/cross-gov">Cross-gov assessors</a>
                         </li>
                     </ul>
                 </nav>
             </div>
             <div class="govuk-grid-column-three-quarters">
 
-                <h1 class="govuk-heading-l">Settings</h1>
-
-                <form action="/settings" method="get">
-
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                <h2 class="govuk-fieldset__heading">
-        Use prototype as:
-      </h2>
-                            </legend>
-                            <div class="govuk-radios govuk-radios--small  govuk-radios--inline" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="usertype" name="usertype" type="radio" value="admin" {{checked('usertype','admin')}}>
-                                    <label class="govuk-label govuk-radios__label" for="usertype">
-          Administrator
-        </label>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="usertype-2" name="usertype" type="radio" value="team" {{checked('usertype','team')}}>
-                                    <label class="govuk-label govuk-radios__label" for="usertype-2">
-          Service team (default)
-        </label>
-                                </div>
-
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="usertype-3" name="usertype" type="radio" value="reviewer" {{checked('usertype','reviewer')}}>
-                                    <label class="govuk-label govuk-radios__label" for="usertype-3">
-          Reviewer
-        </label>
-                                </div>
-                            </div>
+                <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-half">
+                             <h1 class="govuk-heading-l">Overview</h1>
                         </div>
-                    </fieldset>
-                </div>
+                          <div class="govuk-grid-column-one-half govuk-!-text-align-right">
+                            <a href="/settings/add-user" class="govuk-button govuk-!-margin-bottom-0">Add assessor</a>
+                            <a href="/" class="govuk-button  govuk-button--secondary govuk-!-margin-bottom-0">Export to Excel</a>
+                        </div>
+                    </div>
 
-                <button class="govuk-button" data-module="govuk-button">
-  Save
-</button>
+
+ {% include "./_tableext.html" %}
+               
             </form>
 
         </div>

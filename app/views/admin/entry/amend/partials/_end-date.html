@@ -1,0 +1,55 @@
+<form action="/admin/entry/amend/end-date/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+  {% set datex = "" %}
+
+  {% if(entry.fields.EndDate)%}
+    {% set datex = (entry.fields.EndDate | split('-')) %}
+  {% endif%}
+
+   
+
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset" role="group" aria-describedby="disco-end-hint">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+       Discovery end date 
+      </h1>
+        </legend>
+        <div id="disco-end-hint" class="govuk-hint">
+      For example, 18 2 2023
+    </div>
+        <div class="govuk-date-input" id="disco-start">
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="disco-end-day">
+            Day
+          </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-day" name="disco-end-day" type="text" inputmode="numeric" value="{{datex[2] }}">
+            </div>
+          </div>
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="disco-end-month">
+            Month
+          </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-month" name="disco-end-month" type="text" inputmode="numeric" value="{{datex[1] }}">
+            </div>
+          </div>
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="disco-end-year">
+            Year
+          </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="disco-end-year" name="disco-end-year" type="text" inputmode="numeric" value="{{datex[0] }}">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="govuk-button-group">
+      <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+      <a href="/admin/entry/submission/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
+
+  </form>

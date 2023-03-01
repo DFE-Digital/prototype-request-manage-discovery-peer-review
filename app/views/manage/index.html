@@ -71,6 +71,7 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
                 {% endif %}
 
                 {% if type === "new" and newrecords.length %}
+                  <p>New bookings which are with the service assessment team to process.</p>
                     {% include "./_new.html" %}
                 {% elseif type === "new" and newrecords.length === 0%}
                     <p>There are no new requests.</p>

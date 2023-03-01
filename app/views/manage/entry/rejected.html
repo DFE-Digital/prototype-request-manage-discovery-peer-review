@@ -1,0 +1,42 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Admin"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-three-quarters">
+
+                <div class="govuk-panel govuk-!-margin-bottom-5 govuk-panel--confirmation govuk-!-text-align-left">
+                    <h1 class="govuk-panel__title">Request rejected</h1>
+                    <div class="govuk-panel__body">
+                        <p class="">An email has been sent to Wade Wilson telling them why their request has been rejected.</p>
+                        <p class="">The request has been moved into the rejected view in your admin section.</p>
+
+                        <a href="/admin/" class="govuk-button govuk-button--white">Return to admin section</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
