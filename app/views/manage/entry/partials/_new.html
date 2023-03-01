@@ -127,14 +127,18 @@
                                 <a href="/manage/entry/files/{{entry.fields.ID}}">Provide artefacts and links</a></th>
                             <td class="dfeuk-table__cell">Wade Wilson</td>
                             <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                                       <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+                                         {% if artefacts.length %}
+<strong class="govuk-tag govuk-tag--green">{{artefacts.length}} artefact{% if artefacts.length !== 1 %}s{%endif%} added</strong>
+                                {% else %}
+<strong class="govuk-tag govuk-tag--grey">No artefacts added</strong>
+                                {% endif %}
                             </td>
                         </tr>
                         <tr class="dfeuk-table__row">
                             <th scope="row" class="dfeuk-table__cell">Complete review</th>
                             <td class="dfeuk-table__cell">Becky Morton</td>
                             <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                                {% if entry.fields.Status === "Review"%}
+                                      {% if entry.fields.Status === "Review"%}
                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                                 {% elseif entry.fields.Status === "Complete"%}
                                     <strong class="govuk-tag govuk-tag--green">Complete</strong>

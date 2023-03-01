@@ -32,6 +32,12 @@ async function getTeam(id) {
     .firstPage()
 }
 
+async function getArtefacts(id) {
+  return await base('Artefacts')
+    .select({ view: 'Files', filterByFormula: `{ReviewID} = "${id}"` })
+    .firstPage()
+}
+
 // Gets a record by an ID
 async function getDataByID(id) {
   return await base('Reviews')
@@ -45,6 +51,22 @@ async function getPerson(id) {
     .firstPage()
 }
 
+async function getArtefact(id) {
+  return await base('Artefacts')
+    .select({ maxRecords: 1, filterByFormula: `{ID} = "${id}"` })
+    .firstPage()
+}
+
+async function search(term) {
+  try { 
+    console.log(term)
+  return await base('Reviews')
+    .select({filterByFormula: `FIND("${term}", {Name},"${term}", {Description})`}).firstPage()
+  }catch(err){
+    console.log(err)
+  }
+}
+
 
 
 // Gets a record by the main ID
@@ -55,6 +77,24 @@ async function getEntryByPrimaryID(id) {
 router.get('/reset', function (req, res) {
  req.session.data = {}
  res.redirect('/')
+})
+
+
+router.get('/search', function (req, res) {
+  axios
+    .all([
+      search(req.query.search_field)
+    ])
+    .then(
+      axios.spread(
+        (
+          results
+        ) => {
+          res.render('searchresults.html', {results
+          })
+        },
+      ),
+    )
 })
 
 // OVERVIEW (HOMEPAGE)
@@ -1032,10 +1072,10 @@ router.get('/manage/entry/:id', function (req, res) {
   var id = req.params.id
   var view = 'new'
 
-  axios.all([getDataByID(id), getTeam(id)]).then(
-    axios.spread((entryx, team) => {
+  axios.all([getDataByID(id), getTeam(id), getArtefacts(id)]).then(
+    axios.spread((entryx, team, artefacts) => {
       entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, team, view })
+      res.render('manage/entry/taskview.html', { entry, team, artefacts, view })
     }),
   )
 })
@@ -1102,10 +1142,10 @@ router.get('/manage/entry/:view/:id', function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  axios.all([getDataByID(id), getTeam(id)]).then(
-    axios.spread((entryx, team) => {
+  axios.all([getDataByID(id), getTeam(id), getArtefacts(id)]).then(
+    axios.spread((entryx, team, artefacts) => {
       entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, team, view })
+      res.render('manage/entry/taskview.html', { entry, team, artefacts, view })
     }),
   )
 })
@@ -1118,14 +1158,13 @@ router.get('/manage/entry/amend/:view/:id/:entry', function (req, res) {
   var id = req.params.id
   var view = req.params.view
   var entry = req.params.entry
-  var personid = req.params.id
 
   console.log('/manage/entry/amend/' + view + '/' + id + '/' + entry)
 
-  axios.all([getDataByID(id), getPerson(entry)]).then(
-    axios.spread((entryx, person) => {
+  axios.all([getDataByID(id), getPerson(entry), getArtefact(entry)]).then(
+    axios.spread((entryx, person, artefact) => {
       entry = entryx[0]
-      res.render('manage/entry/amend/submissionvalue.html', { entry, person, view })
+      res.render('manage/entry/amend/submissionvalue.html', { entry, person, artefact, view })
     }),
   )
 })
@@ -1182,6 +1221,52 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
     )
     return res.redirect('/manage/entry/team/'+id)
   }
+
+
+  if (view === 'add-artefact') {
+    base('Artefacts').create(
+      [
+        {
+          fields: {
+            Name: req.body.description,
+            ReviewID: parseInt(id),
+            URL: req.body.url
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+          
+        })
+      },
+    )
+    return res.redirect('/manage/entry/files/'+id)
+  }
+
+  if (view === 'remove-artefact') {
+    base('Artefacts').destroy(
+      [
+        entry
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+          
+        })
+      },
+    )
+    return res.redirect('/manage/entry/files/'+id)
+  }
+
 
   if (view === 'code') {
     base('Reviews').update(

@@ -17,12 +17,12 @@
             {% for a in artefacts %}
                 <tr class="govuk-table__row">
                     <th scope="row" class="govuk-table__header">
-                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
+                        <a href="{{a.fields.URL}}" target="_blank">{{a.fields.Name}}</a>
                     </th>
-                    <td class="govuk-table__cell">{{a.addedOn}}</td>
-                    <td class="govuk-table__cell">{{a.addedBy}}</td>
+                    <td class="govuk-table__cell">{{a.fields.Created | date('D MMM YYYY')}}</td>
+                    <td class="govuk-table__cell">{{a.fields.CreatedBy.name}}</td>
                     <td class="govuk-table__cell">
-                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
+                        <a href="/manage/entry/amend/remove-artefact/{{entry.fields.ID}}/{{a.fields.ID}}">Remove</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -30,14 +30,14 @@
     </table>
 
     <p>
-        <a href="/">Add another link</a>
+        <a href="/manage/entry/amend/add-artefact//{{entry.fields.ID}}/{{entry.id}}">Add another link</a>
     </p>
 
 {% else %}
     <div class="govuk-inset-text">
         <p>No links have been added</p>
         <p>
-            <a href="/">Add link</a>
+            <a href="/manage/entry/amend/add-artefact//{{entry.fields.ID}}/{{entry.id}}">Add link to artefact</a>
         </p>
     </div>
 

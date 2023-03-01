@@ -1,0 +1,24 @@
+<form action="/manage/entry/amend/add-artefact/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+  <h2 class="govuk-heading-l">Add a link to an artefact</h2>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="url">
+    URL of the file or artefact
+  </label>
+    <input class="govuk-input" id="url" name="url" type="text">
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="description">
+    Give it a short description
+  </label>
+    <input class="govuk-input" id="description" name="description" type="text">
+  </div>
+
+  <div class="govuk-button-group">
+    <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+    <a href="/manage/entry/files/{{entry.fields.ID}}" class="govuk-link">Cancel and return to artefacts</a>
+  </div>
+
+</form>
