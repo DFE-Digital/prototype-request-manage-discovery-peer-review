@@ -62,9 +62,7 @@
 
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">Deputy director</dt>
-                                    <dd class="govuk-summary-list__value">
-                                        {% if entry.fields.SROSameAsDD === "Yes" %}{{entry.fields.DeputyDirector}}
-                                        {% else %}{{entry.fields.SROName}}{% endif%}</dd>
+                                    <dd class="govuk-summary-list__value">{{entry.fields.DeputyDirector}}</dd>
                                         <dd class="govuk-summary-list__actions">
                                             {% if entry.fields.Status !== "Complete" and entry.fields.Status !== "Cancelled" and entry.fields.Status !== "Rejected" %}
                                                 <a class="govuk-link" href="/manage/entry/amend/dd/{{entry.fields.ID}}/{{entry.id}}">Change<span class="govuk-visually-hidden"> deputy director</span></a>{% endif%}

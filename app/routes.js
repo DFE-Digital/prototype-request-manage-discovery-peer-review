@@ -67,7 +67,15 @@ async function search(term) {
   }
 }
 
+function wait(waitTime) {
 
+  return new Promise ((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, waitTime);
+  });
+  
+}
 
 // Gets a record by the main ID
 async function getEntryByPrimaryID(id) {
@@ -1138,9 +1146,11 @@ router.get('/manage/:status', function (req, res) {
 
 
 // Gets entry for submission list
-router.get('/manage/entry/:view/:id', function (req, res) {
+router.get('/manage/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
+
+  await wait(2000)
 
   axios.all([getDataByID(id), getTeam(id), getArtefacts(id)]).then(
     axios.spread((entryx, team, artefacts) => {
@@ -1296,7 +1306,7 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
         {
           id: entry,
           fields: {
-            DeputyDirector: req.body.dd,
+            DeputyDirector: req.body.dd_,
           },
         },
       ],

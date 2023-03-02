@@ -50,10 +50,10 @@
             </tr>
         </thead>
         <tbody class="dfeuk-table__body">
-            
+
             <tr class="dfeuk-table__row">
                 <th scope="row" class="dfeuk-table__header">
-                    <a href="/admin/entry/submission/{{entry.fields.ID}}">
+                    <a href="/manage/entry/submission/{{entry.fields.ID}}">
                         {%if entry.fields.Status === "New"%}Check submission and accept or reject{% else%}View or edit submission{% endif%}</a>
                     </th>
                     <td class="dfeuk-table__cell">Service Assurance Team</td>
@@ -70,6 +70,45 @@
                     <th scope="row" class="dfeuk-table__cell">
                        
                            Provide available dates</th>
+                    <td class="dfeuk-table__cell">Service Assurance Team</td>
+                    <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+                        {% if entry.fields.Status === "New"%}
+                            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+                        {% elseif entry.fields.Status === "Complete"%}
+                            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+                        {% else %}
+
+                            <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="dfeuk-table__row">
+                    <th scope="row" class="dfeuk-table__cell"> Select date for review</th>
+                    <td class="dfeuk-table__cell">Wade Wilson</td>
+                    <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+
+                        <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+
+                    </td>
+                </tr>
+                <tr class="dfeuk-table__row">
+                    <th scope="row" class="dfeuk-table__cell">
+                        <a href="/manage/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>
+                    </th>
+                    <td class="dfeuk-table__cell">Wade Wilson</td>
+                    <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+
+                        {% if team.length %}
+                            <strong class="govuk-tag govuk-tag--green">{{team.length}}
+                                {% if team.length !== 1 %}people{% else%}person{%endif%} added</strong>
+                            {% else %}
+                                <strong class="govuk-tag govuk-tag--grey">No people added</strong>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                    <tr class="dfeuk-table__row">
+                        <th scope="row" class="dfeuk-table__cell">Add panel volunteers</th>
                         <td class="dfeuk-table__cell">Service Assurance Team</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
                             {% if entry.fields.Status === "New"%}
@@ -83,54 +122,15 @@
                         </td>
                     </tr>
                     <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell"> Select date for review</th>
+                        <th scope="row" class="dfeuk-table__cell">
+                            <a href="/manage/entry/files/{{entry.fields.ID}}">Provide artefacts and links</a>
+                        </th>
                         <td class="dfeuk-table__cell">Wade Wilson</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            
-
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                          
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">
-                                <a href="/manage/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a></th>
-                            <td class="dfeuk-table__cell">Wade Wilson</td>
-                            <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-
-                                {% if team.length %}
-<strong class="govuk-tag govuk-tag--green">{{team.length}} {% if team.length !== 1 %}people{% else%}person{%endif%} added</strong>
+                            {% if artefacts.length %}
+                                <strong class="govuk-tag govuk-tag--green">{{artefacts.length}} artefact{% if artefacts.length !== 1 %}s{%endif%} added</strong>
                                 {% else %}
-<strong class="govuk-tag govuk-tag--grey">No people added</strong>
-                                {% endif %}
-                              
-                                    
-                              
-                            </td>
-                        </tr>
-                        <tr class="dfeuk-table__row">
-                            <th scope="row" class="dfeuk-table__cell">Add panel volunteers</th>
-                            <td class="dfeuk-table__cell">Service Assurance Team</td>
-                            <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                                {% if entry.fields.Status === "New"%}
-                                    <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                                {% elseif entry.fields.Status === "Complete"%}
-                                    <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                                {% else %}
-
-                                    <strong class="govuk-tag govuk-tag--blue">In progress</strong>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr class="dfeuk-table__row">
-                            <th scope="row" class="dfeuk-table__cell">
-                                <a href="/manage/entry/files/{{entry.fields.ID}}">Provide artefacts and links</a></th>
-                            <td class="dfeuk-table__cell">Wade Wilson</td>
-                            <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                                         {% if artefacts.length %}
-<strong class="govuk-tag govuk-tag--green">{{artefacts.length}} artefact{% if artefacts.length !== 1 %}s{%endif%} added</strong>
-                                {% else %}
-<strong class="govuk-tag govuk-tag--grey">No artefacts added</strong>
+                                    <strong class="govuk-tag govuk-tag--grey">No artefacts added</strong>
                                 {% endif %}
                             </td>
                         </tr>
@@ -138,7 +138,7 @@
                             <th scope="row" class="dfeuk-table__cell">Complete review</th>
                             <td class="dfeuk-table__cell">Becky Morton</td>
                             <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                                      {% if entry.fields.Status === "Review"%}
+                                {% if entry.fields.Status === "Review"%}
                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                                 {% elseif entry.fields.Status === "Complete"%}
                                     <strong class="govuk-tag govuk-tag--green">Complete</strong>
