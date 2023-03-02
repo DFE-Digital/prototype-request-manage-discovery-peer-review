@@ -28,18 +28,45 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/book/end-date" method="get">
+                 {% if err or errcode%}
 
-                    <div class="govuk-form-group">
+                    <div class="govuk-error-summary" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title">There is a problem</h2>
+                            <div class="govuk-error-summary__body">
+                                <ul class="govuk-list govuk-error-summary__list">
+                                    {% if err %}
+                                    <li>
+                                        <a href="#disco-start">Select if your discovery has started</a>
+                                    </li>
+                                    {%elseif errcode%}
+                                      <li>
+                                        <a href="#disco-start-day">Enter your discovery start date</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                  <form action="/book/start-date" method="post">
+
+                    <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
             <fieldset class="govuk-fieldset" aria-describedby="disco-start-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
         Have you started your discovery?
       </h1>
               </legend>
+              
               <div id="disco-start-hint" class="govuk-hint">
       Select one option.
-    </div>
+    </div> {%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Select if your discovery has started
+  </p>{% endif%}
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="disco-start" name="disco-start" type="radio" value="Yes" data-aria-controls="conditional-disco-start" {{ checked('disco-start','Yes') }}>
@@ -49,7 +76,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                 </div>
                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-disco-start">
 
-                  <div class="govuk-form-group">
+                  <div class="govuk-form-group {%if errcode%}govuk-form-group--error{% endif%}">
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="disco-start-hint">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
       Start date
@@ -57,13 +84,17 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                       <div id="disco-start-hint" class="govuk-hint">
       For example, 18 2 2023
     </div>
+    {%if errcode%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Enter your discovery start date
+  </p>{% endif%}
                       <div class="govuk-date-input" id="disco-start">
                         <div class="govuk-date-input__item">
                           <div class="govuk-form-group">
                             <label class="govuk-label govuk-date-input__label" for="disco-start-day">
             Day
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-start-day" name="disco-start-day" type="text" inputmode="numeric" value="{{data['disco-start-day']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2 {%if errcode%} govuk-input--error{% endif%}" id="disco-start-day" name="disco-start-day" type="text" inputmode="numeric" value="{{data['disco-start-day']}}">
                           </div>
                         </div>
                         <div class="govuk-date-input__item">
@@ -71,7 +102,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                             <label class="govuk-label govuk-date-input__label" for="disco-start-month">
             Month
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-start-month" name="disco-start-month" type="text" inputmode="numeric"value="{{data['disco-start-month']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2{%if errcode%} govuk-input--error{% endif%}" id="disco-start-month" name="disco-start-month" type="text" inputmode="numeric"value="{{data['disco-start-month']}}">
                           </div>
                         </div>
                         <div class="govuk-date-input__item">
@@ -79,7 +110,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                             <label class="govuk-label govuk-date-input__label" for="disco-start-year">
             Year
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="disco-start-year" name="disco-start-year" type="text" inputmode="numeric"value="{{data['disco-start-year']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-4{%if errcode%} govuk-input--error{% endif%}" id="disco-start-year" name="disco-start-year" type="text" inputmode="numeric"value="{{data['disco-start-year']}}">
                           </div>
                         </div>
                       </div>

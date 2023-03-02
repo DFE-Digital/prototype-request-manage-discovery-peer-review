@@ -58,23 +58,24 @@ async function getArtefact(id) {
 }
 
 async function search(term) {
-  try { 
+  try {
     console.log(term)
-  return await base('Reviews')
-    .select({filterByFormula: `FIND("${term}", {Name},"${term}", {Description})`}).firstPage()
-  }catch(err){
+    return await base('Reviews')
+      .select({
+        filterByFormula: `FIND("${term}", {Name},"${term}", {Description})`,
+      })
+      .firstPage()
+  } catch (err) {
     console.log(err)
   }
 }
 
 function wait(waitTime) {
-
-  return new Promise ((resolve) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(true);
-    }, waitTime);
-  });
-  
+      resolve(true)
+    }, waitTime)
+  })
 }
 
 // Gets a record by the main ID
@@ -83,26 +84,16 @@ async function getEntryByPrimaryID(id) {
 }
 
 router.get('/reset', function (req, res) {
- req.session.data = {}
- res.redirect('/')
+  req.session.data = {}
+  res.redirect('/')
 })
 
-
 router.get('/search', function (req, res) {
-  axios
-    .all([
-      search(req.query.search_field)
-    ])
-    .then(
-      axios.spread(
-        (
-          results
-        ) => {
-          res.render('searchresults.html', {results
-          })
-        },
-      ),
-    )
+  axios.all([search(req.query.search_field)]).then(
+    axios.spread((results) => {
+      res.render('searchresults.html', { results })
+    }),
+  )
 })
 
 // OVERVIEW (HOMEPAGE)
@@ -269,6 +260,11 @@ router.get('/book', function (req, res) {
 router.post('/book/service', function (req, res) {
   // Do we have a record in session?
 
+  if (!req.session.data['title']) {
+    var err = true
+    return res.render('book/service/index', { err })
+  }
+
   if (req.session.data['draftID']) {
     if (req.session.data['cya'] === 'true') {
       return res.redirect('/book/check')
@@ -302,6 +298,88 @@ router.post('/book/service', function (req, res) {
   }
 })
 
+router.post('/book/summary', function (req, res) {
+  // Do we have a record in session?
+
+  if (!req.session.data['purpose']) {
+    var err = true
+    return res.render('book/summary/index', { err })
+  }
+
+  var draftID = req.session.data['draftID']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          Description: req.session.data['purpose'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        if (req.session.data['cya'] === 'true') {
+          return res.redirect('/book/check')
+        } else {
+          return res.redirect('/book/code')
+        }
+      })
+    },
+  )
+})
+
+router.post('/book/code', function (req, res) {
+  if (!req.session.data['code']) {
+    var err = true
+    return res.render('book/code/index', { err })
+  } else if (req.session.data['code'] === 'Yes' && !req.session.data['code_']) {
+    var errcode = true
+    return res.render('book/code/index', { errcode })
+  }
+
+  var draftID = req.session.data['draftID']
+
+  var code =
+    req.session.data['code'] === 'Yes' ? req.session.data['code_'] : null
+
+  req.session.data['code_'] = code
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          ProjectCodeYN: req.session.data['code'],
+          ProjectCode: code,
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+        if (req.session.data['cya'] === 'true') {
+          return res.redirect('/book/check')
+        } else {
+          return res.redirect('/book/start-date')
+        }
+      })
+    },
+  )
+})
+
 router.get('/book/start-date', function (req, res) {
   if (process.env.abtest === 'b') {
     res.render('book/start-date/b')
@@ -309,6 +387,36 @@ router.get('/book/start-date', function (req, res) {
     res.render('book/start-date/index')
   }
 })
+
+
+router.post('/book/start-date', function (req, res) {
+
+
+  if (process.env.abtest === 'b') {
+
+    // Yes no and Date
+    if (!req.session.data['disco-start']) {
+      var err = true
+      return res.render('book/start-date/b', { err })
+    } else if (req.session.data['disco-start'] === 'Yes' && (!req.session.data['disco-start-day'] || !req.session.data['disco-start-month'] || !req.session.data['disco-start-year'])) {
+      var errcode = true
+      return res.render('book/start-date/b', { errcode })
+    }
+
+  } else {
+    // Just date
+    if (!req.session.data['disco-start-day'] || !req.session.data['disco-start-month'] || !req.session.data['disco-start-year']) {
+      var err = true
+      return res.render('book/start-date/index', { err })
+    }
+  }
+
+  return res.redirect('/book/end-date')
+
+})
+
+
+
 
 router.get('/book/dates', function (req, res) {
   // Whats todays date?
@@ -1144,7 +1252,6 @@ router.get('/manage/:status', function (req, res) {
     )
 })
 
-
 // Gets entry for submission list
 router.get('/manage/entry/:view/:id', async function (req, res) {
   var id = req.params.id
@@ -1160,7 +1267,6 @@ router.get('/manage/entry/:view/:id', async function (req, res) {
   )
 })
 
-
 /// Gets a view for a given ID based on vertical nav select
 /// For example, submission, tasks, peer review, supporting artefacts
 /// /manage/entry/submission/1
@@ -1174,11 +1280,15 @@ router.get('/manage/entry/amend/:view/:id/:entry', function (req, res) {
   axios.all([getDataByID(id), getPerson(entry), getArtefact(entry)]).then(
     axios.spread((entryx, person, artefact) => {
       entry = entryx[0]
-      res.render('manage/entry/amend/submissionvalue.html', { entry, person, artefact, view })
+      res.render('manage/entry/amend/submissionvalue.html', {
+        entry,
+        person,
+        artefact,
+        view,
+      })
     }),
   )
 })
-
 
 // Saves the submission list value change
 router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
@@ -1195,7 +1305,7 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
           fields: {
             Name: req.body.team_,
             ReviewID: parseInt(id),
-            Role: req.body.roleinteam
+            Role: req.body.roleinteam,
           },
         },
       ],
@@ -1206,32 +1316,24 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
         }
         records.forEach(function (record) {
           console.log(record.get('ID'))
-          
         })
       },
     )
-    return res.redirect('/manage/entry/team/'+id)
+    return res.redirect('/manage/entry/team/' + id)
   }
 
   if (view === 'remove-team-member') {
-    base('ReviewTeam').destroy(
-      [
-        entry
-      ],
-      function (err, records) {
-        if (err) {
-          console.error(err)
-          return
-        }
-        records.forEach(function (record) {
-          console.log(record.get('ID'))
-          
-        })
-      },
-    )
-    return res.redirect('/manage/entry/team/'+id)
+    base('ReviewTeam').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/manage/entry/team/' + id)
   }
-
 
   if (view === 'add-artefact') {
     base('Artefacts').create(
@@ -1240,7 +1342,7 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
           fields: {
             Name: req.body.description,
             ReviewID: parseInt(id),
-            URL: req.body.url
+            URL: req.body.url,
           },
         },
       ],
@@ -1251,32 +1353,24 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
         }
         records.forEach(function (record) {
           console.log(record.get('ID'))
-          
         })
       },
     )
-    return res.redirect('/manage/entry/files/'+id)
+    return res.redirect('/manage/entry/files/' + id)
   }
 
   if (view === 'remove-artefact') {
-    base('Artefacts').destroy(
-      [
-        entry
-      ],
-      function (err, records) {
-        if (err) {
-          console.error(err)
-          return
-        }
-        records.forEach(function (record) {
-          console.log(record.get('ID'))
-          
-        })
-      },
-    )
-    return res.redirect('/manage/entry/files/'+id)
+    base('Artefacts').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/manage/entry/files/' + id)
   }
-
 
   if (view === 'code') {
     base('Reviews').update(
@@ -1492,28 +1586,6 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
 
   return res.redirect('/manage/entry/submission/' + id)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Old Sprint 3 stuff
 

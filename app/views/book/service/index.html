@@ -26,26 +26,41 @@ Discovery name – {{serviceName}} –  Book and manage a discovery peer review
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/book/service" method="post">
+                {% if err %}
 
-                    <div class="govuk-form-group">
-                        <h1 class="govuk-label-wrapper">
-                            <label class="govuk-label govuk-label--l" for="title">
-      What is the name of your discovery?
-    </label>
-                        </h1>
-                        <div id="title-hint" class="govuk-hint">
-    This can be changed in the future if you develop a service
-  </div>
-                        <input class="govuk-input" id="title" name="title" type="text" value={{data['title']}}>
+                    <div class="govuk-error-summary" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title">There is a problem</h2>
+                            <div class="govuk-error-summary__body">
+                                <ul class="govuk-list govuk-error-summary__list">
+                                    <li>
+                                        <a href="#title">Enter a name</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
-                    <button class="govuk-button" data-module="govuk-button">
-  Save and continue
-</button>
-                </form>
+                {% endif %}
 
+                <form action="/book/service" method="post">
+
+                    <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
+                        <h1 class="govuk-label-wrapper">
+                            <label class="govuk-label govuk-label--l" for="title">What is the name of your discovery?</label>
+                        </h1>
+                        <div id="title-hint" class="govuk-hint">This can be changed in the future if you develop a service</div>
+                        {%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Enter a name
+  </p>{% endif%}
+                            <input class="govuk-input {%if err%} govuk-input--error{% endif%}" id="title" name="title" type="text" value={{data['title']}}>
+                        </div>
+
+                        <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+                    </form>
+
+                </div>
             </div>
-        </div>
 
-    {% endblock %}
+        {% endblock %}
