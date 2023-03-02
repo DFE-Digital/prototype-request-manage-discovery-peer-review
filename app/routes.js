@@ -296,9 +296,9 @@ router.post('/book/service', function (req, res) {
 
 router.get('/book/start-date', function (req, res) {
   if (process.env.abtest === 'b') {
-    res.redirect('/book/start-date/b')
+    res.render('book/start-date/b')
   } else {
-    res.redirect('/book/start-date/index')
+    res.render('book/start-date/index')
   }
 })
 
