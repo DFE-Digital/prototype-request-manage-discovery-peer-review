@@ -567,7 +567,17 @@ router.post('/book/process-request', function (req, res) {
       req.session.data['disco-end-year']
   }
 
-  if (req.session.data['disco-start'] === 'Yes') {
+  if(!req.session.data['disco-end']){
+    endDate =
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+  }
+
+
+  if (!req.session.data['disco-start']) {
     startDate =
       req.session.data['disco-start-month'] +
       '/' +
@@ -575,7 +585,7 @@ router.post('/book/process-request', function (req, res) {
       '/' +
       req.session.data['disco-start-year']
   }
-
+  
   var requestedWeeks = ''
 
   requestedWeeks = req.session.data['reviewWeek']
@@ -632,8 +642,8 @@ router.post('/book/process-request', function (req, res) {
         notify
           .sendEmail(process.env.SATTemplateId, process.env.recipient, {
             personalisation: {
-              title: req.session.data['title'],
-              summary: req.session.data['purpose'],
+              title: record.fields.Name,
+              summary: record.fields.Description,
               id: record.fields.ID,
             },
           })
