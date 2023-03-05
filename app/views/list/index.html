@@ -1,0 +1,67 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+List all – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Manage"%}
+
+{% block beforeContent %}
+
+    <div class="govuk-phase-banner">
+        <p class="govuk-phase-banner__content">
+            <strong class="govuk-tag govuk-phase-banner__content__tag">
+      alpha
+    </strong>
+            <span class="govuk-phase-banner__text">
+      This is a prototype – it is not a real service.
+    </span>
+        </p>
+    </div>
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">List of all assurance requests</h1>
+            </div>
+
+            <div class="govuk-grid-column-three-quarters">
+
+                <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+                    <thead class="dfeuk-table__head">
+                        <tr class="dfeuk-table__row">
+
+                            <th scope="col" class="dfeuk-table__header govuk-!-width-one-third">Service</th>
+                            <th scope="col" class="dfeuk-table__header">Code</th>
+                            <th scope="col" class="dfeuk-table__header">Type</th>
+                            <th scope="col" class="dfeuk-table__header">Created</th>
+                                    <th scope="col" class="dfeuk-table__header dfeuk-table__header--numeric">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="dfeuk-table__body">
+                        {% for record in all %}
+                            <tr class="dfeuk-table__row">
+                                <th scope="row" class="dfeuk-table__header">
+                                    <a href="/manage/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
+                                </th>
+                                <td class="dfeuk-table__cell">{{record.fields.ProjectCode}}</td>
+                                <td class="dfeuk-table__cell">Discovery peer review</td>
+                                <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                                <td class="dfeuk-table__cell dfeuk-table__cell--numeric">
+                                            <strong class="govuk-tag govuk-tag--{{record.fields.Status | lower}}">{{record.fields.Status}}</strong>
+                                        </td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    {% endblock %}

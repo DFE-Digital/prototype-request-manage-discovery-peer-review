@@ -27,10 +27,35 @@ Search results – {{serviceName}} –  Book and manage a discovery peer review
 
       <div class="govuk-grid-column-two-thirds">
 
-    
-           {{results | dump}}
+        <h2 class="govuk-heading-m">{{results.length}} result{% if results.length !== 1 %}s{%endif%} for the term "{{term}}"</h2>
 
-    
+          <ul class="dfeuk-document-list">
+            {% for record in results %}
+
+              <li class="dfeuk-document-list__item dfeuk-document-list--no-underline ">
+                <a href="/report/{{record.fields.ID}}" class="dfeuk-document-list__item-title ">{{record.fields.Name}}</a>
+
+                <p class="dfeuk-document-list__item-description ">Discovery peer review report for {{record.fields.Name}}</p>
+                <ul class="dfeuk-document-list__item-metadata">
+  <li class="gdfeuk-document-list__attribute">
+                    Project code: {{record.fields.ProjectCode}}
+                  </li>
+                 
+                  <li class="gdfeuk-document-list__attribute">
+                    Stage: Discovery
+</li>
+                  <li class="gdfeuk-document-list__attribute">
+                    Type: Peer review
+</li> <li class="gdfeuk-document-list__attribute">
+                    Status: <strong class="govuk-tag govuk-tag--{{record.fields.Status | lower}}">{{record.fields.Status}}</strong>
+                  </li>
+                
+                </ul>
+              </li>
+
+            {% endfor %}
+          </ul>
+
         </div>
 
       </div>

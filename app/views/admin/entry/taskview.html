@@ -71,9 +71,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                             </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'files' %}dfeuk-vertical-nav__section-item--current{% endif%}">
 
-                                {% if artefacts.length%}
-                                    <span class="dfeuk-vertical-nav--count">{{artefacts.length}}</span>
-                                {% endif %}
+                              
                                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/files/{{entry.fields.ID}}">Supporting artefacts</a>
                             </li>
                             <li class="dfeuk-vertical-nav__section-item {% if view === 'review' or view === 'editoutcome' or view === 'editcomments' %}dfeuk-vertical-nav__section-item--current{% endif%}">

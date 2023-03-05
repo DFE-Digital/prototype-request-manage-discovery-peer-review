@@ -32,6 +32,18 @@ async function getTeam(id) {
     .firstPage()
 }
 
+async function getPanel(id) {
+  return await base('ReviewPanel')
+    .select({ view: 'People', filterByFormula: `{ReviewID} = "${id}"` })
+    .firstPage()
+}
+
+async function getObservers(id) {
+  return await base('ReviewObservers')
+    .select({ view: 'People', filterByFormula: `{ReviewID} = "${id}"` })
+    .firstPage()
+}
+
 async function getArtefacts(id) {
   return await base('Artefacts')
     .select({ view: 'Files', filterByFormula: `{ReviewID} = "${id}"` })
@@ -58,11 +70,14 @@ async function getArtefact(id) {
 }
 
 async function search(term) {
+  term = term.toLowerCase()
   try {
     console.log(term)
     return await base('Reviews')
       .select({
-        filterByFormula: `FIND("${term}", {Name},"${term}", {Description})`,
+        filterByFormula: `OR( find("${term}", Lower({Name})),
+                              find("${term}", Lower({DeputyDirector})),
+                              find("${term}", Lower({ProjectCode})))`,
       })
       .firstPage()
   } catch (err) {
@@ -89,9 +104,10 @@ router.get('/reset', function (req, res) {
 })
 
 router.get('/search', function (req, res) {
+  var term = req.query.search_field
   axios.all([search(req.query.search_field)]).then(
     axios.spread((results) => {
-      res.render('searchresults.html', { results })
+      res.render('searchresults.html', { results, term })
     }),
   )
 })
@@ -99,36 +115,7 @@ router.get('/search', function (req, res) {
 // OVERVIEW (HOMEPAGE)
 
 router.get('/', function (req, res) {
-  axios
-    .all([
-      getData('Draft'),
-      getData('New'),
-      getData('Rejected'),
-      getData('Active'),
-      getData('Completed'),
-      getData('Cancelled'),
-    ])
-    .then(
-      axios.spread(
-        (
-          draftrecords,
-          newrecords,
-          rejectedrecords,
-          activerecords,
-          completedrecords,
-          cancelledrecords,
-        ) => {
-          res.render('index.html', {
-            draftrecords,
-            newrecords,
-            rejectedrecords,
-            activerecords,
-            completedrecords,
-            cancelledrecords,
-          })
-        },
-      ),
-    )
+ res.redirect('/manage/')
 })
 
 // SETTINGS
@@ -253,7 +240,26 @@ router.get('/settings/cross-gov', function (req, res) {
 // BOOK
 router.get('/book', function (req, res) {
   // req.session.data = {}
-  return res.render('book/index')
+
+  axios.all([getData('Draft')]).then(
+    axios.spread((draftrecords) => {
+      return res.render('book/index', {
+        draftrecords,
+      })
+    }),
+  )
+})
+
+router.get('/book', function (req, res) {
+  // req.session.data = {}
+
+  axios.all([getData('Draft')]).then(
+    axios.spread((draftrecords) => {
+      return res.render('book/index', {
+        draftrecords,
+      })
+    }),
+  )
 })
 
 // Saves the draft on submission of the service name
@@ -388,35 +394,35 @@ router.get('/book/start-date', function (req, res) {
   }
 })
 
-
 router.post('/book/start-date', function (req, res) {
-
-
   if (process.env.abtest === 'b') {
-
     // Yes no and Date
     if (!req.session.data['disco-start']) {
       var err = true
       return res.render('book/start-date/b', { err })
-    } else if (req.session.data['disco-start'] === 'Yes' && (!req.session.data['disco-start-day'] || !req.session.data['disco-start-month'] || !req.session.data['disco-start-year'])) {
+    } else if (
+      req.session.data['disco-start'] === 'Yes' &&
+      (!req.session.data['disco-start-day'] ||
+        !req.session.data['disco-start-month'] ||
+        !req.session.data['disco-start-year'])
+    ) {
       var errcode = true
       return res.render('book/start-date/b', { errcode })
     }
-
   } else {
     // Just date
-    if (!req.session.data['disco-start-day'] || !req.session.data['disco-start-month'] || !req.session.data['disco-start-year']) {
+    if (
+      !req.session.data['disco-start-day'] ||
+      !req.session.data['disco-start-month'] ||
+      !req.session.data['disco-start-year']
+    ) {
       var err = true
       return res.render('book/start-date/index', { err })
     }
   }
 
   return res.redirect('/book/end-date')
-
 })
-
-
-
 
 router.get('/book/dates', function (req, res) {
   // Whats todays date?
@@ -567,7 +573,7 @@ router.post('/book/process-request', function (req, res) {
       req.session.data['disco-end-year']
   }
 
-  if(!req.session.data['disco-end']){
+  if (!req.session.data['disco-end']) {
     endDate =
       req.session.data['disco-end-month'] +
       '/' +
@@ -575,7 +581,6 @@ router.post('/book/process-request', function (req, res) {
       '/' +
       req.session.data['disco-end-year']
   }
-
 
   if (!req.session.data['disco-start']) {
     startDate =
@@ -585,7 +590,7 @@ router.post('/book/process-request', function (req, res) {
       '/' +
       req.session.data['disco-start-year']
   }
-  
+
   var requestedWeeks = ''
 
   requestedWeeks = req.session.data['reviewWeek']
@@ -715,12 +720,23 @@ router.get('/admin/entry/:id', function (req, res) {
   var id = req.params.id
   var view = 'new'
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
-      entry = entryx[0]
-      res.render('admin/entry/taskview.html', { entry, view })
-    }),
-  )
+  console.log(id)
+  console.log(view)
+
+  axios
+    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .then(
+      axios.spread((entryx, team, artefacts, panel, observers) => {
+        entry = entryx[0]
+        res.render('admin/entry/taskview.html', {
+          entry,
+          team,
+          artefacts,
+          view,
+          panel,observers
+        })
+      }),
+    )
 })
 
 /// Gets a view for a given ID based on vertical nav select
@@ -733,12 +749,20 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 
   console.log('/admin/entry/amend/' + view + '/' + id + '/' + entry)
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
-      entry = entryx[0]
-      res.render('admin/entry/amend/submissionvalue.html', { entry, view })
-    }),
-  )
+  axios
+    .all([getDataByID(id), getPerson(entry), getArtefact(entry), getPanel(id), getObservers(id)])
+    .then(
+      axios.spread((entryx, person, artefact, panel, observers) => {
+        entry = entryx[0]
+        res.render('admin/entry/amend/submissionvalue.html', {
+          entry,
+          person,
+          artefact,
+          view,
+          panel,observers
+        })
+      }),
+    )
 })
 
 // Saves the submission list value change
@@ -746,6 +770,119 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
   var id = req.params.id
   var view = req.params.view
   var entry = req.params.entry
+
+  console.log(view)
+
+  if (view === 'add-panel-member') {
+    base('ReviewPanel').create(
+      [
+        {
+          fields: {
+            Name: req.body.team_,
+            ReviewID: parseInt(id),
+            Role: req.body.roleinteam,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/panel/' + id)
+  }
+
+  if (view === 'remove-panel-member') {
+    base('ReviewPanel').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/admin/entry/panel/' + id)
+  }
+
+  if (view === 'add-team-member') {
+    base('ReviewTeam').create(
+      [
+        {
+          fields: {
+            Name: req.body.team_,
+            ReviewID: parseInt(id),
+            Role: req.body.roleinteam,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/team/' + id)
+  }
+
+  if (view === 'remove-team-member') {
+    base('ReviewTeam').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/admin/entry/team/' + id)
+  }
+
+  if (view === 'add-panel-observer') {
+    base('ReviewObservers').create(
+      [
+        {
+          fields: {
+            Name: req.body.team_,
+            ReviewID: parseInt(id),
+            Role: req.body.roleinteam,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/panel/' + id)
+  }
+
+  if (view === 'remove-panel-observer') {
+    base('ReviewObservers').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/admin/entry/panel/' + id)
+  }
 
   // update entry
 
@@ -769,6 +906,66 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
         })
       },
     )
+  }
+
+  if (view === 'title') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Name: req.body.title_,
+            Description: req.body.purpose_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Name'))
+        })
+      },
+    )
+  }
+
+  if (view === 'add-artefact') {
+    base('Artefacts').create(
+      [
+        {
+          fields: {
+            Name: req.body.description,
+            ReviewID: parseInt(id),
+            URL: req.body.url,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ID'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/files/' + id)
+  }
+
+  if (view === 'remove-artefact') {
+    base('Artefacts').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
+    return res.redirect('/admin/entry/files/' + id)
   }
 
   if (view === 'dd') {
@@ -999,16 +1196,26 @@ router.post('/admin/entry/amend-team/:view/:id/:entry', function (req, res) {
 })
 
 // Gets entry for submission list
-router.get('/admin/entry/:view/:id', function (req, res) {
+router.get('/admin/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
-      entry = entryx[0]
-      res.render('admin/entry/taskview.html', { entry, view })
-    }),
-  )
+  await wait(00)
+
+  axios
+    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .then(
+      axios.spread((entryx, team, artefacts, panel,observers) => {
+        entry = entryx[0]
+        res.render('admin/entry/taskview.html', {
+          entry,
+          team,
+          artefacts,
+          view,
+          panel,observers
+        })
+      }),
+    )
 })
 
 /// Posts from actions
@@ -1190,20 +1397,78 @@ router.get('/report/:id', function (req, res) {
 
 // MANAGE
 
+router.get('/list', function(req, res){
+  axios
+  .all([
+    getData('All')
+  ])
+  .then(
+    axios.spread(
+      (
+        all
+      ) => {
+        res.render('list/index.html', {
+          all
+        })
+      },
+    ),
+  )
+})
+
 router.get('/manage/', function (req, res) {
-  res.redirect('/manage/draft')
+  var type = req.params.status
+
+  axios
+    .all([
+      getData('Draft'),
+      getData('New'),
+      getData('Rejected'),
+      getData('Active'),
+      getData('Completed'),
+      getData('Cancelled'),
+    ])
+    .then(
+      axios.spread(
+        (
+          draftrecords,
+          newrecords,
+          rejectedrecords,
+          activerecords,
+          completedrecords,
+          cancelledrecords,
+        ) => {
+          res.render('manage/index.html', {
+            draftrecords,
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+            type,
+          })
+        },
+      ),
+    )
 })
 
 router.get('/manage/entry/:id', function (req, res) {
   var id = req.params.id
   var view = 'new'
 
-  axios.all([getDataByID(id), getTeam(id), getArtefacts(id)]).then(
-    axios.spread((entryx, team, artefacts) => {
-      entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, team, artefacts, view })
-    }),
-  )
+  axios
+    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .then(
+      axios.spread((entryx, team, artefacts, panel, observers) => {
+        entry = entryx[0]
+        res.render('manage/entry/taskview.html', {
+          entry,
+          team,
+          artefacts,
+          view,
+          panel,observers
+        })
+      }),
+    )
 })
 
 // Gets a report for a given ID
@@ -1267,14 +1532,22 @@ router.get('/manage/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  await wait(2000)
+  await wait(1500)
 
-  axios.all([getDataByID(id), getTeam(id), getArtefacts(id)]).then(
-    axios.spread((entryx, team, artefacts) => {
-      entry = entryx[0]
-      res.render('manage/entry/taskview.html', { entry, team, artefacts, view })
-    }),
-  )
+  axios
+    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .then(
+      axios.spread((entryx, team, artefacts, panel, observers) => {
+        entry = entryx[0]
+        res.render('manage/entry/taskview.html', {
+          entry,
+          team,
+          artefacts,
+          view,
+          panel,observers
+        })
+      }),
+    )
 })
 
 /// Gets a view for a given ID based on vertical nav select
@@ -1399,6 +1672,29 @@ router.post('/manage/entry/amend/:view/:id/:entry', function (req, res) {
         }
         records.forEach(function (record) {
           console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+  }
+
+  if (view === 'title') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Name: req.body.title_,
+            Description: req.body.purpose_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Name'))
         })
       },
     )

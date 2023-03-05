@@ -1,0 +1,16 @@
+<form action="/admin/entry/amend/remove-team-member/{{entry.fields.ID}}/{{person[0].id}}" method="post">
+
+<h2 class="govuk-heading-l">Remove {{person[0].fields.Name}} from the discovery team</h2>
+
+<p>This prevents them from seeing this peer review and adding any artefacts.</p>
+
+<p>You can add them again at a later date if you need to.</p>
+
+                
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button govuk-button--warning"  data-module="govuk-button">Remove and return to team</button>
+        <a href="/admin/entry/team/{{entry.fields.ID}}" class="govuk-link">Cancel and return to team list</a>
+    </div>
+
+</form>
+

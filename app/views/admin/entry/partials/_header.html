@@ -1,5 +1,4 @@
-<h1 class="govuk-heading-l govuk-!-margin-bottom-5">
-    <span class="govuk-caption-l">Discovery peer review</span>{{entry.fields.Name}}</h1>
+<h1 class="govuk-heading-l govuk-!-margin-bottom-5">{{entry.fields.Name}}</h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <details class="govuk-details" data-module="govuk-details">
@@ -9,7 +8,7 @@
     </span>
             </summary>
             <div class="govuk-details__text">
-                <p>{{entry.fields.Description}}</p>
+               <p class="formatted-content">{{entry.fields.Description}}</p>
             </div>
         </details>
     </div>
@@ -41,4 +40,4 @@
             </div>
         </div>
 
-        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+        <hr class="govuk-section-break govuk-!-margin-bottom-5 govuk-section-break--visible">

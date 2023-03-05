@@ -26,6 +26,13 @@
 {% endif %}
 
 <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Update title or summary</dt>
+        <dd class="govuk-summary-list__value">{{entry.fields.Name}}</dd>
+        <dd class="govuk-summary-list__actions">
+                <a class="govuk-link" href="/admin/entry/amend/title/{{entry.fields.ID}}/{{entry.id}}">Change<span class="govuk-visually-hidden"> title or summary</span></a>
+            </dd>
+        </div>
     <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Project code</dt>
         <dd class="govuk-summary-list__value">{{entry.fields.ProjectCode}}</dd>

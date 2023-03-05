@@ -1,0 +1,17 @@
+<form action="/admin/entry/amend/remove-artefact/{{entry.fields.ID}}/{{artefact[0].id}}" method="post">
+
+<h2 class="govuk-heading-l">Remove artefact</h2>
+
+<p>Are you sure you want to remove the following artefact:</p>
+
+<p><strong>Description:</strong> {{artefact[0].fields.Name}}</p>
+
+<p><strong>URL:</strong>  <a href="{{artefact[0].fields.URL}}" target="_blank">{{artefact[0].fields.URL}}</a></p>
+
+                
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button govuk-button--warning"  data-module="govuk-button">Remove and return to artefacts</button>
+        <a href="/admin/entry/files/{{entry.fields.ID}}" class="govuk-link">Cancel and return to artefacts list</a>
+    </div>
+
+</form>

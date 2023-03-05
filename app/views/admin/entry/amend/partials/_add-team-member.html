@@ -1,0 +1,64 @@
+<form action="/admin/entry/amend/add-team-member/{{entry.fields.ID}}/{{entry.id}}" method="post">
+
+<h2 class="govuk-heading-l">Add a person to the discovery team</h2>
+
+                    <div class="govuk-form-group">
+                          <legend class="govuk-fieldset__legend">
+      Name
+    </legend>
+
+                        <select class="govuk-select govuk-!-width-one-half auto" id="team_" name="team_">
+                            {% include "_names.html" %}
+                        </select>
+                    </div>
+
+                       <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend">
+      Role in the discovery team
+    </legend>
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="roleinteam" name="roleinteam" type="radio" value="Design">
+        <label class="govuk-label govuk-radios__label" for="roleinteam">
+          Design
+        </label>
+        <div id="sign-in-item-hint" class="govuk-hint govuk-radios__hint">
+          This includes content design, interaction design or service design
+        </div>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="roleinteam-2" name="roleinteam" type="radio" value="User Research">
+        <label class="govuk-label govuk-radios__label" for="roleinteam-2">
+          User research
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="roleinteam-3" name="roleinteam" type="radio" value="Product">
+        <label class="govuk-label govuk-radios__label" for="roleinteam-3">
+          Product
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="roleinteam-4" name="roleinteam" type="radio" value="Delivery">
+        <label class="govuk-label govuk-radios__label" for="roleinteam-4">
+          Delivery
+        </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="roleinteam-6" name="roleinteam" type="radio" value="Technical">
+        <label class="govuk-label govuk-radios__label" for="roleinteam-6">
+          Technical
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+        <a href="/admin/entry/team/{{entry.fields.ID}}" class="govuk-link">Cancel and return to submission</a>
+    </div>
+
+</form>
+

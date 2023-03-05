@@ -1,0 +1,14 @@
+<form action="/admin/entry/amend/remove-panel-observer/{{entry.fields.ID}}/{{observers[0].id}}" method="post">
+
+<h2 class="govuk-heading-l">Remove {{observers[0].fields.Name}} from the list of observers</h2>
+
+<p>You can add them again at a later date if you need to.</p>
+
+                
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button govuk-button--warning"  data-module="govuk-button">Remove and return to team</button>
+        <a href="/admin/entry/panel/{{entry.fields.ID}}" class="govuk-link">Cancel and return to team list</a>
+    </div>
+
+</form>
+

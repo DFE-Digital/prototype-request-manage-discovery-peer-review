@@ -1,44 +1,39 @@
 <h2 class="govuk-heading-l">Supporting artefacts</h2>
 
 <p>You can add links to supporting artefacts for your peer review.</p>
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Artefacts</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="/manage/entry/amend/add-artefact//{{entry.fields.ID}}/{{entry.id}}">
+          Add artefact link<span class="govuk-visually-hidden"> to the review</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="govuk-summary-card__content">
+{% if not artefacts.length %}
 
-{% if artefacts.length%}
-
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Artefact</th>
-                <th scope="col" class="govuk-table__header">Added on</th>
-                <th scope="col" class="govuk-table__header">Added By</th>
-                <th scope="col" class="govuk-table__header">Action</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            {% for a in artefacts %}
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">
-                        <a href="{{a.fields.URL}}" target="_blank">{{a.fields.Name}}</a>
-                    </th>
-                    <td class="govuk-table__cell">{{a.fields.Created | date('D MMM YYYY')}}</td>
-                    <td class="govuk-table__cell">{{a.fields.CreatedBy.name}}</td>
-                    <td class="govuk-table__cell">
-                        <a href="/manage/entry/amend/remove-artefact/{{entry.fields.ID}}/{{a.fields.ID}}">Remove</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p>
-        <a href="/manage/entry/amend/add-artefact//{{entry.fields.ID}}/{{entry.id}}">Add another link</a>
-    </p>
+<p>No artefacts have been added.</p>
 
 {% else %}
-    <div class="govuk-inset-text">
-        <p>No links have been added</p>
-        <p>
-            <a href="/manage/entry/amend/add-artefact//{{entry.fields.ID}}/{{entry.id}}">Add link to artefact</a>
-        </p>
-    </div>
 
-{% endif %}
+        <dl class="govuk-summary-list">
+
+            {% for a in artefacts %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"> <a href="{{a.fields.URL}}" target="_blank">{{a.fields.Name}}</a></dt>
+                <dd class="govuk-summary-list__value">
+                 Added by {{a.fields.CreatedBy.name}}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                      <a href="/manage/entry/amend/remove-artefact/{{entry.fields.ID}}/{{a.fields.ID}}">Remove</a>
+                </dd>
+            </div>
+            {% endfor %}
+            
+        </dl>
+        {% endif%}
+    </div>
+</div>

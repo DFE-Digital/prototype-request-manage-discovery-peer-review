@@ -25,7 +25,7 @@ Request – {{serviceName}} –  Book and manage a discovery peer review
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Book a discovery peer review</h1>
+        <h1 class="govuk-heading-l">Book a discovery peer review</h1>
 
 
          <p>You can use this service to:</p>
@@ -46,6 +46,43 @@ Request – {{serviceName}} –  Book and manage a discovery peer review
                   <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z"/>
                 </svg>
               </a>
+
+
+               {% if draftrecords.length %}
+
+        <h2 class="govuk-heading-m">Continue with a draft</h2>
+          <section id="drafts" class="govuk-!-margin-bottom-5">
+            <p>Select a draft to continue submitting your request.</p>
+
+            <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+              <thead class="dfeuk-table__head">
+                <tr class="dfeuk-table__row">
+
+                  <th scope="col" class="dfeuk-table__header govuk-!-width-one-third">Service</th>
+                  <th scope="col" class="dfeuk-table__header">Type</th>
+                  <th scope="col" class="dfeuk-table__header">Started</th>
+                  <th scope="col" class="dfeuk-table__header">Last updated</th>
+                </tr>
+              </thead>
+              <tbody class="dfeuk-table__body">
+                {% for record in draftrecords %}
+                  <tr class="dfeuk-table__row">
+                    <th scope="row" class="dfeuk-table__header">
+                      <a href="/manage/draft/{{record.id}}">{{record.fields.Name}}</a>
+                    </th>
+                    <td class="dfeuk-table__cell">Discovery peer review</td>
+                    <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                    <td class="dfeuk-table__cell">{{record.fields.LastModified|date('D MMM YYYY')}}</td>
+                  </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+
+          </section>
+
+        {% endif %}
+
 
                 <h2 class="govuk-heading-l">Before you start</h2>
 

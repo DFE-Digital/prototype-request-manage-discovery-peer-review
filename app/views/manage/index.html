@@ -24,7 +24,7 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
     {% block content %}
 
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-quarter">
+            {# <div class="govuk-grid-column-one-quarter">
                 <nav class="dfeuk-vertical-nav">
                     <ul class="dfeuk-vertical-nav__section">
                           <li class="dfeuk-vertical-nav__section-item  {%if type === "draft" %}dfeuk-vertical-nav__section-item--current{% endif %}">
@@ -101,7 +101,159 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
                     <p>There are no cancelled requests.</p>
                 {% endif %}
 
+            </div> #}
+
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l">Manage requests</h1>
             </div>
+
+            <div class="govuk-grid-column-two-thirds">
+
+                {% if draftrecords.length %}
+
+                    <div class="govuk-summary-card">
+                        <div class="govuk-summary-card__title-wrapper">
+                            <h2 class="govuk-summary-card__title">Your drafts</h2>
+                        </div>
+                        <div class="govuk-summary-card__content">
+                            <p>Select a draft to continue submitting your request.</p>
+
+                            <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+                                <thead class="dfeuk-table__head">
+                                    <tr class="dfeuk-table__row">
+
+                                        <th scope="col" class="dfeuk-table__header govuk-!-width-one-third">Service</th>
+                                        <th scope="col" class="dfeuk-table__header">Type</th>
+                                        <th scope="col" class="dfeuk-table__header">Started</th>
+                                        <th scope="col" class="dfeuk-table__header">Last updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="dfeuk-table__body">
+                                    {% for record in draftrecords %}
+                                        <tr class="dfeuk-table__row">
+                                            <th scope="row" class="dfeuk-table__header">
+                                                <a href="/manage/draft/{{record.id}}">{{record.fields.Name}}</a>
+                                            </th>
+                                            <td class="dfeuk-table__cell">Discovery peer review</td>
+                                            <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                                            <td class="dfeuk-table__cell">{{record.fields.LastModified|date('D MMM YYYY')}}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Your requests</h2>
+                    </div>
+                    <div class="govuk-summary-card__content">
+
+                         {% if newrecords.length or activerecords.length %}
+
+                        <p>Manage details, people, and artefacts relating to your peer review.</p>
+                        <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+                            <thead class="dfeuk-table__head">
+                                <tr class="dfeuk-table__row">
+                                    <th scope="col" class="dfeuk-table__header  govuk-!-width-one-third">Service</th>
+                                    <th scope="col" class="dfeuk-table__header">Type</th>
+                                    <th scope="col" class="dfeuk-table__header">Submitted</th>
+                                    <th scope="col" class="dfeuk-table__header dfeuk-table__header--numeric">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="dfeuk-table__body">
+                                {% for record in newrecords %}
+                                    <tr class="dfeuk-table__row">
+                                        <th scope="row" class="dfeuk-table__header">
+                                            <a href="/manage/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
+                                        </th>
+                                        <td class="dfeuk-table__cell">Discovery peer review</td>
+                                        <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                                        <td class="dfeuk-table__cell dfeuk-table__cell--numeric">
+                                            <strong class="govuk-tag govuk-tag--{{record.fields.Status | lower}}">{{record.fields.Status}}</strong>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                {% for record in activerecords %}
+                                    <tr class="dfeuk-table__row">
+                                        <th scope="row" class="dfeuk-table__header">
+                                            <a href="/manage/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
+                                        </th>
+                                        <td class="dfeuk-table__cell">Discovery peer review</td>
+                                        <td class="dfeuk-table__cell">{{record.fields.Created|date('D MMM YYYY')}}</td>
+                                        <td class="dfeuk-table__cell dfeuk-table__cell--numeric">
+                                            <strong class="govuk-tag govuk-tag--green">{{record.fields.Status}}</strong>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+                        {% else %}
+
+
+                        <p>No requests to manage.</p>
+
+                           {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+
+                <div class="dfeuk-card">
+                    <div class="dfeuk-card__content">
+                        <h2 class="dfeuk-card__heading dfeuk-heading-m">Book a peer review</h2>
+                        <p class="dfeuk-card__description">Use the new service to book a discovery peer review.</p>
+                        <p>
+                            <a href="/book/">Book <span class="govuk-visually-hidden"> a discovery peer review</span></a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="dfeuk-card">
+                    <div class="dfeuk-card__content">
+                        <h2 class="dfeuk-card__heading dfeuk-heading-m">Unsure if you need a discovery peer review?</h2>
+                        <p>
+                            <a href="https://dfe-standards-manual-prototype.herokuapp.com/service-assurance" target="_blank">Check <span class="govuk-visually-hidden"> the type of assurance you need</span></a>
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="govuk-section-break govuk-section-break--visible dfe-bar-thick govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+                <h3 class="govuk-heading-s">Additional guidance across DfE</h3>
+                <ul class="govuk-list govuk-list--spaced">
+                    <li>
+                        <a href="https://apply-the-service-standard.education.gov.uk/" target="_blank">Apply the Service Standard in DfE</a>
+                    </li>
+                    <li>
+                        <a href="https://user-research.education.gov.uk/" target="_blank">User Research in DfE</a>
+                    </li>
+                    <li>
+                        <a href="https://technical-guidance.education.gov.uk/" target="_blank">DfE Technical Guidance</a>
+                    </li>
+                    <li>
+                        <a href="https://dfe-digital.github.io/architecture/#dfe-architecture" target="_blank">DfE Architecture</a>
+                    </li>
+                </ul>
+                <h3 class="govuk-heading-s">GOV.UK resources</h3>
+                <ul class="govuk-list govuk-list--spaced">
+                    <li>
+                        <a href="https://design-system.service.gov.uk/" target="_blank">GOV.UK Design System</a>
+                    </li>
+                    <li>
+                        <a href="https://www.gov.uk/service-manual" target="_blank">GOV.UK Service Manual</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
     {% endblock %}

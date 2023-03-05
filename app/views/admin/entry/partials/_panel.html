@@ -1,90 +1,76 @@
-<h2 class="govuk-heading-l">Review panel</h2>
+<h2 class="govuk-heading-l">Review panel and observers</h2>
 <p class="govuk-body">Details of the panel of peer reviewers and any observers.</p>
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
-        <h2 class="govuk-summary-card__title">Peer review panel</h2>
+        <h2 class="govuk-summary-card__title">Panel</h2>
         <ul class="govuk-summary-card__actions">
             <li class="govuk-summary-card__action">
-                <a class="govuk-link" href="#">
-          Add another role<span class="govuk-visually-hidden"> to the panel</span>
+                <a class="govuk-link" href="/admin/entry/amend/add-panel-member/{{entry.fields.ID}}/{{entry.id}}">
+          Add people<span class="govuk-visually-hidden"> to the panel</span>
                 </a>
             </li>
         </ul>
     </div>
     <div class="govuk-summary-card__content">
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Lead</dt>
-                <dd class="govuk-summary-list__value">
-                    {% if data['ur-panel']%}{{data['ur-panel']}}{% else%}
-                        <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                    {% endif %}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/admin/entry/panel/{{entry.fields.ID}}">Change<span class="govuk-visually-hidden"> lead peer reviewer</span></a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">User research</dt>
-                <dd class="govuk-summary-list__value">
-                    {% if data['ur-panel']%}{{data['ur-panel']}}{% else%}
-                        <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                    {% endif %}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/admin/entry/panel/{{entry.fields.ID}}">Change<span class="govuk-visually-hidden"> user research peer reviewer</span></a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Design</dt>
-                <dd class="govuk-summary-list__value">
-                    {% if data['ur-panel']%}{{data['ur-panel']}}{% else%}
-                        <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                    {% endif %}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/admin/entry/panel/{{entry.fields.ID}}">Change<span class="govuk-visually-hidden"> design peer reviewer</span></a>
-                </dd>
-            </div>
-        </dl>
+{% if not panel.length %}
 
+<p>No people have been added to the review panel.</p>
+
+{% else %}
+
+        <dl class="govuk-summary-list">
+
+            {% for person in panel %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">{{person.fields.Name}}</dt>
+                <dd class="govuk-summary-list__value">
+                   {{person.fields.Role}}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="/admin/entry/amend/remove-panel-member/{{entry.fields.ID}}/{{person.fields.ID}}">Remove<span class="govuk-visually-hidden"> {{person.fields.Name}}</span></a>
+                </dd>
+            </div>
+            {% endfor %}
+            
+        </dl>
+        {% endif%}
     </div>
 </div>
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
         <h2 class="govuk-summary-card__title">Observers</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="/admin/entry/amend/add-panel-observer/{{entry.fields.ID}}/{{entry.id}}">
+          Add people<span class="govuk-visually-hidden"> as an observer</span>
+                </a>
+            </li>
+        </ul>
     </div>
     <div class="govuk-summary-card__content">
+{% if not observers.length %}
+
+<p>No people have been added as observers.</p>
+
+{% else %}
+
         <dl class="govuk-summary-list">
+
+            {% for person in observers %}
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Observer 1</dt>
+                <dt class="govuk-summary-list__key">{{person.fields.Name}}</dt>
                 <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
+                   {{person.fields.Role}}
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 1</span></a>
+                    <a class="govuk-link" href="/admin/entry/amend/remove-panel-observer/{{entry.fields.ID}}/{{person.fields.ID}}">Remove<span class="govuk-visually-hidden"> {{person.fields.Name}}</span></a>
                 </dd>
             </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Observer 2</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 2</span></a>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Observer 3</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--grey">Not assigned</strong>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="#">Change<span class="govuk-visually-hidden"> observer 3</span></a>
-                </dd>
-            </div>
+            {% endfor %}
+            
         </dl>
+        {% endif%}
     </div>
 </div>

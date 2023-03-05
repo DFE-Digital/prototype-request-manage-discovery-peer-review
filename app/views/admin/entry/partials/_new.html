@@ -58,6 +58,7 @@
                         {% endif %}
                     </td>
                 </tr>
+                
 
                 <tr class="dfeuk-table__row">
                     <th scope="row" class="dfeuk-table__cell">
@@ -128,6 +129,32 @@
                             {% else %}
 
                                 <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="dfeuk-table__row">
+                        <th scope="row" class="dfeuk-table__cell">Pre-call and Slack</th>
+                        <td class="dfeuk-table__cell">Service Assurance Team</td>
+                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+                            {% if entry.fields.Status === "New"%}
+                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+                            {% elseif entry.fields.Status === "Complete"%}
+                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
+                            {% else %}
+                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                            {% endif %}
+                        </td>
+                    </tr>
+                     <tr class="dfeuk-table__row">
+                        <th scope="row" class="dfeuk-table__cell">Start peer review</th>
+                        <td class="dfeuk-table__cell">Service Assurance Team</td>
+                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+                            {% if entry.fields.Status === "Review"%}
+                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+                            {% elseif entry.fields.Status === "Complete"%}
+                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
+                            {% else %}
+                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% endif %}
                         </td>
                     </tr>

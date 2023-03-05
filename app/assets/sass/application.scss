@@ -1501,3 +1501,11 @@ p.formatted-content {
     }
   }
 }
+
+.govuk-summary-card__content p {
+  margin-bottom: 0px;
+
+  +table, +p {
+    margin-top: 24px;
+  }
+}
