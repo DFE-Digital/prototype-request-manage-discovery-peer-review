@@ -6,6 +6,9 @@ const dateFilter = require('nunjucks-date-filter');
 const { marked } = require('marked')
 const markdown = require('nunjucks-markdown');
 
+var passport = require('passport');
+var WindowsStrategy = require('passport-windowsauth');
+
 addFilter('split', function(str, seperator) {
     return str.split(seperator);
 });
@@ -20,3 +23,9 @@ addFilter('BoolToYesNo', function(str){
 addFilter('BoolToYesBlank', function(str){
     return str ? 'Yes' : '-'
 })
+
+
+addFilter('user', function(){
+   return require("os").userInfo().username
+})
+
