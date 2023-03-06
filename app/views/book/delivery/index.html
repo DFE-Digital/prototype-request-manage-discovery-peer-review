@@ -37,7 +37,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 <ul class="govuk-list govuk-error-summary__list">
                                     {% if err %}
                                     <li>
-                                        <a href="#code">Yes no error</a>
+                                        <a href="#code">Select if you have a delivery manager</a>
                                     </li>
                                     {%elseif errcode%}
                                       <li>
@@ -64,7 +64,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
       Select one option.
     </div>{%if err%}
                             <p id="event-name-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> Yes no error
+                                <span class="govuk-visually-hidden">Error:</span>Select if you have a delivery manager
   </p>{% endif%}
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">

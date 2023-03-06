@@ -36,7 +36,7 @@ Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
                             <div class="govuk-error-summary__body">
                                 <ul class="govuk-list govuk-error-summary__list">
                                     <li>
-                                        <a href="#dd">Select a name</a>
+                                        <a href="#dd">Select the name of your deputy director</a>
                                     </li>
                                 </ul>
                             </div>
@@ -55,7 +55,7 @@ Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
                         </h1>
  {%if err%}
                             <p id="event-name-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span>Select a name
+                                <span class="govuk-visually-hidden">Error:</span>Select the name of your deputy director
   </p>{% endif%}
                         <select class="govuk-select govuk-!-width-one-half auto  {%if err%} govuk-input--error{% endif%}" id="dd" name="dd">
                             {% include "_names.html" %}
