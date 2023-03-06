@@ -146,13 +146,13 @@
                         </td>
                     </tr>
                      <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Start peer review</th>
+                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" or entry.fields.Status !== "Complete" %}<a href="/admin/entry/start-peer-review/{{entry.fields.ID}}">Start peer review</a>{% else%}Start peer review{% endif%}</th>
                         <td class="dfeuk-table__cell">Service Assurance Team</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "Review"%}
-                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
+                            {% if entry.fields.Status === "Review" or entry.fields.Status === "Complete" %}
                                 <strong class="govuk-tag govuk-tag--green">Complete</strong>
+                            {% elseif entry.fields.Status === "Pre-Review"%}
+                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                             {% else %}
                                 <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% endif %}

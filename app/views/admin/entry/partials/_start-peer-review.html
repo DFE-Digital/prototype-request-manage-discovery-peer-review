@@ -1,0 +1,45 @@
+{% if entry.fields.Status === "Review"%}
+  <h2 class="govuk-heading-l">Start peer review</h2>
+
+  <p>The peer review has been started.</p>
+
+  <p><a href="/admin/entry/{{entry.fields.ID}}" >Return to tasks</a></p>
+{% else %}
+
+<form method="post" action="/admin/action/start-peer-review/{{entry.fields.ID}}/{{entry.id}}">
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="openreport-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h2 class="govuk-fieldset__heading">
+        Do you want to start the peer review?
+      </h2>
+            </legend>
+            <div id="openreport-hint" class="govuk-hint">
+      This will enable the peer review report to be completed by the panel.
+    </div>
+            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="openreport" name="openreport" type="radio" value="Yes">
+                    <label class="govuk-label govuk-radios__label" for="openreport">
+          Yes
+        </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="openreport-2" name="openreport" type="radio" value="No">
+                    <label class="govuk-label govuk-radios__label" for="openreport-2">
+          No
+        </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Save and return</button>
+        <a href="/admin/entry/{{entry.fields.ID}}" class="govuk-link">Cancel and return to tasks</a>
+    </div>
+
+</form>
+
+{% endif %}

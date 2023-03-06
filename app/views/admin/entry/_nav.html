@@ -1,0 +1,57 @@
+<nav class="dfeuk-vertical-nav">
+
+    {% if entry.fields.Status === "Complete"%}
+        <ul class="dfeuk-vertical-nav__section">
+
+            <li class="dfeuk-vertical-nav__section-item">
+                <a class="dfeuk-vertical-nav__link " href="/report/{{entry.fields.ID}}">View report</a>
+            </li>
+
+        </ul>
+
+        <h2 class="govuk-heading-m">Manage</h2>
+    {% endif %}
+
+    <ul class="dfeuk-vertical-nav__section">
+
+        {% if entry.fields.Status === "New"%}
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
+            </li>
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' or view === 'reject_reason'%}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">Submission</a>
+            </li>
+
+        {% else %}
+
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' or view === 'providedates' or view === 'adddateoption' or view==='start-peer-review' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
+            </li>
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">Submission</a>
+            </li>
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'team' or view==='add-team-member'  or view==='remove-team-member'%}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/team/{{entry.fields.ID}}">Discovery team</a>
+            </li>
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'files' or view==='add-artefact' or view==='remove-artefact'  %}dfeuk-vertical-nav__section-item--current{% endif%}">
+
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/files/{{entry.fields.ID}}">Supporting artefacts</a>
+            </li>
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'panel' or view==='add-panel-member'  or view==='remove-panel-member' or view==='add-panel-observer'  or view==='remove-panel-observer' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/panel/{{entry.fields.ID}}">Review panel</a>
+            </li>
+
+        {% endif %}
+
+    </ul>
+
+    {% if entry.fields.Status === "Review"%}
+        <h2 class="govuk-heading-s">Peer review</h2>
+        <ul class="dfeuk-vertical-nav__section">
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'review' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>
+            </li>
+        </ul>
+    {% endif %}
+
+</nav>

@@ -8,7 +8,7 @@
     <div class="govuk-notification-banner__content">
         <p class="govuk-notification-banner__heading">Panel has completed all sections of the report.</p>
         <p>When you're ready, you can submit the report to the Service Assessment Team to check and for it to be sent to the service team.</p>
-        <form action="/sprint-3/manage/review/submitted" method="get">
+        <form action="/admin/manage/review/submitted" method="get">
             <button class="govuk-button" data-module="govuk-button">Submit report</button>
         </form>
     </div>
@@ -63,7 +63,7 @@
                                 <button class="govuk-button" data-module="govuk-button">
     Save
   </button>
-                                <a class="govuk-link" href="/sprint-3/manage/review/12345">Cancel</a>
+                                <a class="govuk-link" href="/admin/entry/review/{{entry.fields.ID}}">Cancel</a>
                             </div>
                         </form>
             </div>
@@ -80,7 +80,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="govuk-summary-card__content">
+            <div class="govuk-summary-card__content  formatted-content">
                 {% if entry.fields.ReviewDoneWell%}
                     <p>{{entry.fields.ReviewDoneWell}}</p>
                     {% else%}
@@ -100,7 +100,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="govuk-summary-card__content">
+                <div class="govuk-summary-card__content  formatted-content">
                     {% if entry.fields.ReviewImprove%}
                         <p>{{entry.fields.ReviewImprove}}</p>
                         {% else%}

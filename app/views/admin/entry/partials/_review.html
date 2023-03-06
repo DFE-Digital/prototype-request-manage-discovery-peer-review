@@ -1,51 +1,17 @@
 <h2 class="govuk-heading-l">Peer review</h2>
 
 
-<p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
-
 {% if(entry.fields.Status === "New" or entry.fields.Status === "Pre-Review")%}
 
-<div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-    <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-    </div>
-    <div class="govuk-notification-banner__content">
-       <p>This section can only be completed by the peer review panel once the entry is in the "Review" status.</p>
 
-    </div>
-</div> 
+  <p>This section can only be completed by the peer review panel once the entry is in the "Review" status.</p>
 
 {% endif %}
 
-{% if data['usertype'] === "team" and entry.fields.Status === "Review"%}
 
 
-<div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-    <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-    </div>
-    <div class="govuk-notification-banner__content">
-       <p>You will be able to view the peer review comments when the panel have completed the review feedback.</p>
 
-       <p>You'll receive an email when the review comments are available to read.</p>
-
-    </div>
-</div> 
-
-{% else %}
-
-{# <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-    <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-    </div>
-    <div class="govuk-notification-banner__content">
-        <p class="govuk-notification-banner__heading">Panel has completed all sections of the report.</p>
-        <p>When you're ready, you can submit the report to the Service Assessment Team to check and for it to be sent to the service team.</p>
-        <form action="/sprint-3/manage/review/submitted" method="get">
-            <button class="govuk-button" data-module="govuk-button">Submit report</button>
-        </form>
-    </div>
-</div> #}
+{% if entry.fields.Status === "Review"%}
 
 <div class="govuk-summary-card" id="outcome">
     <div class="govuk-summary-card__title-wrapper">
@@ -106,8 +72,8 @@
                 </ul>
                 {% endif%}
             </div>
-            <div class="govuk-summary-card__content">
-                {% if entry.fields.ReviewDoneWell !== "\n"%}
+            <div class="govuk-summary-card__content  formatted-content">
+                {% if entry.fields.ReviewDoneWell %}
                     <p>{{entry.fields.ReviewDoneWell}}</p>
                     {% else%}
                     <p>The panel has not entered any comments.</p>
@@ -128,8 +94,8 @@
                     </ul>
                     {% endif%}
                 </div>
-                <div class="govuk-summary-card__content">
-                    {% if entry.fields.ReviewImprove !== "\n"%}
+                <div class="govuk-summary-card__content  formatted-content">
+                    {% if entry.fields.ReviewImprove %}
                         <p>{{entry.fields.ReviewImprove}}</p>
                         {% else%}
                         <p>The panel has not entered any comments.</p>
@@ -140,5 +106,7 @@
         </div>
     </div>
 </div>
+
+
 
 {% endif %}

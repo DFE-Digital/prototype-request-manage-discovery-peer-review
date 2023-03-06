@@ -30,7 +30,7 @@
                     <td class="govuk-table__cell">{{a.addedOn}}</td>
                     <td class="govuk-table__cell">{{a.addedBy}}</td>
                     <td class="govuk-table__cell">
-                        <a href="/sprint-3/manage/artefacts/remove/{{a.id}}">Remove</a>
+                        <a href="/admin/manage/artefacts/remove/{{a.id}}">Remove</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -38,7 +38,7 @@
     </table>
 
     <p>
-        <a href="/sprint-3/manage/artefacts/add/12345">Add another date option</a>
+        <a href="/admin/manage/artefacts/add/{{entry.fields.ID}}">Add another date option</a>
     </p>
 
 {% else %}

@@ -242,7 +242,7 @@ router.get('/settings/cross-gov', function (req, res) {
 router.get('/book', function (req, res) {
   // req.session.data = {}
 
-  req.session.data['retrieved'] = "No"
+  req.session.data['retrieved'] = 'No'
 
   axios.all([getData('Draft')]).then(
     axios.spread((draftrecords) => {
@@ -252,7 +252,6 @@ router.get('/book', function (req, res) {
     }),
   )
 })
-
 
 // Saves the draft on submission of the service name
 router.post('/book/service', function (req, res) {
@@ -618,10 +617,7 @@ router.post('/book/bp', function (req, res) {
   if (!req.session.data['bp']) {
     var err = true
     return res.render('book/bp/index', { err })
-  } else if (
-    req.session.data['bp'] === 'Yes' &&
-    !req.session.data['bp-name']
-  ) {
+  } else if (req.session.data['bp'] === 'Yes' && !req.session.data['bp-name']) {
     var errcode = true
     return res.render('book/bp/index', { errcode })
   } else {
@@ -633,10 +629,7 @@ router.post('/book/delivery', function (req, res) {
   if (!req.session.data['dm']) {
     var err = true
     return res.render('book/delivery/index', { err })
-  } else if (
-    req.session.data['dm'] === 'Yes' &&
-    !req.session.data['dm-name']
-  ) {
+  } else if (req.session.data['dm'] === 'Yes' && !req.session.data['dm-name']) {
     var errcode = true
     return res.render('book/delivery/index', { errcode })
   } else {
@@ -648,10 +641,7 @@ router.post('/book/product', function (req, res) {
   if (!req.session.data['pm']) {
     var err = true
     return res.render('book/product/index', { err })
-  } else if (
-    req.session.data['pm'] === 'Yes' &&
-    !req.session.data['pm-name']
-  ) {
+  } else if (req.session.data['pm'] === 'Yes' && !req.session.data['pm-name']) {
     var errcode = true
     return res.render('book/product/index', { errcode })
   } else {
@@ -827,12 +817,14 @@ router.get('/admin/entry/rejected', function (req, res) {
 
 /// Entry record by ID
 /// /admin/entry/1
-router.get('/admin/entry/:id', function (req, res) {
+router.get('/admin/entry/:id', async function (req, res) {
   var id = req.params.id
   var view = 'new'
 
   console.log(id)
   console.log(view)
+
+  await wait(1000)
 
   axios
     .all([
@@ -1358,7 +1350,6 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
 
   console.log('/admin/action/' + view + '/' + id + '/' + entry)
 
-  console.log(req.body.action)
 
   // Task action
   // Update the status of the review
@@ -1386,6 +1377,34 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     )
 
     return res.redirect('/admin/entry/review/' + id)
+  }
+
+  // Change status of review
+
+  if (view === 'start-peer-review') {
+    if (req.body.openreport === 'Yes') {
+      base('Reviews').update(
+        [
+          {
+            id: entry,
+            fields: {
+              Status: 'Review',
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('Status'))
+          })
+        },
+      )
+    }
+
+    return res.redirect('/admin/entry/' + id)
   }
 
   // Update the status of the review
@@ -1614,7 +1633,7 @@ router.get('/manage/draft/:record', function (req, res) {
       req.session.data['draftID'] = entry.id
       req.session.data['title'] = entry.fields.Name
 
-      req.session.data['retrieved'] = "Yes";
+      req.session.data['retrieved'] = 'Yes'
 
       return res.redirect('/book/check')
     }),
