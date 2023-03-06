@@ -28,16 +28,36 @@ Deputy Director – {{serviceName}} –  Book and manage a discovery peer review
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/book/sro" method="get">
+                  {% if err %}
 
-                    <div class="govuk-form-group">
+                    <div class="govuk-error-summary" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title">There is a problem</h2>
+                            <div class="govuk-error-summary__body">
+                                <ul class="govuk-list govuk-error-summary__list">
+                                    <li>
+                                        <a href="#dd">Select a name</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                <form action="/book/dd" method="post">
+
+                   <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
                         <h1 class="govuk-label-wrapper">
                             <label class="govuk-label govuk-label--l" for="dd">
       Who is the deputy director of your portfolio?
     </label>
                         </h1>
-
-                        <select class="govuk-select govuk-!-width-one-half auto" id="dd" name="dd">
+ {%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>Select a name
+  </p>{% endif%}
+                        <select class="govuk-select govuk-!-width-one-half auto  {%if err%} govuk-input--error{% endif%}" id="dd" name="dd">
                             {% include "_names.html" %}
                         </select>
                     </div>

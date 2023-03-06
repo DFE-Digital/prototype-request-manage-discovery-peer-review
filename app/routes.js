@@ -599,6 +599,15 @@ router.post('/book/portfolio', function (req, res) {
   return res.redirect('/book/dd')
 })
 
+router.post('/book/dd', function (req, res) {
+  if (!req.session.data['dd']) {
+    var err = true
+    return res.render('book/dd/index', { err })
+  }
+
+  return res.redirect('/book/sro')
+})
+
 // Check page
 router.get('/book/check', function (req, res) {
   // We want to know if people have got to this page so that the "change" route sends them back here and not to the next page in the jouurney
