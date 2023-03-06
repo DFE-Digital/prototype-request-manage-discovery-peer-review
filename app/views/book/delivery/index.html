@@ -28,9 +28,32 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/book/product" method="get">
+                  {% if err or errcode%}
 
-  <div class="govuk-form-group">
+                    <div class="govuk-error-summary" data-module="govuk-error-summary">
+                        <div role="alert">
+                            <h2 class="govuk-error-summary__title">There is a problem</h2>
+                            <div class="govuk-error-summary__body">
+                                <ul class="govuk-list govuk-error-summary__list">
+                                    {% if err %}
+                                    <li>
+                                        <a href="#code">Yes no error</a>
+                                    </li>
+                                    {%elseif errcode%}
+                                      <li>
+                                        <a href="#code_">Select name</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                <form action="/book/delivery" method="post">
+
+  <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
             <fieldset class="govuk-fieldset" aria-describedby="dm-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
@@ -39,7 +62,10 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
               </legend>
               <div id="dm-hint" class="govuk-hint">
       Select one option.
-    </div>
+    </div>{%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Yes no error
+  </p>{% endif%}
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="dm" name="dm" type="radio" value="Yes" data-aria-controls="conditional-dm" {{ checked('dm','Yes') }}>
@@ -49,13 +75,16 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                 </div>
                  <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-dm">
 
-                   <div class="govuk-form-group">
+                   <div class="govuk-form-group {%if errcode%}govuk-form-group--error{% endif%}">
                        
                             <label class="govuk-label" for="dm-name">
       Name of delivery manager
     </label>
                        
-
+ {%if errcode%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span>Select a name
+  </p>{% endif%}
                                                 <select class="govuk-select govuk-!-width-one-half auto" id="dm-name" name="dm-name">
 {% include "_names.html" %}
                         </select>

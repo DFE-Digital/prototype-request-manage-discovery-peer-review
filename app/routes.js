@@ -608,6 +608,66 @@ router.post('/book/dd', function (req, res) {
   return res.redirect('/book/sro')
 })
 
+router.post('/book/sro', function (req, res) {
+  if (!req.session.data['sro']) {
+    var err = true
+    return res.render('book/sro/index', { err })
+  } else if (
+    req.session.data['sro'] === 'No' &&
+    !req.session.data['sro-name']
+  ) {
+    var errcode = true
+    return res.render('book/sro/index', { errcode })
+  } else {
+    return res.redirect('/book/bp')
+  }
+})
+
+router.post('/book/bp', function (req, res) {
+  if (!req.session.data['bp']) {
+    var err = true
+    return res.render('book/bp/index', { err })
+  } else if (
+    req.session.data['bp'] === 'Yes' &&
+    !req.session.data['bp-name']
+  ) {
+    var errcode = true
+    return res.render('book/bp/index', { errcode })
+  } else {
+    return res.redirect('/book/delivery')
+  }
+})
+
+router.post('/book/delivery', function (req, res) {
+  if (!req.session.data['dm']) {
+    var err = true
+    return res.render('book/delivery/index', { err })
+  } else if (
+    req.session.data['dm'] === 'Yes' &&
+    !req.session.data['dm-name']
+  ) {
+    var errcode = true
+    return res.render('book/delivery/index', { errcode })
+  } else {
+    return res.redirect('/book/product')
+  }
+})
+
+router.post('/book/product', function (req, res) {
+  if (!req.session.data['pm']) {
+    var err = true
+    return res.render('book/product/index', { err })
+  } else if (
+    req.session.data['pm'] === 'Yes' &&
+    !req.session.data['pm-name']
+  ) {
+    var errcode = true
+    return res.render('book/product/index', { errcode })
+  } else {
+    return res.redirect('/book/check')
+  }
+})
+
 // Check page
 router.get('/book/check', function (req, res) {
   // We want to know if people have got to this page so that the "change" route sends them back here and not to the next page in the jouurney

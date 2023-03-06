@@ -450,11 +450,37 @@ thead>tr {
 }
 
 
+.dfeuk-table {
+
+  thead>tr {
+    background: $color_dfeuk-white;
+  }
+
+  th,
+  td {
+    padding: 8px 4px;
+  }
+
+  th,
+  td {
+    @include dfeuk-typography-responsive(16);
+  }
+
+  .dfeuk-tag {
+    padding: 4px 8px;
+    line-height: 1;
+  }
+
+  caption {
+    @include dfeuk-typography-responsive(24);
+  }
+}
+
 
 .dfeuk-table--smaller {
 
   thead>tr {
-    background: $color_dfeuk-grey-4;
+    background: $color_dfeuk-white;
   }
 
   th,
