@@ -242,17 +242,7 @@ router.get('/settings/cross-gov', function (req, res) {
 router.get('/book', function (req, res) {
   // req.session.data = {}
 
-  axios.all([getData('Draft')]).then(
-    axios.spread((draftrecords) => {
-      return res.render('book/index', {
-        draftrecords,
-      })
-    }),
-  )
-})
-
-router.get('/book', function (req, res) {
-  // req.session.data = {}
+  req.session.data['retrieved'] = "No"
 
   axios.all([getData('Draft')]).then(
     axios.spread((draftrecords) => {
@@ -262,6 +252,7 @@ router.get('/book', function (req, res) {
     }),
   )
 })
+
 
 // Saves the draft on submission of the service name
 router.post('/book/service', function (req, res) {
@@ -1334,7 +1325,7 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  await wait(00)
+  await wait(1500)
 
   axios
     .all([
@@ -1622,6 +1613,8 @@ router.get('/manage/draft/:record', function (req, res) {
       // Load the draft into session
       req.session.data['draftID'] = entry.id
       req.session.data['title'] = entry.fields.Name
+
+      req.session.data['retrieved'] = "Yes";
 
       return res.redirect('/book/check')
     }),

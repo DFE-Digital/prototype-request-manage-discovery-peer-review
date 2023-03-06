@@ -28,40 +28,39 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <h1 class="govuk-heading-l">Check your answers before submitting your request to book a discovery peer review</h1>
+  
 
-                <h2 class="govuk-heading-m">Discovery details</h2>
+                    <h1 class="govuk-heading-l">Check your answers before submitting your request to book a discovery peer review</h1>
 
-                <form action="/book/process-request" method="post">
+                    <form action="/book/process-request" method="post">
 
-                    <dl class="govuk-summary-list">
+                        <dl class="govuk-summary-list">
 
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Discovery name</dt>
-                            <dd class="govuk-summary-list__value">{{data['title']}}</dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/book/service">Change<span class="govuk-visually-hidden"> discovery name</span></a>
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Summary</dt>
-                            <dd class="govuk-summary-list__value">{{data['purpose']}}</dd>
-                            <dd class="govuk-summary-list__actions">
-                                <a class="govuk-link" href="/book/summary">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
-                            </dd>
-                        </div>
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Project code</dt>
-                            <dd class="govuk-summary-list__value">
-                                {% if data['code'] === "Yes"%}{{data['code_']}}{% else%}No{% endif%}</dd>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Discovery name</dt>
+                                <dd class="govuk-summary-list__value">{{data['title']}}</dd>
                                 <dd class="govuk-summary-list__actions">
-                                    <a class="govuk-link" href="/book/code">Change<span class="govuk-visually-hidden"> code</span></a>
+                                    <a class="govuk-link" href="/book/service">Change<span class="govuk-visually-hidden"> discovery name</span></a>
                                 </dd>
                             </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Summary</dt>
+                                <dd class="govuk-summary-list__value">{{data['purpose']}}</dd>
+                                <dd class="govuk-summary-list__actions">
+                                    <a class="govuk-link" href="/book/summary">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
+                                </dd>
+                            </div>
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">Project code</dt>
+                                <dd class="govuk-summary-list__value">
+                                    {% if data['code'] === "Yes"%}{{data['code_']}}{% else%}No{% endif%}</dd>
+                                    <dd class="govuk-summary-list__actions">
+                                        <a class="govuk-link" href="/book/code">Change<span class="govuk-visually-hidden"> code</span></a>
+                                    </dd>
+                                </div>
 
-                            {%if (data['disco-start-month'] and data['disco-start-day'] and data['disco-start-year']) %}{% set dstartDate = (data['disco-start-month']+"/"+data['disco-start-day']+"/"+data['disco-start-year']) %}
-                            {% endif %}
-
+                                {%if (data['disco-start-month'] and data['disco-start-day'] and data['disco-start-year']) %}{% set dstartDate = (data['disco-start-month']+"/"+data['disco-start-day']+"/"+data['disco-start-year']) %}
+                                {% endif %}
 
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">Start date</dt>
@@ -71,59 +70,63 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                         {% elseif data['disco-start'] and data['disco-start'] === "No"  %}
                                   No
                                   {% else %}
-                                  {% if dstartDate %}
-                                            {{dstartDate | date('D MMMM YYYY')}}
-                                            {% endif%}
-                                        {% endif %}
-                                    </dd>
-                                    <dd class="govuk-summary-list__actions">
-                                        <a class="govuk-link" href="/book/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
-                                    </dd>
-                                </div>
-
-                                {% set denddate = (data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']) %}
-                                <div class="govuk-summary-list__row">
-                                    <dt class="govuk-summary-list__key">Planned end date</dt>
-                                    <dd class="govuk-summary-list__value">
-                                        {% if data['disco-end'] === "Yes"%}
-                                            {{denddate | date('D MMMM YYYY')}}{% else%}No{% endif%}</dd>
+                                            {% if dstartDate %}
+                                                {{dstartDate | date('D MMMM YYYY')}}
+                                                {% endif%}
+                                            {% endif %}
+                                        </dd>
                                         <dd class="govuk-summary-list__actions">
-                                            <a class="govuk-link" href="/book/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                                            <a class="govuk-link" href="/book/start-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
                                         </dd>
                                     </div>
 
+                                    {% set denddate = (data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']) %}
                                     <div class="govuk-summary-list__row">
-                                        <dt class="govuk-summary-list__key">Requested week(s)</dt>
+                                        <dt class="govuk-summary-list__key">Planned end date</dt>
                                         <dd class="govuk-summary-list__value">
-                                            <ul class="govuk-list">
-                                                {% for item in data['reviewWeek' | split(",")] %}
-                                                    <li>{{ item }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </dd>
-                                        <dd class="govuk-summary-list__actions">
-                                            <a class="govuk-link" href="/book/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
-                                        </dd>
-                                    </div>
-                                    <div class="govuk-summary-list__row">
-                                        <dt class="govuk-summary-list__key">Portfolio or arms length body</dt>
-                                        <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
-                                        <dd class="govuk-summary-list__actions">
-                                            <a class="govuk-link" href="/book/portfolio">Change<span class="govuk-visually-hidden"> portfolio or arms length body of team doing the discovery</span></a>
-                                        </dd>
-                                    </div>
+                                            {% if data['disco-end'] === "Yes"%}
+                                                {{denddate | date('D MMMM YYYY')}}{% else%}No{% endif%}</dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <a class="govuk-link" href="/book/end-date">Change<span class="govuk-visually-hidden"> start date of discovery</span></a>
+                                            </dd>
+                                        </div>
 
-                                    <div class="govuk-summary-list__row">
-                                        <dt class="govuk-summary-list__key">Deputy director</dt>
-                                        <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
-                                        <dd class="govuk-summary-list__actions">
-                                            <a class="govuk-link" href="/book/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
-                                        </dd>
-                                    </div>
-                                    <div class="govuk-summary-list__row">
-                                        <dt class="govuk-summary-list__key">Senior responsible officer</dt>
-                                        <dd class="govuk-summary-list__value">
-                                            {% if data['sro'] === 'Yes'%} {{data['dd']}}{% else%} {{data['sro-name']}}{% endif %}</dd>
+                                        <div class="govuk-summary-list__row">
+                                            <dt class="govuk-summary-list__key">Requested week(s)</dt>
+                                            <dd class="govuk-summary-list__value">
+                                                <ul class="govuk-list">
+                                                    {% for item in data['reviewWeek' | split(",")] %}
+                                                        <li>{{ item }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <a class="govuk-link" href="/book/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
+                                            </dd>
+                                        </div>
+                                        <div class="govuk-summary-list__row">
+                                            <dt class="govuk-summary-list__key">Portfolio or arms length body</dt>
+                                            <dd class="govuk-summary-list__value">{{data['portfolio']}}</dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <a class="govuk-link" href="/book/portfolio">Change<span class="govuk-visually-hidden"> portfolio or arms length body of team doing the discovery</span></a>
+                                            </dd>
+                                        </div>
+
+                                        <div class="govuk-summary-list__row">
+                                            <dt class="govuk-summary-list__key">Deputy director</dt>
+                                            <dd class="govuk-summary-list__value">{{data['dd']}}</dd>
+                                            <dd class="govuk-summary-list__actions">
+                                                <a class="govuk-link" href="/book/dd">Change<span class="govuk-visually-hidden"> deputy director</span></a>
+                                            </dd>
+                                        </div>
+                                        <div class="govuk-summary-list__row">
+                                            <dt class="govuk-summary-list__key">Senior responsible officer</dt>
+                                            <dd class="govuk-summary-list__value">
+                                                {% if data['sro'] === 'Yes'%}
+                                                    {{data['dd']}}{% else%}
+                                                    {{data['sro-name']}}
+                                                {% endif %}
+                                            </dd>
                                             <dd class="govuk-summary-list__actions">
                                                 <a class="govuk-link" href="/book/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
                                             </dd>
@@ -156,8 +159,8 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
 
                                                 <button class="govuk-button" data-module="govuk-button">Submit request</button>
                                             </form>
-
-                                        </div>
+                                       
                                     </div>
+                                </div>
 
-                                {% endblock %}
+                            {% endblock %}
