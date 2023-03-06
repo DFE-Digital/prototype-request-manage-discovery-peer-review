@@ -28,11 +28,32 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-        <form action="/book/dates" method="get">
+        {% if err or errcode%}
 
-        
+          <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+              <h2 class="govuk-error-summary__title">There is a problem</h2>
+              <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                  {% if err %}
+                    <li>
+                      <a href="#disco-end">Select if you have a discovery end date</a>
+                    </li>
+                  {%elseif errcode%}
+                    <li>
+                      <a href="#disco-end-day">Enter your discovery end date</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
 
-          <div class="govuk-form-group">
+        {% endif %}
+
+        <form action="/book/end-date" method="post">
+
+         <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
             <fieldset class="govuk-fieldset" aria-describedby="disco-end-hint">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
@@ -41,7 +62,10 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
               </legend>
               <div id="disco-end-hint" class="govuk-hint">
       Select one option.
-    </div>
+    </div>{%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Select if you have a discovery end date
+  </p>{% endif%}
               <div class="govuk-radios" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="disco-end" name="disco-end" type="radio" value="Yes" data-aria-controls="conditional-disco-end" {{ checked('disco-end','Yes') }}>
@@ -51,7 +75,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                 </div>
                 <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-disco-end">
 
-                  <div class="govuk-form-group">
+                  <div class="govuk-form-group {%if errcode%}govuk-form-group--error{% endif%}">
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="disco-end-hint">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
       End date
@@ -59,13 +83,17 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                       <div id="disco-end-hint" class="govuk-hint">
       For example, 18 2 2023
     </div>
+     {%if errcode%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Enter your discovery end date
+  </p>{% endif%}
                       <div class="govuk-date-input" id="disco-end">
                         <div class="govuk-date-input__item">
                           <div class="govuk-form-group">
                             <label class="govuk-label govuk-date-input__label" for="disco-end-day">
             Day
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-day" name="disco-end-day" type="text" inputmode="numeric" value="{{data['disco-end-day']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2 {%if errcode%} govuk-input--error{% endif%}" id="disco-end-day" name="disco-end-day" type="text" inputmode="numeric" value="{{data['disco-end-day']}}">
                           </div>
                         </div>
                         <div class="govuk-date-input__item">
@@ -73,7 +101,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                             <label class="govuk-label govuk-date-input__label" for="disco-end-month">
             Month
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="disco-end-month" name="disco-end-month" type="text" inputmode="numeric"value="{{data['disco-end-month']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-2 {%if errcode%} govuk-input--error{% endif%}" id="disco-end-month" name="disco-end-month" type="text" inputmode="numeric"value="{{data['disco-end-month']}}">
                           </div>
                         </div>
                         <div class="govuk-date-input__item">
@@ -81,7 +109,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                             <label class="govuk-label govuk-date-input__label" for="disco-end-year">
             Year
           </label>
-                            <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="disco-end-year" name="disco-end-year" type="text" inputmode="numeric"value="{{data['disco-end-year']}}">
+                            <input class="govuk-input govuk-date-input__input govuk-input--width-4 {%if errcode%} govuk-input--error{% endif%}" id="disco-end-year" name="disco-end-year" type="text" inputmode="numeric"value="{{data['disco-end-year']}}">
                           </div>
                         </div>
                       </div>

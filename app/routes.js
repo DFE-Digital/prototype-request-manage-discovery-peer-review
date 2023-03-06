@@ -115,7 +115,8 @@ router.get('/search', function (req, res) {
 // OVERVIEW (HOMEPAGE)
 
 router.get('/', function (req, res) {
- res.redirect('/manage/')
+  req.session.data['xday'] = 'Its Monday'
+  res.redirect('/manage/')
 })
 
 // SETTINGS
@@ -424,6 +425,23 @@ router.post('/book/start-date', function (req, res) {
   return res.redirect('/book/end-date')
 })
 
+router.post('/book/end-date', function (req, res) {
+  if (!req.session.data['disco-end']) {
+    var err = true
+    return res.render('book/end-date/index', { err })
+  } else if (
+    req.session.data['disco-end'] === 'Yes' &&
+    (!req.session.data['disco-end-day'] ||
+      !req.session.data['disco-end-month'] ||
+      !req.session.data['disco-end-year'])
+  ) {
+    var errcode = true
+    return res.render('book/end-date/index', { errcode })
+  }
+
+  return res.redirect('/book/dates')
+})
+
 router.get('/book/dates', function (req, res) {
   // Whats todays date?
 
@@ -545,7 +563,30 @@ router.get('/book/dates', function (req, res) {
     }
   }
   console.log(dates)
+
+  req.session.data['dates'] = dates;
+  if (dates.length) {
+    req.session.data['hasdates'] = 'yes'
+  } else {
+    req.session.data['hasdates'] = 'no'
+  }
+  console.log(req.session.data['hasdates'])
   res.render('book/dates/index.html', { dates })
+})
+
+router.post('/book/dates', function (req, res) {
+
+  console.log(req.session.data['hasdates'])
+  var dates = req.session.data['dates']
+  var err = false
+
+  if (req.session.data['hasdates'] === 'yes' && !req.session.data['reviewWeek']) {
+    err = true
+    return res.render('book/dates/index', { dates, err })
+  } else {
+    return res.redirect('/book/portfolio')
+  }
+
 })
 
 // Check page
@@ -724,7 +765,13 @@ router.get('/admin/entry/:id', function (req, res) {
   console.log(view)
 
   axios
-    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
     .then(
       axios.spread((entryx, team, artefacts, panel, observers) => {
         entry = entryx[0]
@@ -733,7 +780,8 @@ router.get('/admin/entry/:id', function (req, res) {
           team,
           artefacts,
           view,
-          panel,observers
+          panel,
+          observers,
         })
       }),
     )
@@ -750,7 +798,13 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
   console.log('/admin/entry/amend/' + view + '/' + id + '/' + entry)
 
   axios
-    .all([getDataByID(id), getPerson(entry), getArtefact(entry), getPanel(id), getObservers(id)])
+    .all([
+      getDataByID(id),
+      getPerson(entry),
+      getArtefact(entry),
+      getPanel(id),
+      getObservers(id),
+    ])
     .then(
       axios.spread((entryx, person, artefact, panel, observers) => {
         entry = entryx[0]
@@ -759,7 +813,8 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           person,
           artefact,
           view,
-          panel,observers
+          panel,
+          observers,
         })
       }),
     )
@@ -1203,16 +1258,23 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
   await wait(00)
 
   axios
-    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
     .then(
-      axios.spread((entryx, team, artefacts, panel,observers) => {
+      axios.spread((entryx, team, artefacts, panel, observers) => {
         entry = entryx[0]
         res.render('admin/entry/taskview.html', {
           entry,
           team,
           artefacts,
           view,
-          panel,observers
+          panel,
+          observers,
         })
       }),
     )
@@ -1397,21 +1459,13 @@ router.get('/report/:id', function (req, res) {
 
 // MANAGE
 
-router.get('/list', function(req, res){
-  axios
-  .all([
-    getData('All')
-  ])
-  .then(
-    axios.spread(
-      (
-        all
-      ) => {
-        res.render('list/index.html', {
-          all
-        })
-      },
-    ),
+router.get('/list', function (req, res) {
+  axios.all([getData('All')]).then(
+    axios.spread((all) => {
+      res.render('list/index.html', {
+        all,
+      })
+    }),
   )
 })
 
@@ -1456,7 +1510,13 @@ router.get('/manage/entry/:id', function (req, res) {
   var view = 'new'
 
   axios
-    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
     .then(
       axios.spread((entryx, team, artefacts, panel, observers) => {
         entry = entryx[0]
@@ -1465,7 +1525,8 @@ router.get('/manage/entry/:id', function (req, res) {
           team,
           artefacts,
           view,
-          panel,observers
+          panel,
+          observers,
         })
       }),
     )
@@ -1535,7 +1596,13 @@ router.get('/manage/entry/:view/:id', async function (req, res) {
   await wait(1500)
 
   axios
-    .all([getDataByID(id), getTeam(id), getArtefacts(id), getPanel(id), getObservers(id)])
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
     .then(
       axios.spread((entryx, team, artefacts, panel, observers) => {
         entry = entryx[0]
@@ -1544,7 +1611,8 @@ router.get('/manage/entry/:view/:id', async function (req, res) {
           team,
           artefacts,
           view,
-          panel,observers
+          panel,
+          observers,
         })
       }),
     )

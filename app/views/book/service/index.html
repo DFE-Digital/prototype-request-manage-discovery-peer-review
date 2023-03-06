@@ -54,7 +54,7 @@ Discovery name – {{serviceName}} –  Book and manage a discovery peer review
                             <p id="event-name-error" class="govuk-error-message">
                                 <span class="govuk-visually-hidden">Error:</span> Enter a name
   </p>{% endif%}
-                            <input class="govuk-input {%if err%} govuk-input--error{% endif%}" id="title" name="title" type="text" value={{data['title']}}>
+                            <input class="govuk-input {%if err%} govuk-input--error{% endif%}" id="title" name="title" type="text" value="{{data['title']}}">
                         </div>
 
                         <button class="govuk-button" data-module="govuk-button">Save and continue</button>

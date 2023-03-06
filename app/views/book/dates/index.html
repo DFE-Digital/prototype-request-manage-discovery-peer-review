@@ -28,10 +28,29 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-  {% if data['disco-end'] === "Yes" and not dates.length %}
-         <h1 class="govuk-heading-l">Your discovery end date is less than 5 weeks away</h1>
+        {% if err or errcode%}
+
+          <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+              <h2 class="govuk-error-summary__title">There is a problem</h2>
+              <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                  {% if err %}
+                    <li>
+                      <a href="#date_1">Select some weeks for your peer review to take place</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        {% endif %}
+
+        {% if data['disco-end'] === "Yes" and not dates.length %}
+          <h1 class="govuk-heading-l">Your discovery end date is less than 5 weeks away</h1>
         {% else %}
-         <h1 class="govuk-heading-l">When would you like your discovery peer review?</h1>
+          <h1 class="govuk-heading-l">When would you like your discovery peer review?</h1>
         {% endif %}
 
         {% set datex = data['disco-end-month']+"/"+data['disco-end-day']+"/"+data['disco-end-year']%}
@@ -44,34 +63,39 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
           <p class="govuk-body">As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now.</p>
         {% endif %}
 
-        <form action="/book/portfolio" method="get">
+        <form action="/book/dates" method="post">
           {% if dates.length %}
-            <div class="govuk-form-group">
+            <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
               <fieldset class="govuk-fieldset" aria-describedby="reviewWeek-hint">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                Select dates
               </legend>
+
                 <div id="reviewWeek-hint" class="govuk-hint">Select all weeks that are suitable for you.</div>
-                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                {%if err%}
+                  <p id="event-name-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> Select some weeks for your peer review to take place
+  </p>{% endif%}
+                  <div class="govuk-checkboxes" data-module="govuk-checkboxes">
 
-                  {%for xdate in dates %}
-                    <div class="govuk-checkboxes__item">
-                      <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}" {{ checked('reviewWeek',xdate.week) }} >
-                      <label class="govuk-label govuk-checkboxes__label" for="date_{{loop.index}}">Week beginning {{xdate.week}}
-                      </label>
-                    </div>
-                  {% endfor %}
+                    {%for xdate in dates %}
+                      <div class="govuk-checkboxes__item" id="weeks">
+                        <input class="govuk-checkboxes__input" id="date_{{loop.index}}" name="reviewWeek" type="checkbox" value="{{xdate.week}}" {{ checked('reviewWeek',xdate.week) }} >
+                        <label class="govuk-label govuk-checkboxes__label" for="date_{{loop.index}}">Week beginning {{xdate.week}}
+                        </label>
+                      </div>
+                    {% endfor %}
 
-                </div>
-              </fieldset>
-            </div>
-            <button class="govuk-button" data-module="govuk-button">Save and continue</button>
-          {% else %}
-            <button class="govuk-button" data-module="govuk-button">Continue</button>
-          {% endif %}
-        </form>
+                  </div>
+                </fieldset>
+              </div>
+              <button class="govuk-button" data-module="govuk-button">Save and continue</button>
+            {% else %}
+              <button class="govuk-button" data-module="govuk-button">Continue</button>
+            {% endif %}
+          </form>
 
+        </div>
       </div>
-    </div>
 
-  {% endblock %}
+    {% endblock %}
