@@ -28,9 +28,28 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
 
-                <form action="/book/dd" method="get">
+               {% if err or errcode%}
 
-                    <div class="govuk-form-group">
+          <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+              <h2 class="govuk-error-summary__title">There is a problem</h2>
+              <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                  {% if err %}
+                    <li>
+                      <a href="#portfolio">Select portfolio</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        {% endif %}
+
+                <form action="/book/portfolio" method="post">
+
+                    <div class="govuk-form-group {%if err%}govuk-form-group--error{% endif%}">
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                                 <h1 class="govuk-fieldset__heading">
@@ -40,6 +59,10 @@
                                <div id="disco-end-hint" class="govuk-hint">
       Select one option.
     </div>
+    {%if err%}
+                            <p id="event-name-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> Select portfolio
+  </p>{% endif%}
                             <div class="govuk-radios" data-module="govuk-radios">
                                 <div class="govuk-radios__item">
                                     <input class="govuk-radios__input" id="portfolio" name="portfolio" type="radio" value="Families Group" {{ checked('portfolio','Families Group') }} >

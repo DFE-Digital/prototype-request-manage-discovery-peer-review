@@ -564,7 +564,7 @@ router.get('/book/dates', function (req, res) {
   }
   console.log(dates)
 
-  req.session.data['dates'] = dates;
+  req.session.data['dates'] = dates
   if (dates.length) {
     req.session.data['hasdates'] = 'yes'
   } else {
@@ -575,18 +575,28 @@ router.get('/book/dates', function (req, res) {
 })
 
 router.post('/book/dates', function (req, res) {
-
   console.log(req.session.data['hasdates'])
   var dates = req.session.data['dates']
   var err = false
 
-  if (req.session.data['hasdates'] === 'yes' && !req.session.data['reviewWeek']) {
+  if (
+    req.session.data['hasdates'] === 'yes' &&
+    !req.session.data['reviewWeek']
+  ) {
     err = true
     return res.render('book/dates/index', { dates, err })
   } else {
     return res.redirect('/book/portfolio')
   }
+})
 
+router.post('/book/portfolio', function (req, res) {
+  if (!req.session.data['portfolio']) {
+    var err = true
+    return res.render('book/portfolio/index', { err })
+  }
+
+  return res.redirect('/book/dd')
 })
 
 // Check page
