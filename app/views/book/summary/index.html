@@ -37,7 +37,7 @@ Discovery purpose – {{serviceName}} –  Book and manage a discovery peer revi
                             <div class="govuk-error-summary__body">
                                 <ul class="govuk-list govuk-error-summary__list">
                                     <li>
-                                        <a href="#title">Enter a description</a>
+                                        <a href="#title">Enter background to discovery</a>
                                     </li>
                                 </ul>
                             </div>
@@ -56,7 +56,7 @@ Discovery purpose – {{serviceName}} –  Book and manage a discovery peer revi
                             <div id="purpose-hint" class="govuk-hint">Tell us the background to your discovery. For example, if it's part of a wider service or based on policy intent. This will help us to arrange a review panel with the most relevant experience</div>
                             {%if err%}
                             <p id="event-name-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> Enter a description
+                                <span class="govuk-visually-hidden">Error:</span> Enter background to discovery
   </p>{% endif%}
                             <textarea class="govuk-textarea govuk-js-character-count  {%if err%} govuk-input--error{% endif%}" id="purpose" name="purpose" rows="5" aria-describedby="purpose-info purpose-hint">{{data['purpose']}}</textarea>
                         </div>
