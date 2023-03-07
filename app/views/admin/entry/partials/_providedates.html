@@ -3,50 +3,48 @@
 <p>The team have selected the following weeks as suitable for their peer review:</p>
 
 {% set weeks = entry.fields.RequestedWeeks | split(",")%}
-<ul class="govuk-list">
+<ul class="govuk-list govuk-list--bullet">
     {% for item in weeks %}
         <li>week beginning {{ item }}</li>
     {% endfor %}
 </ul>
 
-<h3 class="govuk-heading-m">Add dates and times</h3>
 
-{% if available_dates.length%}
-
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Date</th>
-                <th scope="col" class="govuk-table__header govuk-!-width-one-third">Time</th>
-                <th scope="col" class="govuk-table__header">Action</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            {% for a in available_dates %}
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">
-                        <a href="{{a.url}}" target="_blank">{{a.title}}</a>
-                    </th>
-                    <td class="govuk-table__cell">{{a.addedOn}}</td>
-                    <td class="govuk-table__cell">{{a.addedBy}}</td>
-                    <td class="govuk-table__cell">
-                        <a href="/admin/manage/artefacts/remove/{{a.id}}">Remove</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p>
-        <a href="/admin/manage/artefacts/add/{{entry.fields.ID}}">Add another date option</a>
-    </p>
-
-{% else %}
-    <div class="govuk-inset-text">
-        <p>No dates have been added</p>
-        <p>
-            <a href="/admin/entry/adddateoption/{{entry.fields.ID}}">Add date option</a>
-        </p>
+<div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Dates</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="/admin/entry/amend/add-date-option/{{entry.fields.ID}}/{{entry.id}}">
+          Add date option
+                </a>
+            </li>
+        </ul>
     </div>
+    <div class="govuk-summary-card__content">
+        {% if not dates.length %}
 
-{% endif %}
+            <p>No available dates have been added.</p>
+
+        {% else %}
+
+            <dl class="govuk-summary-list">
+
+                {% for datex in dates %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">{{datex.fields.Date | date('ddd D MMMM YYYY')}}</dt>
+                        <dd class="govuk-summary-list__value">
+                            {{datex.fields.Time}}
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link" href="/admin/entry/amend/remove-date-option/{{entry.fields.ID}}/{{datex.id}}">Remove<span class="govuk-visually-hidden">
+                                   {{datex.fields.Date | date('ddd D MMMM YYYY')}} {{datex.fields.Time}}</span></a>
+                        </dd>
+                    </div>
+                {% endfor %}
+
+            </dl>
+            {% endif%}
+        </div>
+    </div>
+</div>

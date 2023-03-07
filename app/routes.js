@@ -50,6 +50,12 @@ async function getArtefacts(id) {
     .firstPage()
 }
 
+async function getDates(id) {
+  return await base('ReviewDateOptions')
+    .select({ view: 'All', filterByFormula: `{ReviewID} = "${id}"` })
+    .firstPage()
+}
+
 // Gets a record by an ID
 async function getDataByID(id) {
   return await base('Reviews')
@@ -890,6 +896,69 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 
   console.log(view)
 
+  if (view === 'add-date-option') {
+    var optiondate, optiontime
+
+    optiondate =
+      req.session.data['available-month'] +
+      '/' +
+      req.session.data['available-day'] +
+      '/' +
+      req.session.data['available-year']
+
+    //availabletime
+    var tempTimes = req.session.data['availabletime']
+    optiontime = req.session.data['availabletime'][0]
+
+    if (tempTimes.length === 1) {
+      base('ReviewDateOptions').create(
+        [
+          {
+            fields: {
+              Date: optiondate,
+              ReviewID: parseInt(id),
+              Time: optiontime,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('ID'))
+          })
+        },
+      )
+    } else {
+      tempTimes.forEach(function (time) {
+        base('ReviewDateOptions').create(
+          [
+            {
+              fields: {
+                Date: optiondate,
+                ReviewID: parseInt(id),
+                Time: time,
+              },
+            },
+          ],
+          function (err, records) {
+            if (err) {
+              console.error(err)
+              return
+            }
+            records.forEach(function (record) {
+              console.log(record.get('ID'))
+            })
+          },
+        )
+      })
+    }
+
+    return res.redirect('/admin/entry/providedates/' + id)
+  }
+
   if (view === 'add-panel-member') {
     base('ReviewPanel').create(
       [
@@ -1326,9 +1395,10 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
       getArtefacts(id),
       getPanel(id),
       getObservers(id),
+      getDates(id),
     ])
     .then(
-      axios.spread((entryx, team, artefacts, panel, observers) => {
+      axios.spread((entryx, team, artefacts, panel, observers,dates) => {
         entry = entryx[0]
         res.render('admin/entry/taskview.html', {
           entry,
@@ -1337,6 +1407,7 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
           view,
           panel,
           observers,
+          dates
         })
       }),
     )
@@ -1349,7 +1420,6 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
   var entry = req.params.entry
 
   console.log('/admin/action/' + view + '/' + id + '/' + entry)
-
 
   // Task action
   // Update the status of the review
