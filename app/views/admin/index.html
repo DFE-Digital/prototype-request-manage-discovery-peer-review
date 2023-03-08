@@ -24,79 +24,180 @@ Manage – {{serviceName}} –  Book and manage a discovery peer review
     {% block content %}
 
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-quarter">
-                <nav class="dfeuk-vertical-nav">
-                    <ul class="dfeuk-vertical-nav__section">
-                        <li class="dfeuk-vertical-nav__section-item  {%if type === 'new' %}dfeuk-vertical-nav__section-item--current{% endif %}">
-                            <span class="dfeuk-vertical-nav--count">{{newrecords.length}}</span>
-                            <a class="dfeuk-vertical-nav__link " href="/admin/new">New</a>
-                        </li>
-                        <li class="dfeuk-vertical-nav__section-item {%if type === 'active' %}dfeuk-vertical-nav__section-item--current{% endif %}">
-                            <span class="dfeuk-vertical-nav--count">{{activerecords.length}}</span>
-                            <a class="dfeuk-vertical-nav__link " href="/admin/active">Active</a>
-                        </li>
+            <div class="govuk-grid-column-two-thirds">
+                <span class="govuk-caption-xl">Service assessment team</span>
+                <h1 class="govuk-heading-l">Dashboard</h1>
+            </div>
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === 'completed' %}dfeuk-vertical-nav__section-item--current{% endif %}">
-                            <span class="dfeuk-vertical-nav--count">{{completedrecords.length}}</span>
-                            <a class="dfeuk-vertical-nav__link " href="/admin/completed">Completed</a>
-                        </li>
+            <div class="govuk-grid-column-two-thirds">
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === 'cancelled' %}dfeuk-vertical-nav__section-item--current{% endif %}">
-                            <span class="dfeuk-vertical-nav--count">{{cancelledrecords.length}}</span>
-                            <a class="dfeuk-vertical-nav__link " href="/admin/cancelled">Cancelled</a>
-                        </li>
+                <ul class="dfeuk-grid-row dfeuk-card-group">
+                    <li class="dfeuk-grid-column-one-third dfeuk-card-group__item">
 
-                        <li class="dfeuk-vertical-nav__section-item {%if type === 'rejected' %}dfeuk-vertical-nav__section-item--current{% endif %}">
-                            <span class="dfeuk-vertical-nav--count">{{rejectedrecords.length}}</span>
-                            <a class="dfeuk-vertical-nav__link " href="/admin/rejected">Rejected</a>
-                        </li>
+                        <div class="dfeuk-card dfeuk-card--clickable">
+                            <div class="dfeuk-card__content">
+                                <p class="dfeuk-heading-xl dfeuk-u-font-size-64 dfeuk-u-margin-bottom-1">{{newrecords.length}}
+                                    <span class="dfeuk-u-visually-hidden">New requests</span></p>
+                                <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">New request{% if newrecords.length !== 1 %}s{% endif %}
+                                </a>
+                            </div>
+                        </div>
 
+                    </li>
+                    <li class="dfeuk-grid-column-one-third dfeuk-card-group__item">
+
+                        <div class="dfeuk-card dfeuk-card--clickable">
+                            <div class="dfeuk-card__content">
+                                <p class="dfeuk-heading-xl dfeuk-u-font-size-64 dfeuk-u-margin-bottom-1">{{activerecords.length}}
+                                    <span class="dfeuk-u-visually-hidden">Active requests</span></p>
+                                <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Active review{% if activerecords.length !== 1 %}s{% endif %}
+                                </a>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="dfeuk-grid-column-one-third dfeuk-card-group__item">
+
+                        <div class="dfeuk-card dfeuk-card--clickable">
+                            <div class="dfeuk-card__content">
+                                <p class="dfeuk-heading-xl dfeuk-u-font-size-64 dfeuk-u-margin-bottom-1">{{completedrecords.length}}
+                                    <span class="dfeuk-u-visually-hidden">Completed requests</span></p>
+                                <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Completed review{% if completedrecords.length !== 1 %}s{% endif %}
+                                </a>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+ </div>
+                   <div class="govuk-grid-column-one-third">
+
+                    <aside class="govuk-related-navigation">
+
+                        <h2 class="govuk-heading-m">More</h2>
+
+                        <ul class="govuk-list govuk-list--spaced">
+                            <li>
+                                <a href="#">All reviews</a>
+                            </li>
+                            <li>
+                                <a href="#">Rejected and cancelled requests</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                
+
+                 <div class="govuk-grid-column-two-thirds">
+
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible  govuk-!-margin-top-0">
+
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">Upcoming peer reviews</h2>
+                        <ul class="govuk-summary-card__actions"></div>
+                        <div class="govuk-summary-card__content">
+
+                            {% include "./_active.html" %}
+
+                        </div>
+                    </div>
+
+                     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+                      <h1 class="govuk-heading-m">User satisfaction scores</h1>
+
+                      <p>Cumulative satisfaction scores from 9 responses over the last 3 months. </p>
+
+                    <ul class="dfeuk-grid-row dfeuk-card-group govuk-!-margin-bottom-0">
+                        <li class="dfeuk-grid-column-one-quarter dfeuk-card-group__item">
+
+                            <div class="dfeuk-card dfeuk-card--clickable">
+                                <div class="dfeuk-card__content">
+                                    <p class="dfeuk-heading-xl dfeuk-u-font-size-36 dfeuk-u-margin-bottom-1">98% <span class="dfeuk-u-visually-hidden">Booking</span></p>
+                                    <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Booking</a>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="dfeuk-grid-column-one-quarter dfeuk-card-group__item">
+
+                            <div class="dfeuk-card dfeuk-card--clickable">
+                                <div class="dfeuk-card__content">
+                                    <p class="dfeuk-heading-xl dfeuk-u-font-size-36 dfeuk-u-margin-bottom-1">83% <span class="dfeuk-u-visually-hidden">Review</span></p>
+                                    <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Review</a>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="dfeuk-grid-column-one-quarter dfeuk-card-group__item">
+
+                            <div class="dfeuk-card dfeuk-card--clickable">
+                                <div class="dfeuk-card__content">
+                                    <p class="dfeuk-heading-xl dfeuk-u-font-size-36 dfeuk-u-margin-bottom-1">96% <span class="dfeuk-u-visually-hidden">Guidance</span></p>
+                                    <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Guidance</a>
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="dfeuk-grid-column-one-quarter dfeuk-card-group__item">
+
+                            <div class="dfeuk-card dfeuk-card--clickable">
+                                <div class="dfeuk-card__content">
+                                    <p class="dfeuk-heading-xl dfeuk-u-font-size-36 dfeuk-u-margin-bottom-1">100% <span class="dfeuk-u-visually-hidden">Support</span></p>
+                                    <a href="#" class="dfeuk-card__link dfeuk-u-font-weight-normal dfeuk-u-font-size-19 dfeuk-link--no-visited-state">Support</a>
+                                </div>
+                            </div>
+
+                        </li>
                     </ul>
-                </nav>
-            </div>
-            <div class="govuk-grid-column-three-quarters">
+                    <p><a href="">View all responses</a></p>
+                </div>
 
-                <span class="govuk-caption-l">Assurance administration</span>
-                <h1 class="govuk-heading-l">
-                    {%if type === "new" %}New{% endif %}
-                    {%if type === "active" %}Active{% endif %}
-                    {%if type === "completed" %}Completed{% endif %}
-                    {%if type === "rejected" %}Rejected{% endif %}
-                    {%if type === "cancelled" %}Cancelled{% endif %}
-                    
-                    requests</h1>
+                <div class="govuk-grid-column-one-third">
 
-                {% if type === "new" and newrecords.length %}
-                    {% include "./_new.html" %}
-                {% elseif type === "new" and newrecords.length === 0%}
-                    <p>There are no new requests.</p>
-                {% endif %}
+                    <aside class="govuk-related-navigation">
 
-                {% if type === "active" and activerecords.length %}
-                    {% include "./_active.html" %}
-                {% elseif type === "active" and activerecords.length === 0%}
-                    <p>There are no active reviews.</p>
-                {% endif %}
+                         <h2 class="govuk-heading-m">Guidance</h2>
 
-                {% if type === "completed" and completedrecords.length %}
-                    {% include "./_completed.html" %}
-                {% elseif type === "completed" and completedrecords.length === 0%}
-                    <p>There are no completed reviews.</p>
-                {% endif %}
+                        <ul class="govuk-list govuk-list--spaced">
+                            <li>
+                                <a href="#">Service assurance</a>
+                            </li>
+                            <li>
+                                <a href="#">Service Standards in DfE</a>
+                            </li>
+                            <li>
+                                <a href="#">UCD Manual</a>
+                            </li>
+                            <li>
+                                <a href="#">User Research Manual</a>
+                            </li>
+                            <li>
+                                <a href="#">Tech Manual</a>
+                            </li>
+                            <li>
+                                <a href="#">Architecture Manual</a>
+                            </li>
+                        </ul>
 
-                {% if type === "rejected" and rejectedrecords.length %}
-                    {% include "./_rejected.html" %}
-                {% elseif type === "rejected" and rejectedrecords.length === 0%}
-                    <p>There are no rejected requests.</p>
-                {% endif %}
+                        <h2 class="govuk-heading-m">Assessors</h2>
 
-                {% if type === "cancelled" and cancelledrecords.length %}
-                    {% include "./_cancelled.html" %}
-                {% elseif type === "cancelled" and cancelledrecords.length === 0%}
-                    <p>There are no cancelled requests.</p>
-                {% endif %}
+                        <ul class="govuk-list govuk-list--spaced">
+                            <li>
+                                <a href="#">View assessors</a>
+                            </li>
+                            <li>
+                                <a href="#">Add new assessor</a>
+                            </li>
+                            <li>
+                                <a href="#">Assessor analysis</a>
+                            </li>
+                        </ul>
 
-            </div>
-        </div>
+                    </div>
 
-    {% endblock %}
+                </div>
+
+            {% endblock %}

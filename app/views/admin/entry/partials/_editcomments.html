@@ -51,8 +51,25 @@
                             <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="review_comments">
-    comments
+    Comments
     </label>
+    <div id="more-detail-hint" class="govuk-hint">
+    You can use markdown in this field.
+  </div>
+  <details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      Help with markdown
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+    ## Heading <br/>
+    ### Sub heading<br/>
+    - bulleted list<br/>
+    1. numbered list<br/>
+    [Link text](URL)
+  </div>
+</details>
                                     <textarea class="govuk-textarea govuk-js-character-count" id="review_comments" name="review_comments" rows="16" aria-describedby="review_comments-info">{{entry.fields.ReviewComments}}</textarea>
                                 </div>
                                 <div id="review_comments-info" class="govuk-hint govuk-character-count__message">

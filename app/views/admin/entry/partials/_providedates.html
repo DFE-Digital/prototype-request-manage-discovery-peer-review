@@ -1,14 +1,47 @@
+{% set sessionVar = 'choosedate'+'-'+entry.fields.ID%}
+
+{% if data[sessionVar].length %}
+
+<div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+  aria-labelledby="govuk-notification-banner-title"
+  data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+      Success
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <h3 class="govuk-notification-banner__heading">
+      Email sent to {{entry.fields.RequestedBy}}
+    </h3>
+    <p class="govuk-body">They've been asked to select dates for their peer review.</p>
+      <p class="govuk-body">A new task has been added to the list, where the date can be selected.</p>
+      <p class="govuk-body">You'll get an email when they have completed this task.</p>
+
+      <p class="govuk-body"><a href="/admin/dismiss-notification/choosedate/{{entry.fields.ID}}">Dismiss this notification</a></p>
+  </div>
+</div>
+
+{% endif %}
+
 <h2 class="govuk-heading-l">Provide available dates and times</h2>
 
 <p>The team have selected the following weeks as suitable for their peer review:</p>
 
+{% if entry.fields.RequestedWeeks.length %}
 {% set weeks = entry.fields.RequestedWeeks | split(",")%}
 <ul class="govuk-list govuk-list--bullet">
     {% for item in weeks %}
         <li>week beginning {{ item }}</li>
     {% endfor %}
 </ul>
+{% else %}
 
+<p>The end date of the discovery has been entered as {{entry.fields.EndDate | date('D MMM YYYY')}} which is less than 5 weeks away.</p>
+
+<p>You may want to contact {{entry.fields.RequestedBy}} about this, or continue to add dates for the team to select for their peer review.</p>
+
+{% endif %}
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">
@@ -24,7 +57,7 @@
     <div class="govuk-summary-card__content">
         {% if not dates.length %}
 
-            <p>No available dates have been added.</p>
+            <p>No dates have been added.</p>
 
         {% else %}
 
@@ -32,18 +65,27 @@
 
                 {% for datex in dates %}
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">{{datex.fields.Date | date('ddd D MMMM YYYY')}}</dt>
+                        <dt class="govuk-summary-list__key">{{datex.fields.Date | date('dddd D MMMM')}}</dt>
                         <dd class="govuk-summary-list__value">
                             {{datex.fields.Time}}
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="/admin/entry/amend/remove-date-option/{{entry.fields.ID}}/{{datex.id}}">Remove<span class="govuk-visually-hidden">
-                                   {{datex.fields.Date | date('ddd D MMMM YYYY')}} {{datex.fields.Time}}</span></a>
+                            <a class="govuk-link" href="/admin/entry/amend/remove-date-option/{{entry.fields.ID}}/{{datex.fields.ID}}">Remove<span class="govuk-visually-hidden">
+                                    {{datex.fields.Date | date('dddd D MMMM')}}
+                                    {{datex.fields.Time}}</span></a>
                         </dd>
                     </div>
                 {% endfor %}
 
             </dl>
+            <form action="/admin/send-notification/choosedate/{{entry.fields.ID}}" method="post">
+                <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                <p class="govuk-body">When you've added all available dates and times, click the button to notify {{entry.fields.RequestedBy}} that they can select a date for their peer review.</p>
+                <p class="govuk-body">
+                    <button class="govuk-button" data-module="govuk-button">Send notification</button>
+                </p>
+            </form>
+
             {% endif%}
         </div>
     </div>

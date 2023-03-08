@@ -1,23 +1,21 @@
 <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
     <thead class="dfeuk-table__head">
         <tr class="dfeuk-table__row">
-            <th scope="col" class="dfeuk-table__header">Request</th>
             <th scope="col" class="dfeuk-table__header">Service</th>
-            <th scope="col" class="dfeuk-table__header">Type</th>
             <th scope="col" class="dfeuk-table__header">Requestor</th>
-            <th scope="col" class="dfeuk-table__header">Status</th>
+            <th scope="col" class="dfeuk-table__header">Portfolio</th>
+            <th scope="col" class="dfeuk-table__header">Review date</th>
         </tr>
     </thead>
     <tbody class="dfeuk-table__body">
         {% for record in activerecords %}
             <tr class="dfeuk-table__row">
                 <th scope="row" class="dfeuk-table__header">
-                    <a href="/admin/entry/{{record.fields.ID}}">PR-{{record.fields.ID}}</a>
+                    <a href="/admin/entry/{{record.fields.ID}}">{{record.fields.Name}}</a>
                 </th>
-                <td class="dfeuk-table__cell">{{record.fields.Name}}</td>
-                <td class="dfeuk-table__cell">Discovery peer review</td>
                 <td class="dfeuk-table__cell">{{record.fields.RequestedBy}}</td>
-                <td class="dfeuk-table__cell">{{record.fields.Status}}</td>
+                <td class="dfeuk-table__cell">{{record.fields.Portfolio}}</td>
+                <td class="dfeuk-table__cell">{{record.fields.ReviewDate | date('ddd D MMM')}} </td>
             </tr>
         {% endfor %}
     </tbody>

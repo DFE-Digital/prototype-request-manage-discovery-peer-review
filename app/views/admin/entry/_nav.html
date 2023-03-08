@@ -51,6 +51,9 @@
             <li class="dfeuk-vertical-nav__section-item {% if view === 'review' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>
             </li>
+            <li class="dfeuk-vertical-nav__section-item">
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/preview-report/{{entry.fields.ID}}">Preview report</a>
+            </li>
         </ul>
     {% endif %}
 

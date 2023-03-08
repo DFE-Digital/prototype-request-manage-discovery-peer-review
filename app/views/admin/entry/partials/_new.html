@@ -67,12 +67,17 @@
                    Provide available dates</a>{%else%}Provide available dates{% endif%}</th>
                         <td class="dfeuk-table__cell">Service Assurance Team</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+
+
+
+
                             {% if entry.fields.Status === "New"%}
                                 <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% elseif entry.fields.Status === "Complete"%}
                                 <strong class="govuk-tag govuk-tag--green">Complete</strong>
+                            {% elseif not dates.length %}
+                            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                             {% else %}
-
                                 <strong class="govuk-tag govuk-tag--blue">In progress</strong>
                             {% endif %}
                         </td>
@@ -95,40 +100,44 @@
                         <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}</th>
                         <td class="dfeuk-table__cell">Wade Wilson</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "New"%}
+                           {% if entry.fields.Status === "New"%}
                                 <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% elseif entry.fields.Status === "Complete"%}
                                 <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                            {% elseif (team.length) %}
+                                <strong class="govuk-tag govuk-tag--blue">{{team.length}} {% if team.length === 1%}person{% else%}people{%endif%}</strong>
+                                {% else %}
+                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                             {% endif %}
                         </td>
                     </tr>
                     <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Add panel volunteers</th>
+                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/panel/{{entry.fields.ID}}">Review panel members</a>{% else%}Review panel members{% endif%}</th>
                         <td class="dfeuk-table__cell">Service Assurance Team</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
                             {% if entry.fields.Status === "New"%}
                                 <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% elseif entry.fields.Status === "Complete"%}
                                 <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-
+                            {% elseif (panel.length or observers.length) %}
                                 <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                                {% else %}
+                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                             {% endif %}
                         </td>
                     </tr>
                     <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Provide artefacts and links</th>
+                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/files/{{entry.fields.ID}}">Artefacts and links</a>{% else%}Artefacts and links{% endif%}</th>
                         <td class="dfeuk-table__cell">Wade Wilson</td>
                         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "New"%}
+                         {% if entry.fields.Status === "New"%}
                                 <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
                             {% elseif entry.fields.Status === "Complete"%}
                                 <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+                            {% elseif (artefacts.length) %}
+                                <strong class="govuk-tag govuk-tag--blue">{{artefacts.length}} {% if artefacts.length === 1%}artefact{% else%}artefacts{%endif%}</strong>
+                                {% else %}
+                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
                             {% endif %}
                         </td>
                     </tr>

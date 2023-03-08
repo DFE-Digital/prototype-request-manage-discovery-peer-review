@@ -51,8 +51,13 @@
                             <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="review_comments">
-    comments
+    Comments
     </label>
+    <div id="more-detail-hint" class="govuk-hint">
+    You can write using basic markdown.
+  </div>
+
+
                                     <textarea class="govuk-textarea govuk-js-character-count" id="review_comments" name="review_comments" rows="16" aria-describedby="review_comments-info">{{entry.fields.ReviewComments}}</textarea>
                                 </div>
                                 <div id="review_comments-info" class="govuk-hint govuk-character-count__message">

@@ -56,6 +56,13 @@ async function getDates(id) {
     .firstPage()
 }
 
+async function getDate(id) {
+  console.log(id)
+  return await base('ReviewDateOptions')
+    .select({ maxRecords: 1, filterByFormula: `{ID} = "${id}"` })
+    .firstPage()
+}
+
 // Gets a record by an ID
 async function getDataByID(id) {
   return await base('Reviews')
@@ -777,8 +784,34 @@ router.post('/book/process-request', function (req, res) {
 
 /// Root admin, redirect to the 'new' view route
 /// /admin/
-router.get('/admin/', function (req, res) {
-  return res.redirect('/admin/new')
+router.get('/admin', function (req, res) {
+  axios
+  .all([
+    getData('New'),
+    getData('Rejected'),
+    getData('Active'),
+    getData('Completed'),
+    getData('Cancelled'),
+  ])
+  .then(
+    axios.spread(
+      (
+        newrecords,
+        rejectedrecords,
+        activerecords,
+        completedrecords,
+        cancelledrecords,
+      ) => {
+        res.render('admin/index.html', {
+          newrecords,
+          rejectedrecords,
+          activerecords,
+          completedrecords,
+          cancelledrecords
+        })
+      },
+    ),
+  )
 })
 
 /// Gets view by status of the requests
@@ -821,6 +854,41 @@ router.get('/admin/entry/rejected', function (req, res) {
   res.render('admin/entry/rejected.html')
 })
 
+router.get('/admin/dismiss-notification/:type/:id', function (req, res) {
+  var type = req.params.type
+  var id = req.params.id
+
+  req.session.data[type + '-' + id] = {}
+
+  if (type === 'choosedate') {
+    return res.redirect('/admin/entry/providedates/' + id)
+  }
+})
+
+router.post('/admin/send-notification/:type/:id', function (req, res) {
+  var type = req.params.type
+  var id = req.params.id
+
+  if (type === 'choosedate') {
+    // Sends notification to the requestor that they can now select a date
+    notify
+      .sendEmail(
+        process.env.pick_some_dates_template_id,
+        process.env.recipient,
+        {
+          personalisation: {
+            id: id,
+          },
+        },
+      )
+      .then((response) => console.log('Notification: ' + response.statusText))
+      .catch((err) => console.error(err))
+  }
+
+  req.session.data[type + '-' + id] = 'Message sent'
+  return res.redirect('/admin/entry/providedates/' + id)
+})
+
 /// Entry record by ID
 /// /admin/entry/1
 router.get('/admin/entry/:id', async function (req, res) {
@@ -839,9 +907,10 @@ router.get('/admin/entry/:id', async function (req, res) {
       getArtefacts(id),
       getPanel(id),
       getObservers(id),
+      getDates(id)
     ])
     .then(
-      axios.spread((entryx, team, artefacts, panel, observers) => {
+      axios.spread((entryx, team, artefacts, panel, observers, dates) => {
         entry = entryx[0]
         res.render('admin/entry/taskview.html', {
           entry,
@@ -850,6 +919,7 @@ router.get('/admin/entry/:id', async function (req, res) {
           view,
           panel,
           observers,
+          dates
         })
       }),
     )
@@ -872,9 +942,10 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
       getArtefact(entry),
       getPanel(id),
       getObservers(id),
+      getDate(entry),
     ])
     .then(
-      axios.spread((entryx, person, artefact, panel, observers) => {
+      axios.spread((entryx, person, artefact, panel, observers, datex) => {
         entry = entryx[0]
         res.render('admin/entry/amend/submissionvalue.html', {
           entry,
@@ -883,6 +954,7 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
           view,
           panel,
           observers,
+          datex,
         })
       }),
     )
@@ -956,6 +1028,19 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
       })
     }
 
+    return res.redirect('/admin/entry/providedates/' + id)
+  }
+
+  if (view === 'remove-date-option') {
+    base('ReviewDateOptions').destroy([entry], function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.get('ID'))
+      })
+    })
     return res.redirect('/admin/entry/providedates/' + id)
   }
 
@@ -1398,7 +1483,7 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
       getDates(id),
     ])
     .then(
-      axios.spread((entryx, team, artefacts, panel, observers,dates) => {
+      axios.spread((entryx, team, artefacts, panel, observers, dates) => {
         entry = entryx[0]
         res.render('admin/entry/taskview.html', {
           entry,
@@ -1407,7 +1492,7 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
           view,
           panel,
           observers,
-          dates
+          dates,
         })
       }),
     )

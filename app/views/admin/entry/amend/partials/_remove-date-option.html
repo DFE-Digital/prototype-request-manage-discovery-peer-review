@@ -1,0 +1,12 @@
+<form action="/admin/entry/amend/remove-date-option/{{entry.fields.ID}}/{{datex[0].id}}" method="post">
+
+<h2 class="govuk-heading-l">Remove {{datex[0].fields.Date | date('dddd D MMM')}} at {{datex[0].fields.Time }} from the date options</h2>
+
+
+                
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button govuk-button--warning"  data-module="govuk-button">Remove and return to dates</button>
+        <a href="/admin/entry/providedates/{{entry.fields.ID}}" class="govuk-link">Cancel and return to dates list</a>
+    </div>
+
+</form>
