@@ -1534,4 +1534,16 @@ p.formatted-content {
   +table, +p {
     margin-top: 24px;
   }
+
+}
+
+
+
+
+.dfeuk-header--username{
+  padding-bottom: 25px;
+  margin:0px;
+  text-align: right;
+  color: $color_dfeuk-white;
+  @include dfeuk-typography-responsive(19);
 }

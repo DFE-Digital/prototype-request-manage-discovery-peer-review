@@ -11,8 +11,12 @@ var NotifyClient = require('notifications-node-client').NotifyClient,
 
 const { v4: uuidv4 } = require('uuid')
 
+var moment = require('moment');
+var momentBusinessDays = require("moment-business-days")
+
 var Airtable = require('airtable')
-var axios = require('axios')
+var axios = require('axios');
+const { NULL } = require('mysql/lib/protocol/constants/types');
 var base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
   'appiBjyMzgmJEGFqn',
 )
@@ -837,7 +841,7 @@ router.get('/admin/:status', function (req, res) {
           completedrecords,
           cancelledrecords,
         ) => {
-          res.render('admin/index.html', {
+          res.render('admin/statusview.html', {
             newrecords,
             rejectedrecords,
             activerecords,
@@ -854,14 +858,19 @@ router.get('/admin/entry/rejected', function (req, res) {
   res.render('admin/entry/rejected.html')
 })
 
-router.get('/admin/dismiss-notification/:type/:id', function (req, res) {
+router.get('/admin/dismiss-notification/:type/:id/:entry', function (req, res) {
   var type = req.params.type
   var id = req.params.id
+  var entry = req.params.entry
 
   req.session.data[type + '-' + id] = {}
 
   if (type === 'choosedate') {
     return res.redirect('/admin/entry/providedates/' + id)
+  }
+
+  if (type === 'add-date-option') {
+    return res.redirect('/admin/entry/'+ id)
   }
 })
 
@@ -869,23 +878,53 @@ router.post('/admin/send-notification/:type/:id', function (req, res) {
   var type = req.params.type
   var id = req.params.id
 
-  if (type === 'choosedate') {
-    // Sends notification to the requestor that they can now select a date
-    notify
-      .sendEmail(
-        process.env.pick_some_dates_template_id,
-        process.env.recipient,
-        {
-          personalisation: {
-            id: id,
-          },
-        },
-      )
-      .then((response) => console.log('Notification: ' + response.statusText))
-      .catch((err) => console.error(err))
-  }
+  axios
+    .all([
+      getDataByID(id),
+      getDates(id)
+    ])
+    .then(
+      axios.spread((entryx,dates) => {
+        entry = entryx[0]
 
-  req.session.data[type + '-' + id] = 'Message sent'
+
+        
+        if (type === 'choosedate') {
+
+          // format the date
+
+          var datef= new Date(dates[0].fields.Date)
+
+            var formattedDate = moment(datef).format("dddd D MMMM YYYY")
+
+          console.log(formattedDate)
+
+
+          // Sends notification to the requestor that they can now select a date
+          notify
+            .sendEmail(
+              process.env.pick_some_dates_template_id,
+              process.env.recipient,
+              {
+                personalisation: {
+                  id: id,
+                  nameOfDiscovery: entryx[0].fields.Name,
+                  date: formattedDate,
+                  time: dates[0].fields.Time
+                },
+              },
+            )
+            .then((response) => console.log('Notification: ' + response.statusText))
+            .catch((err) => console.error(err))
+        }
+      
+        req.session.data[type + '-' + id] = 'Message sent'
+
+
+      }),
+    )
+
+  
   return res.redirect('/admin/entry/providedates/' + id)
 })
 
@@ -961,7 +1000,7 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 })
 
 // Saves the submission list value change
-router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
+router.post('/admin/entry/amend/:view/:id/:entry', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
   var entry = req.params.entry
@@ -980,55 +1019,34 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 
     //availabletime
     var tempTimes = req.session.data['availabletime']
-    optiontime = req.session.data['availabletime'][0]
 
-    if (tempTimes.length === 1) {
-      base('ReviewDateOptions').create(
-        [
-          {
-            fields: {
-              Date: optiondate,
-              ReviewID: parseInt(id),
-              Time: optiontime,
-            },
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewDate: optiondate,
+            ReviewTime: tempTimes
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('ID'))
-          })
         },
-      )
-    } else {
-      tempTimes.forEach(function (time) {
-        base('ReviewDateOptions').create(
-          [
-            {
-              fields: {
-                Date: optiondate,
-                ReviewID: parseInt(id),
-                Time: time,
-              },
-            },
-          ],
-          function (err, records) {
-            if (err) {
-              console.error(err)
-              return
-            }
-            records.forEach(function (record) {
-              console.log(record.get('ID'))
-            })
-          },
-        )
-      })
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjeReviewDatectCode'))
+        })
+      },
+    )
 
-    return res.redirect('/admin/entry/providedates/' + id)
+
+    await wait(1500)
+
+      req.session.data['add-date-option-'+id] = "Yes"
+    return res.redirect('/admin/entry/amend/add-date-option/' + id+'/'+entry)
   }
 
   if (view === 'remove-date-option') {
@@ -1041,7 +1059,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
         console.log(record.get('ID'))
       })
     })
-    return res.redirect('/admin/entry/providedates/' + id)
+    return res.redirect('/admin/entry/' + id)
   }
 
   if (view === 'add-panel-member') {
@@ -1067,6 +1085,9 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
     )
     return res.redirect('/admin/entry/panel/' + id)
   }
+
+
+
 
   if (view === 'remove-panel-member') {
     base('ReviewPanel').destroy([entry], function (err, records) {
@@ -1200,6 +1221,30 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
         })
       },
     )
+  }
+
+  if (view === 'slack') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            SlackChannel: req.body.slackchannel,
+            SlackURL: req.body.slackurl,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('slackchannel'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/' + id)
   }
 
   if (view === 'add-artefact') {
@@ -1471,6 +1516,9 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
+  var businessDays = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(5)._d 
+    var businessDaysPlus1 = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(6)._d 
+
   await wait(1500)
 
   axios
@@ -1492,7 +1540,7 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
           view,
           panel,
           observers,
-          dates,
+          dates,businessDays, businessDaysPlus1
         })
       }),
     )
@@ -1588,6 +1636,114 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
 
     return res.redirect('/admin/entry/review/' + id)
   }
+
+    // Update the status of the review
+    if (view === 'updatedonewell') {
+      var comments = req.body.review_donewell
+  
+      base('Reviews').update(
+        [
+          {
+            id: entry,
+            fields: {
+              ReviewDoneWell: comments,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('ReviewDoneWell'))
+          })
+        },
+      )
+  
+      return res.redirect('/admin/entry/review/' + id)
+    }
+
+    if (view === 'editimprove') {
+      var comments = (req.body.review_improve === "" ? null : req.body.review_improve)
+
+      console.log(comments)
+  
+      base('Reviews').update(
+        [
+          {
+            id: entry,
+            fields: {
+              ReviewImprove: comments,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('ReviewImprove'))
+          })
+        },
+      )
+  
+      return res.redirect('/admin/entry/review/' + id)
+    }
+
+    if (view === 'submitreport') {
+     
+      base('Reviews').update(
+        [
+          {
+            id: entry,
+            fields: {
+              Status: "SAT Check",
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('Status'))
+          })
+        },
+      )
+  
+      return res.redirect('/admin/entry/' + id)
+    }
+
+    if (view === 'satsubmit') {
+     
+      base('Reviews').update(
+        [
+          {
+            id: entry,
+            fields: {
+              Status: "Complete",
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log(record.get('Status'))
+          })
+        },
+      )
+  
+      return res.redirect('/admin/entry/' + id)
+    }
+
+
+    
 
   if (view === 'process') {
     // This is the first task to accept or reject.

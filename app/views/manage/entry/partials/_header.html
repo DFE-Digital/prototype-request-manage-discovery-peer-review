@@ -33,8 +33,13 @@
                 <span class="govuk-!-font-weight-bold">Status</span><br/>
                 {% if entry.fields.Status === "New"%}
                     <strong class="govuk-tag govuk-tag--blue">{{entry.fields.Status}}</strong>
-                {% else %}
-                    <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>{% endif%}
+                 {% elseif entry.fields.Status === "Complete"%}
+                    <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>
+                    {% elseif entry.fields.Status === "SAT Check"%}
+                    <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>
+                    {% else %}
+                    <strong class="govuk-tag govuk-tag--grey">{{entry.fields.Status}}</strong>
+                    {% endif%}
 
                 </p>
             </div>

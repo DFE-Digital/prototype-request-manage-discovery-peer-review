@@ -1,212 +1,222 @@
 <h2 class="govuk-heading-l">Tasks</h2>
-
 {% if entry.fields.Status === "Rejected"%}
-
-    <p>There are no tasks to action as this request has been rejected.</p>
-
-    <div class="govuk-inset-text">
-
-        <h3 class="govuk-heading-s">Reason for rejection</h3>
-        <p>{{entry.fields.RejectedReason}}</p>
-
-        <p class="govuk-body-s">Rejected on {{entry.fields.RejectedDate | date('D MMMM YYYY')}} by Service Assessment Team</p>
-
-    </div>
-
+<p>There are no tasks to action as this request has been rejected.</p>
+<div class="govuk-inset-text">
+   <h3 class="govuk-heading-s">Reason for rejection</h3>
+   <p>{{entry.fields.RejectedReason}}</p>
+   <p class="govuk-body-s">Rejected on {{entry.fields.RejectedDate | date('D MMMM YYYY')}} by Service Assessment Team</p>
+</div>
 {% elseif entry.fields.Status === "Cancelled"%}
-
-    <p>There are no tasks to action as this request has been cancelled.</p>
-
-    <div class="govuk-inset-text">
-
-        <h3 class="govuk-heading-s">Reason for cancellation</h3>
-        <p>{{entry.fields.CancelledReason}}</p>
-
-        <p class="govuk-body-s">Cancelled on {{entry.fields.CancelledDate | date('D MMMM YYYY')}} by Service Assessment Team</p>
-
-    </div>
-
+<p>There are no tasks to action as this request has been cancelled.</p>
+<div class="govuk-inset-text">
+   <h3 class="govuk-heading-s">Reason for cancellation</h3>
+   <p>{{entry.fields.CancelledReason}}</p>
+   <p class="govuk-body-s">Cancelled on {{entry.fields.CancelledDate | date('D MMMM YYYY')}} by Service Assessment Team</p>
+</div>
 {% elseif entry.fields.Status === "Complete"%}
+<p>There are no tasks to action as this review is complete.</p>
+<p>You can <a href="/report/{{entry.fields.ID}}">view the report</a>.</p>
+{% else%}
+<table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
+   <thead class="dfeuk-table__head">
+      <tr class="dfeuk-table__row">
+         <th scope="col" class="dfeuk-table__header">Task</th>
+         <th scope="col" class="dfeuk-table__header">Assigned to</th>
+         <th scope="col" class="dfeuk-table__header dfeuk-table__header--numeric">Status</th>
+      </tr>
+   </thead>
+   <tbody class="dfeuk-table__body">
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__header">
+            <a href="/admin/entry/submission/{{entry.fields.ID}}">
+            {%if entry.fields.Status === "New"%}Check submission and accept or reject{% else%}View or edit submission{% endif%}</a>
+         </th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/amend/add-date-option/{{entry.fields.ID}}/{{entry.id}}">
+            Update review date</a>{%else%}Update review date{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif not entry.fields.ReviewDate %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}</th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (team.length) %}
+            <strong class="govuk-tag govuk-tag--blue">{{team.length}} {% if team.length === 1%}person{% else%}people{%endif%} added</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/panel/{{entry.fields.ID}}">Panel and observers</a>{% else%}Panel and observers{% endif%}</th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (panel.length or observers.length) %}
+            <strong class="govuk-tag govuk-tag--blue">{{panel.length}} {% if panel.length === 1%}person{% else%}people{%endif%} added</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/files/{{entry.fields.ID}}">Add supporting artefacts</a>{% else%}Add supporting artefacts{% endif%}</th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (artefacts.length) %}
+            <strong class="govuk-tag govuk-tag--blue">{{artefacts.length}} {% if artefacts.length === 1%}artefact{% else%}artefacts{%endif%}</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/slack/{{entry.fields.ID}}">Panel Slack channel</a>{% else%}Panel Slack channel{% endif%}</th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (entry.fields.SlackURL and entry.fields.SlackChannel) %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" or entry.fields.Status !== "Complete" or  entry.fields.Status !== "SAT Check"%}<a href="/admin/entry/start-peer-review/{{entry.fields.ID}}">Open peer review</a>{% else%}Open peer review{% endif%}</th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "Review" or entry.fields.Status === "Complete" or  entry.fields.Status === "SAT Check"  %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif entry.fields.Status === "Pre-Review"%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong> 
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% endif %}
+         </td>
+      </tr>
+      {% if entry.fields.Status === "Review"%}
+      {% set hasStarted = (entry.fields.Outcome or entry.fields.ReviewComments or entry.fields.ReviewDoneWell or entry.fields.ReviewImprove)%}
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status === "Review"%}<a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>{% else%}Report{% endif%}</th>
+         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if hasStarted %}
+            <strong class="govuk-tag govuk-tag--blue">In progress</strong>
+            {% elseif not hasStarted%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% elseif entry.fields.Status === "Complete" %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">Submit report</th>
+         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "Review"%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">Accept review</th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "Review"%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% endif %}
+         </td>
+      </tr>
+      {%endif%}
 
-    <p>There are no tasks to action as this review is complete.</p>
 
-    <p>You can <a href="/report/{{entry.fields.ID}}">view the report</a>.</p>
-
-    {% else%}
-
-    <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
-
-        <thead class="dfeuk-table__head">
-            <tr class="dfeuk-table__row">
-                <th scope="col" class="dfeuk-table__header">Task</th>
-                <th scope="col" class="dfeuk-table__header">Assigned to</th>
-                <th scope="col" class="dfeuk-table__header dfeuk-table__header--numeric">Status</th>
-            </tr>
-        </thead>
-        <tbody class="dfeuk-table__body">
-            <tr class="dfeuk-table__row">
-                <th scope="row" class="dfeuk-table__header">
-                    <a href="/admin/entry/submission/{{entry.fields.ID}}">
-                        {%if entry.fields.Status === "New"%}Check submission and accept or reject{% else%}View or edit submission{% endif%}</a>
-                    </th>
-                    <td class="dfeuk-table__cell">Service Assurance Team</td>
-                    <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                        {% if entry.fields.Status === "New"%}
-                            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                        {% else %}
-                            <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                        {% endif %}
-                    </td>
-                </tr>
-                
-
-                <tr class="dfeuk-table__row">
-                    <th scope="row" class="dfeuk-table__cell">
-                        {% if entry.fields.Status !== "New" %}
-                            <a href="/admin/entry/providedates/{{entry.fields.ID}}">
-                   Provide available dates</a>{%else%}Provide available dates{% endif%}</th>
-                        <td class="dfeuk-table__cell">Service Assurance Team</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-
-
-
-
-                            {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% elseif not dates.length %}
-                            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell"> Select date for review</th>
-                        <td class="dfeuk-table__cell">Wade Wilson</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}</th>
-                        <td class="dfeuk-table__cell">Wade Wilson</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                           {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% elseif (team.length) %}
-                                <strong class="govuk-tag govuk-tag--blue">{{team.length}} {% if team.length === 1%}person{% else%}people{%endif%}</strong>
-                                {% else %}
-                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/panel/{{entry.fields.ID}}">Review panel members</a>{% else%}Review panel members{% endif%}</th>
-                        <td class="dfeuk-table__cell">Service Assurance Team</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% elseif (panel.length or observers.length) %}
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
-                                {% else %}
-                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/files/{{entry.fields.ID}}">Artefacts and links</a>{% else%}Artefacts and links{% endif%}</th>
-                        <td class="dfeuk-table__cell">Wade Wilson</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                         {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% elseif (artefacts.length) %}
-                                <strong class="govuk-tag govuk-tag--blue">{{artefacts.length}} {% if artefacts.length === 1%}artefact{% else%}artefacts{%endif%}</strong>
-                                {% else %}
-                                     <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Pre-call and Slack</th>
-                        <td class="dfeuk-table__cell">Service Assurance Team</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "New"%}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--blue">In progress</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                     <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" or entry.fields.Status !== "Complete" %}<a href="/admin/entry/start-peer-review/{{entry.fields.ID}}">Start peer review</a>{% else%}Start peer review{% endif%}</th>
-                        <td class="dfeuk-table__cell">Service Assurance Team</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "Review" or entry.fields.Status === "Complete" %}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% elseif entry.fields.Status === "Pre-Review"%}
-                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Complete review</th>
-                        <td class="dfeuk-table__cell">Becky Morton</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "Review"%}
-                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Submit review</th>
-                        <td class="dfeuk-table__cell">Becky Morton</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "Review"%}
-                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr class="dfeuk-table__row">
-                        <th scope="row" class="dfeuk-table__cell">Accept review</th>
-                        <td class="dfeuk-table__cell">Wade Wilson</td>
-                        <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-                            {% if entry.fields.Status === "Review"%}
-                                <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-                            {% elseif entry.fields.Status === "Complete"%}
-                                <strong class="govuk-tag govuk-tag--green">Complete</strong>
-                            {% else %}
-                                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-                            {% endif %}
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-            {% endif%}
+       {% if entry.fields.Status === "SAT Check"%}
+        <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell"><a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a></th>
+         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+           
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+     
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">Submit report</th>
+         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+           
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+          
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status === "SAT Check"%}<a href="/admin/entry/review/{{entry.fields.ID}}">Check and approve report</a>{% endif%}</th>
+         <td class="dfeuk-table__cell">Service Assessment Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            <strong class="govuk-tag govuk-tag--grey">Not Started</strong>
+         </td>
+      </tr>
+      
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">Accept review</th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "Review"%}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% endif %}
+         </td>
+      </tr>
+      {%endif%}
+   </tbody>
+</table>
+{% endif%}

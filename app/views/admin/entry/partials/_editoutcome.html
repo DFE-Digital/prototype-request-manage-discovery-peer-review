@@ -1,126 +1,126 @@
-  <h2 class="govuk-heading-m">Peer review</h2>
-                <p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
-                <div class="govuk-summary-card" id="outcome">
-                    <div class="govuk-summary-card__title-wrapper">
-                        <h2 class="govuk-summary-card__title">Panel outcome</h2>
-                       
-                    </div>
-                    <div class="govuk-summary-card__content">
+<h2 class="govuk-heading-m">Peer review</h2>
+<p class="govuk-body">Details of the peer review findings and recommendations from the panel.</p>
+<div class="govuk-summary-card" id="outcome">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Panel outcome</h2>
 
-                        <form action="/admin/action/updateoutcome/{{entry.fields.ID}}/{{entry.id}}" method="post">
-                            <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset" aria-describedby="outcomerag-hint">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                        <h3 class="govuk-fieldset__heading">
+    </div>
+    <div class="govuk-summary-card__content">
+
+        <form action="/admin/action/updateoutcome/{{entry.fields.ID}}/{{entry.id}}" method="post">
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="outcomerag-hint">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <h3 class="govuk-fieldset__heading">
         What is the outcome of the peer review
       </h3>
-                                    </legend>
-                                    <div id="outcomerag-hint" class="govuk-hint">
+                    </legend>
+                    <div id="outcomerag-hint" class="govuk-hint">
       Discovery peer reviews don't give a Met or Not met, instead we use a Red, Amber, Green (RAG) status an an overall indicator of a good discovery.
     </div>
-                                    <div class="govuk-radios" data-module="govuk-radios">
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="outcomerag" name="outcomerag" type="radio" value="Red" aria-describedby="outcomerag-item-hint" {{ checked('outcomerag','Red') }}>
-                                            <label class="govuk-label govuk-radios__label" for="outcomerag">
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="outcomerag" name="outcomerag" type="radio" value="Red" aria-describedby="outcomerag-item-hint" {{ checked('outcomerag','Red') }}>
+                            <label class="govuk-label govuk-radios__label" for="outcomerag">
           Red
         </label>
-                                            <div id="outcomerag-item-hint" class="govuk-hint govuk-radios__hint">
+                            <div id="outcomerag-item-hint" class="govuk-hint govuk-radios__hint">
           There are some serious concerns or recommendations the team need to adress before continuing.
         </div>
-                                        </div>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="outcomerag-2" name="outcomerag" type="radio" value="Amber" aria-describedby="outcomerag-2-item-hint"{{ checked('outcomerag','Amber') }}>
-                                            <label class="govuk-label govuk-radios__label" for="outcomerag-2">
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="outcomerag-2" name="outcomerag" type="radio" value="Amber" aria-describedby="outcomerag-2-item-hint"{{ checked('outcomerag','Amber') }}>
+                            <label class="govuk-label govuk-radios__label" for="outcomerag-2">
           Amber
         </label>
-                                            <div id="outcomerag-2-item-hint" class="govuk-hint govuk-radios__hint">
+                            <div id="outcomerag-2-item-hint" class="govuk-hint govuk-radios__hint">
           There are some recommendations but the team can continue and evidence improvements in their Alpha assessment or another peer review.
         </div>
-                                        </div>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="outcomerag-3" name="outcomerag" type="radio" value="Green" aria-describedby="outcomerag-3-item-hint"{{ checked('outcomerag','Green') }}>
-                                            <label class="govuk-label govuk-radios__label" for="outcomerag-3">
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="outcomerag-3" name="outcomerag" type="radio" value="Green" aria-describedby="outcomerag-3-item-hint"{{ checked('outcomerag','Green') }}>
+                            <label class="govuk-label govuk-radios__label" for="outcomerag-3">
           Green
         </label>
-                                            <div id="outcomerag-3-item-hint" class="govuk-hint govuk-radios__hint">
+                            <div id="outcomerag-3-item-hint" class="govuk-hint govuk-radios__hint">
           Nothing of concern the teams needs to address.
         </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
 
-                            <div class="govuk-button-group">
-                                <button class="govuk-button" data-module="govuk-button">
+            <div class="govuk-button-group">
+                <button class="govuk-button" data-module="govuk-button">
     Save
   </button>
-                                <a class="govuk-link" href="/admin/entry/review/{{entry.fields.ID}}">Cancel</a>
-                            </div>
-                        </form>
+                <a class="govuk-link" href="/admin/entry/review/{{entry.fields.ID}}">Cancel</a>
+            </div>
+        </form>
 
-                    </div>
-                </div>
+    </div>
+</div>
 
-                  <div class="govuk-summary-card" id="comments">
+<div class="govuk-summary-card" id="comments">
+    <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Panel comments</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link" href="/admin/entry/review/edit-comments/{{entry.fields.ID}}/#comments">
+          Edit<span class="govuk-visually-hidden"> summary</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="govuk-summary-card__content  formatted-content">
+        {% if entry.fields.ReviewComments%}
+            <p>{{entry.fields.ReviewComments}}</p>
+            {% else%}
+            <p>The panel has not entered any comments.</p>
+            {% endif%}
+        </div>
+    </div>
+
+    <div class="govuk-summary-card" id="done-well">
         <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">Panel comments</h2>
+            <h2 class="govuk-summary-card__title">What the team has done well</h2>
             <ul class="govuk-summary-card__actions">
                 <li class="govuk-summary-card__action">
-                    <a class="govuk-link" href="/admin/entry/review/edit-comments/{{entry.fields.ID}}/#comments">
+                    <a class="govuk-link" href="/admin/entry/review/edit-done-well/{{entry.fields.ID}}/#done-well">
           Edit<span class="govuk-visually-hidden"> summary</span>
                     </a>
                 </li>
             </ul>
         </div>
         <div class="govuk-summary-card__content  formatted-content">
-            {% if entry.fields.ReviewComments%}
-                <p>{{entry.fields.ReviewComments}}</p>
+            {% if entry.fields.ReviewDoneWell%}
+                <p>{{entry.fields.ReviewDoneWell}}</p>
                 {% else%}
                 <p>The panel has not entered any comments.</p>
                 {% endif%}
             </div>
         </div>
 
-        <div class="govuk-summary-card" id="done-well">
+        <div class="govuk-summary-card" id="improve">
             <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title">What the team has done well</h2>
+                <h2 class="govuk-summary-card__title">What the team can improve</h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="/admin/entry/review/edit-done-well/{{entry.fields.ID}}/#done-well">
+                        <a class="govuk-link" href="/admin/entry/review/edit-improve/{{entry.fields.ID}}/#improve">
           Edit<span class="govuk-visually-hidden"> summary</span>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="govuk-summary-card__content  formatted-content">
-                {% if entry.fields.ReviewDoneWell%}
-                    <p>{{entry.fields.ReviewDoneWell}}</p>
+                {% if entry.fields.ReviewImprove%}
+                    <p>{{entry.fields.ReviewImprove}}</p>
                     {% else%}
                     <p>The panel has not entered any comments.</p>
                     {% endif%}
                 </div>
             </div>
-
-            <div class="govuk-summary-card" id="improve">
-                <div class="govuk-summary-card__title-wrapper">
-                    <h2 class="govuk-summary-card__title">What the team can improve</h2>
-                    <ul class="govuk-summary-card__actions">
-                        <li class="govuk-summary-card__action">
-                            <a class="govuk-link" href="/admin/entry/review/edit-improve/{{entry.fields.ID}}/#improve">
-          Edit<span class="govuk-visually-hidden"> summary</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="govuk-summary-card__content  formatted-content">
-                    {% if entry.fields.ReviewImprove%}
-                        <p>{{entry.fields.ReviewImprove}}</p>
-                        {% else%}
-                        <p>The panel has not entered any comments.</p>
-                        {% endif%}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+</div>
 </div>
