@@ -8,8 +8,6 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
 
 {% block beforeContent %}
 
-
-
     <a href="/reports" class="govuk-back-link">Back</a>
 
     {% endblock%}
@@ -24,20 +22,20 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
 
             <div class="govuk-grid-column-two-thirds">
                 <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-      Reference
+                           <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+      Outcome
     </dt>
-                        <dd class="govuk-summary-list__value">
-      PR-{{entry.fields.ID}}
-                        </dd>
-                    </div>
+                    <dd class="govuk-summary-list__value">
+                        <strong class="dfeuk-tag dfeuk-tag--{{entry.fields.Outcome | lower}}">{{entry.fields.Outcome}}</strong>
+                    </dd>
+                </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
       Project code
     </dt>
                         <dd class="govuk-summary-list__value">
-                            {{entry.fields.ProjectCode}}
+                            IT{{entry.fields.ProjectCode}}
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -61,87 +59,77 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
       Requested by
     </dt>
                         <dd class="govuk-summary-list__value">
-      Wade Wilson
-    </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
+                            {{entry.fields.RequestedBy}}</li>
+
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
       Portfolio
     </dt>
-                        <dd class="govuk-summary-list__value">
-                            {{entry.fields.Portfolio}}
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
-      Outcome
-    </dt>
-                        <dd class="govuk-summary-list__value">
-                            <strong class="dfeuk-tag dfeuk-tag--{{entry.fields.Outcome | lower}}">{{entry.fields.Outcome}}</strong>
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
+                    <dd class="govuk-summary-list__value">
+                        {{entry.fields.Portfolio}}
+                    </dd>
+                </div>
+         
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
       Review panel
     </dt>
-                        <dd class="govuk-summary-list__value">
-                            Tom Adams (User research)<br/>Andy Jones (Design)
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
+                    <dd class="govuk-summary-list__value">
+                        <ul class="govuk-list">
+
+                            {% for person in panel %}
+                                <li>{{person.fields.Name}}</li>
+                            {% endfor %}
+
+                        </ul>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
       Service team
     </dt>
-                        <dd class="govuk-summary-list__value">
-                            Joe Bloggs (User research)<br/>Jane Doe (Content design)<br/>Barry James (Product manager)
-                        </dd>
-                    </div>
-                </dl>
+                    <dd class="govuk-summary-list__value">
+                        <ul class="govuk-list">
 
-                <h2 class="govuk-heading-l">Purpose of the discovery</h2>
+                            {% for person in team %}
+                                <li>{{person.fields.Name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                </div>
+            </dl>
 
-                <p class="formatted-content">{{entry.fields.Description}}</p>
+            <h2 class="govuk-heading-l">Purpose of the discovery</h2>
 
-                <h2 class="govuk-heading-l">Panel recommendations</h2>
-                <p class="formatted-content">{{entry.fields.ReviewComments}}</p>
+            <p class="formatted-content">{{entry.fields.Description}}</p>
 
-                <h2 class="govuk-heading-l">Understanding the problem, users, and needs</h2>
+            <h2 class="govuk-heading-l">Overall comments</h2>
+            <p class="formatted-content">{{entry.fields.ReviewComments}}</p>
 
-                <p class="formatted-content">{{entry.fields.ReviewDoneWell}}</p>
+            <h2 class="govuk-heading-l">What the team has done well</h2>
 
-                <h2 class="govuk-heading-l">Planning for Alpha and next steps</h2>
-                <p class="formatted-content">{{entry.fields.ReviewImprove}}</p>
-            </div>
+            <p class="formatted-content">{{entry.fields.ReviewDoneWell}}</p>
 
-            <div class="govuk-grid-column-one-third">
+            <h2 class="govuk-heading-l">What the team needs to focus on</h2>
+            <p class="formatted-content">{{entry.fields.ReviewImprove}}</p>
+        </div>
 
-                <aside class="govuk-related-navigation">
+        <div class="govuk-grid-column-one-third">
 
-                    <h2 class="govuk-heading-m">Export</h2>
+            <aside class="govuk-related-navigation">
 
-                    <a href="/data/example.docx">Download as a Word document</a>
+                <h2 class="govuk-heading-m">Export</h2>
 
-                    {# <h2 class="govuk-heading-m govuk-!-margin-top-7">Actions</h2>
+                <a href="/data/example.docx">Download as a Word document</a>
 
-                    <p>Once the panel submit the report, the SA+ team will see:</p>
+             
 
-                    <p>Accept and send to service team.</p>
-                    <a href="" class="govuk-button" role="button">Accept and send to service team</a>
-
-                    <p>Reopen and edit or send back to the review panel for amendments</p>
-                    <a href="" class="govuk-button" role="button">Reopen</a>
-
-                    <p>Once sent to the team, the requestor will see:</p>
-
-                    <p>You have until 22 February to challenge something in this report.</p>
-                    <a href="" class="govuk-button" role="button">Open a challenge</a>
-                    <p>Accept the report as final. If you don't challenge the report, it will be accepted automatically on 23 February.</p>
-                    <a href="" class="govuk-button" role="button">Accept the report</a> #}
-
-                </aside>
-
-            </div>
+            </aside>
 
         </div>
 
-    {% endblock %}
+    </div>
+
+{% endblock %}

@@ -55,6 +55,9 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                 accessibleAutocomplete.enhanceSelectElement({selectElement: document.querySelector('.auto')})
             {% elseif view === "add-panel-observer" %}
                 accessibleAutocomplete.enhanceSelectElement({selectElement: document.querySelector('.auto')})
+
+            {% elseif view === "add-business-partner" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.BusinessPartnerName }}', selectElement: document.querySelector('.auto')})
             {% endif %}
         </script>
     {% endblock %}

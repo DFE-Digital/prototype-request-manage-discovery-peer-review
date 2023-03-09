@@ -1,4 +1,4 @@
-<strong class="govuk-tag">{% if entry.fields.ProjectCode %}{{entry.fields.ProjectCode}}{% else %}No project code{% endif%}</strong> 
+<strong class="govuk-tag {% if not entry.fields.ProjectCode %}govuk-tag--red{% endif%}">{% if entry.fields.ProjectCode %}IT{{entry.fields.ProjectCode}}{% else %}No project code{% endif%}</strong> 
 <strong class="govuk-tag govuk-tag--grey">Discovery Peer Review</strong>
 <h1 class="govuk-heading-l govuk-!-margin-top-2">{{entry.fields.Name}}</h1>
 <div class="govuk-grid-row">

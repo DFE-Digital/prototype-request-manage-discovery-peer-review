@@ -11,12 +11,12 @@ var NotifyClient = require('notifications-node-client').NotifyClient,
 
 const { v4: uuidv4 } = require('uuid')
 
-var moment = require('moment');
-var momentBusinessDays = require("moment-business-days")
+var moment = require('moment')
+var momentBusinessDays = require('moment-business-days')
 
 var Airtable = require('airtable')
-var axios = require('axios');
-const { NULL } = require('mysql/lib/protocol/constants/types');
+var axios = require('axios')
+const { NULL } = require('mysql/lib/protocol/constants/types')
 var base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
   'appiBjyMzgmJEGFqn',
 )
@@ -343,7 +343,7 @@ router.post('/book/summary', function (req, res) {
         if (req.session.data['cya'] === 'true') {
           return res.redirect('/book/check')
         } else {
-          return res.redirect('/book/code')
+          return res.redirect('/book/start-date')
         }
       })
     },
@@ -395,39 +395,39 @@ router.post('/book/code', function (req, res) {
 })
 
 router.get('/book/start-date', function (req, res) {
-  if (process.env.abtest === 'b') {
-    res.render('book/start-date/b')
-  } else {
-    res.render('book/start-date/index')
-  }
+  // if (process.env.abtest === 'b') {
+  //   res.render('book/start-date/b')
+  // } else {
+  res.render('book/start-date/index')
+  // }
 })
 
 router.post('/book/start-date', function (req, res) {
-  if (process.env.abtest === 'b') {
-    // Yes no and Date
-    if (!req.session.data['disco-start']) {
-      var err = true
-      return res.render('book/start-date/b', { err })
-    } else if (
-      req.session.data['disco-start'] === 'Yes' &&
-      (!req.session.data['disco-start-day'] ||
-        !req.session.data['disco-start-month'] ||
-        !req.session.data['disco-start-year'])
-    ) {
-      var errcode = true
-      return res.render('book/start-date/b', { errcode })
-    }
-  } else {
-    // Just date
-    if (
-      !req.session.data['disco-start-day'] ||
-      !req.session.data['disco-start-month'] ||
-      !req.session.data['disco-start-year']
-    ) {
-      var err = true
-      return res.render('book/start-date/index', { err })
-    }
+  // if (process.env.abtest === 'b') {
+  //   // Yes no and Date
+  //   if (!req.session.data['disco-start']) {
+  //     var err = true
+  //     return res.render('book/start-date/b', { err })
+  //   } else if (
+  //     req.session.data['disco-start'] === 'Yes' &&
+  //     (!req.session.data['disco-start-day'] ||
+  //       !req.session.data['disco-start-month'] ||
+  //       !req.session.data['disco-start-year'])
+  //   ) {
+  //     var errcode = true
+  //     return res.render('book/start-date/b', { errcode })
+  //   }
+  // } else {
+  // Just date
+  if (
+    !req.session.data['disco-start-day'] ||
+    !req.session.data['disco-start-month'] ||
+    !req.session.data['disco-start-year']
+  ) {
+    var err = true
+    return res.render('book/start-date/index', { err })
   }
+  // }
 
   return res.redirect('/book/end-date')
 })
@@ -626,7 +626,7 @@ router.post('/book/sro', function (req, res) {
     var errcode = true
     return res.render('book/sro/index', { errcode })
   } else {
-    return res.redirect('/book/bp')
+    return res.redirect('/book/delivery')
   }
 })
 
@@ -765,7 +765,7 @@ router.post('/book/process-request', function (req, res) {
         notify
           .sendEmail(process.env.SATTemplateId, process.env.recipient, {
             personalisation: {
-              title: record.fields.Name,
+              nameOfDiscovery: record.fields.Name,
               summary: record.fields.Description,
               id: record.fields.ID,
             },
@@ -790,32 +790,32 @@ router.post('/book/process-request', function (req, res) {
 /// /admin/
 router.get('/admin', function (req, res) {
   axios
-  .all([
-    getData('New'),
-    getData('Rejected'),
-    getData('Active'),
-    getData('Completed'),
-    getData('Cancelled'),
-  ])
-  .then(
-    axios.spread(
-      (
-        newrecords,
-        rejectedrecords,
-        activerecords,
-        completedrecords,
-        cancelledrecords,
-      ) => {
-        res.render('admin/index.html', {
+    .all([
+      getData('New'),
+      getData('Rejected'),
+      getData('Active'),
+      getData('Completed'),
+      getData('Cancelled'),
+    ])
+    .then(
+      axios.spread(
+        (
           newrecords,
           rejectedrecords,
           activerecords,
           completedrecords,
-          cancelledrecords
-        })
-      },
-    ),
-  )
+          cancelledrecords,
+        ) => {
+          res.render('admin/index.html', {
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+          })
+        },
+      ),
+    )
 })
 
 /// Gets view by status of the requests
@@ -868,9 +868,8 @@ router.get('/admin/dismiss-notification/:type/:id/:entry', function (req, res) {
   if (type === 'choosedate') {
     return res.redirect('/admin/entry/providedates/' + id)
   }
-
-  if (type === 'add-date-option') {
-    return res.redirect('/admin/entry/'+ id)
+  else{
+    return res.redirect('/admin/entry/' + id)
   }
 })
 
@@ -878,53 +877,43 @@ router.post('/admin/send-notification/:type/:id', function (req, res) {
   var type = req.params.type
   var id = req.params.id
 
-  axios
-    .all([
-      getDataByID(id),
-      getDates(id)
-    ])
-    .then(
-      axios.spread((entryx,dates) => {
-        entry = entryx[0]
+  axios.all([getDataByID(id), getDates(id)]).then(
+    axios.spread((entryx, dates) => {
+      entry = entryx[0]
 
+      if (type === 'choosedate') {
+        // format the date
 
-        
-        if (type === 'choosedate') {
+        var datef = new Date(dates[0].fields.Date)
 
-          // format the date
+        var formattedDate = moment(datef).format('dddd D MMMM YYYY')
 
-          var datef= new Date(dates[0].fields.Date)
+        console.log(formattedDate)
 
-            var formattedDate = moment(datef).format("dddd D MMMM YYYY")
-
-          console.log(formattedDate)
-
-
-          // Sends notification to the requestor that they can now select a date
-          notify
-            .sendEmail(
-              process.env.pick_some_dates_template_id,
-              process.env.recipient,
-              {
-                personalisation: {
-                  id: id,
-                  nameOfDiscovery: entryx[0].fields.Name,
-                  date: formattedDate,
-                  time: dates[0].fields.Time
-                },
+        // Sends notification to the requestor that they can now select a date
+        notify
+          .sendEmail(
+            process.env.pick_some_dates_template_id,
+            process.env.recipient,
+            {
+              personalisation: {
+                id: id,
+                nameOfDiscovery: entryx[0].fields.Name,
+                date: formattedDate,
+                time: dates[0].fields.Time,
               },
-            )
-            .then((response) => console.log('Notification: ' + response.statusText))
-            .catch((err) => console.error(err))
-        }
-      
-        req.session.data[type + '-' + id] = 'Message sent'
+            },
+          )
+          .then((response) =>
+            console.log('Notification: ' + response.statusText),
+          )
+          .catch((err) => console.error(err))
+      }
 
+      req.session.data[type + '-' + id] = 'Message sent'
+    }),
+  )
 
-      }),
-    )
-
-  
   return res.redirect('/admin/entry/providedates/' + id)
 })
 
@@ -946,7 +935,7 @@ router.get('/admin/entry/:id', async function (req, res) {
       getArtefacts(id),
       getPanel(id),
       getObservers(id),
-      getDates(id)
+      getDates(id),
     ])
     .then(
       axios.spread((entryx, team, artefacts, panel, observers, dates) => {
@@ -958,7 +947,7 @@ router.get('/admin/entry/:id', async function (req, res) {
           view,
           panel,
           observers,
-          dates
+          dates,
         })
       }),
     )
@@ -1020,14 +1009,13 @@ router.post('/admin/entry/amend/:view/:id/:entry', async function (req, res) {
     //availabletime
     var tempTimes = req.session.data['availabletime']
 
-
     base('Reviews').update(
       [
         {
           id: entry,
           fields: {
             ReviewDate: optiondate,
-            ReviewTime: tempTimes
+            ReviewTime: tempTimes,
           },
         },
       ],
@@ -1042,11 +1030,70 @@ router.post('/admin/entry/amend/:view/:id/:entry', async function (req, res) {
       },
     )
 
+    await wait(1500)
+
+    req.session.data['add-date-option-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-date-option/' + id + '/' + entry,
+    )
+  }
+
+  if (view === 'add-project-code') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProjectCode: req.body.code_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
 
     await wait(1500)
 
-      req.session.data['add-date-option-'+id] = "Yes"
-    return res.redirect('/admin/entry/amend/add-date-option/' + id+'/'+entry)
+    req.session.data['add-project-code-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-project-code/' + id + '/' + entry,
+    )
+  }
+
+  if (view === 'add-business-partner') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            BusinessPartnerName: req.body.bp_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+
+    await wait(1500)
+
+    req.session.data['add-business-partner-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-business-partner/' + id + '/' + entry,
+    )
   }
 
   if (view === 'remove-date-option') {
@@ -1085,9 +1132,6 @@ router.post('/admin/entry/amend/:view/:id/:entry', async function (req, res) {
     )
     return res.redirect('/admin/entry/panel/' + id)
   }
-
-
-
 
   if (view === 'remove-panel-member') {
     base('ReviewPanel').destroy([entry], function (err, records) {
@@ -1516,8 +1560,12 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
-  var businessDays = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(5)._d 
-    var businessDaysPlus1 = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(6)._d 
+  var businessDays = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(5)
+    ._d
+  var businessDaysPlus1 = momentBusinessDays(
+    new Date(),
+    'DD-MM-YYYY',
+  ).businessAdd(6)._d
 
   await wait(1500)
 
@@ -1540,7 +1588,9 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
           view,
           panel,
           observers,
-          dates,businessDays, businessDaysPlus1
+          dates,
+          businessDays,
+          businessDaysPlus1,
         })
       }),
     )
@@ -1637,113 +1687,109 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     return res.redirect('/admin/entry/review/' + id)
   }
 
-    // Update the status of the review
-    if (view === 'updatedonewell') {
-      var comments = req.body.review_donewell
-  
-      base('Reviews').update(
-        [
-          {
-            id: entry,
-            fields: {
-              ReviewDoneWell: comments,
-            },
+  // Update the status of the review
+  if (view === 'updatedonewell') {
+    var comments = req.body.review_donewell
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewDoneWell: comments,
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('ReviewDoneWell'))
-          })
         },
-      )
-  
-      return res.redirect('/admin/entry/review/' + id)
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ReviewDoneWell'))
+        })
+      },
+    )
 
-    if (view === 'editimprove') {
-      var comments = (req.body.review_improve === "" ? null : req.body.review_improve)
+    return res.redirect('/admin/entry/review/' + id)
+  }
 
-      console.log(comments)
-  
-      base('Reviews').update(
-        [
-          {
-            id: entry,
-            fields: {
-              ReviewImprove: comments,
-            },
+  if (view === 'editimprove') {
+    var comments =
+      req.body.review_improve === '' ? null : req.body.review_improve
+
+    console.log(comments)
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewImprove: comments,
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('ReviewImprove'))
-          })
         },
-      )
-  
-      return res.redirect('/admin/entry/review/' + id)
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ReviewImprove'))
+        })
+      },
+    )
 
-    if (view === 'submitreport') {
-     
-      base('Reviews').update(
-        [
-          {
-            id: entry,
-            fields: {
-              Status: "SAT Check",
-            },
+    return res.redirect('/admin/entry/review/' + id)
+  }
+
+  if (view === 'submitreport') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Status: 'SAT Check',
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('Status'))
-          })
         },
-      )
-  
-      return res.redirect('/admin/entry/' + id)
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Status'))
+        })
+      },
+    )
 
-    if (view === 'satsubmit') {
-     
-      base('Reviews').update(
-        [
-          {
-            id: entry,
-            fields: {
-              Status: "Complete",
-            },
+    return res.redirect('/admin/entry/' + id)
+  }
+
+  if (view === 'satsubmit') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Status: 'Complete',
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('Status'))
-          })
         },
-      )
-  
-      return res.redirect('/admin/entry/' + id)
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Status'))
+        })
+      },
+    )
 
-
-    
+    return res.redirect('/admin/entry/' + id)
+  }
 
   if (view === 'process') {
     // This is the first task to accept or reject.
@@ -1812,6 +1858,58 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     )
     return res.redirect('/admin/entry/rejected')
   }
+
+  if (view === 'send-survey' && req.body.sendsurvey === "Yes") {
+    console.log('send survey')
+    axios
+      .all([getDataByID(id), getTeam(id), getPanel(id), getObservers(id)])
+      .then(
+        axios.spread((entryx, team, panel, observers) => {
+          entry = entryx[0]
+
+          notify
+            .sendEmail(process.env.surveytemplateid, process.env.recipient, {
+              personalisation: {
+                nameOfDiscovery: entry.fields.Name,
+                id: entry.fields.ID,
+              },
+            })
+            .then((response) =>
+              console.log('Notification: ' + response.statusText),
+              
+            )
+            .catch((err) => console.error(err))
+
+
+            base('Reviews').update(
+              [
+                {
+                  id: entry.id,
+                  fields: {
+                    SurveySentDate: new Date()
+                  },
+                },
+              ],
+              function (err, records) {
+                if (err) {
+                  console.error(err)
+                  return
+                }
+                records.forEach(function (record) {
+                  console.log(record.get('Status'))
+                })
+              },
+            )
+
+          req.session.data['send-survey-' + id] = 'Yes'
+          return res.redirect('/admin/entry/send-survey/' + id)
+        }),
+      )
+      
+  }
+  else{
+    return res.redirect('/admin/entry/' + id)
+  }
 })
 
 // ANALYSIS
@@ -1847,14 +1945,27 @@ router.get('/reports', function (req, res) {
 router.get('/report/:id', function (req, res) {
   var id = req.params.id
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
-      entry = entryx[0]
-      return res.render('reports/report.html', {
-        entry,
-      })
-    }),
-  )
+  axios
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
+    .then(
+      axios.spread((entryx, team, artefacts, panel, observers) => {
+        entry = entryx[0]
+        res.render('reports/report.html', {
+          entry,
+          team,
+          artefacts,
+          panel,
+          observers,
+        })
+      }),
+    )
+
 })
 
 // MANAGE

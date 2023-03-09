@@ -13,9 +13,6 @@
    <p>{{entry.fields.CancelledReason}}</p>
    <p class="govuk-body-s">Cancelled on {{entry.fields.CancelledDate | date('D MMMM YYYY')}} by Service Assessment Team</p>
 </div>
-{% elseif entry.fields.Status === "Complete"%}
-<p>There are no tasks to action as this review is complete.</p>
-<p>You can <a href="/report/{{entry.fields.ID}}">view the report</a>.</p>
 {% else%}
 <table class="dfeuk-table dfeuk-table-responsive dfeuk-table--smaller">
    <thead class="dfeuk-table__head">
@@ -44,7 +41,8 @@
          <th scope="row" class="dfeuk-table__cell">
             {% if entry.fields.Status !== "New" %}
             <a href="/admin/entry/amend/add-date-option/{{entry.fields.ID}}/{{entry.id}}">
-            Update review date</a>{%else%}Update review date{% endif%}
+            {% if entry.fields.ReviewDate%}Update{% else%}Add{% endif%} review date</a>{%else%}
+            {% if entry.fields.ReviewDate%}Update{% else%}Add{% endif%} review date{% endif%}
          </th>
          <td class="dfeuk-table__cell">Service Assurance Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
@@ -60,22 +58,50 @@
          </td>
       </tr>
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell"> {% if entry.fields.Status !== "New" %}<a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}</th>
-         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/amend/add-project-code/{{entry.fields.ID}}/{{entry.id}}">
+            {% if entry.fields.ProjectCode%}Update{% else%}Add{% endif%} project code</a>{%else%}
+            {% if entry.fields.ProjectCode%}Update{% else%}Add{% endif%}  project code{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
             {% if entry.fields.Status === "New"%}
             <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
             {% elseif entry.fields.Status === "Complete"%}
             <strong class="govuk-tag govuk-tag--green">Complete</strong>
-            {% elseif (team.length) %}
-            <strong class="govuk-tag govuk-tag--blue">{{team.length}} {% if team.length === 1%}person{% else%}people{%endif%} added</strong>
-            {% else %}
+            {% elseif not entry.fields.ProjectCode %}
             <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
             {% endif %}
          </td>
       </tr>
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/panel/{{entry.fields.ID}}">Panel and observers</a>{% else%}Panel and observers{% endif%}</th>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/amend/add-business-partner/{{entry.fields.ID}}/{{entry.id}}">
+            {% if entry.fields.BusinessPartnerName%}Update{% else%}Add{% endif%} DDaT business partner</a>{%else%}
+            {% if entry.fields.BusinessPartnerName%}Update{% else%}Add{% endif%}  DDaT business partner{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif not entry.fields.BusinessPartnerName %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/panel/{{entry.fields.ID}}">Panel and observers</a>{% else%}Panel and observers{% endif%}
+         </th>
          <td class="dfeuk-table__cell">Service Assurance Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
             {% if entry.fields.Status === "New"%}
@@ -83,29 +109,18 @@
             {% elseif entry.fields.Status === "Complete"%}
             <strong class="govuk-tag govuk-tag--green">Complete</strong>
             {% elseif (panel.length or observers.length) %}
-            <strong class="govuk-tag govuk-tag--blue">{{panel.length}} {% if panel.length === 1%}person{% else%}people{%endif%} added</strong>
+            <strong class="govuk-tag govuk-tag--blue">{{panel.length}}
+            {% if panel.length === 1%}person{% else%}people{%endif%} added</strong>
             {% else %}
             <strong class="govuk-tag govuk-tag--grey">Not started</strong>
             {% endif %}
          </td>
       </tr>
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/files/{{entry.fields.ID}}">Add supporting artefacts</a>{% else%}Add supporting artefacts{% endif%}</th>
-         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
-         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-            {% if entry.fields.Status === "New"%}
-            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
-            {% elseif entry.fields.Status === "Complete"%}
-            <strong class="govuk-tag govuk-tag--green">Complete</strong>
-            {% elseif (artefacts.length) %}
-            <strong class="govuk-tag govuk-tag--blue">{{artefacts.length}} {% if artefacts.length === 1%}artefact{% else%}artefacts{%endif%}</strong>
-            {% else %}
-            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-            {% endif %}
-         </td>
-      </tr>
-      <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" %}<a href="/admin/entry/slack/{{entry.fields.ID}}">Panel Slack channel</a>{% else%}Panel Slack channel{% endif%}</th>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/slack/{{entry.fields.ID}}">Panel Slack channel</a>{% else%}Panel Slack channel{% endif%}
+         </th>
          <td class="dfeuk-table__cell">Service Assurance Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
             {% if entry.fields.Status === "New"%}
@@ -120,36 +135,97 @@
          </td>
       </tr>
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status !== "New" or entry.fields.Status !== "Complete" or  entry.fields.Status !== "SAT Check"%}<a href="/admin/entry/start-peer-review/{{entry.fields.ID}}">Open peer review</a>{% else%}Open peer review{% endif%}</th>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/team/{{entry.fields.ID}}">Update details of the discovery team</a>{% else%}Update details of the discovery team{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (team.length) %}
+            <strong class="govuk-tag govuk-tag--blue">{{team.length}}
+            {% if team.length === 1%}person{% else%}people{%endif%} added</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" %}
+            <a href="/admin/entry/files/{{entry.fields.ID}}">Add supporting artefacts</a>{% else%}Add supporting artefacts{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+            {% if entry.fields.Status === "New"%}
+            <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif entry.fields.Status === "Complete"%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif (artefacts.length) %}
+            <strong class="govuk-tag govuk-tag--blue">{{artefacts.length}}
+            {% if artefacts.length === 1%}artefact{% else%}artefacts{%endif%}</strong>
+            {% else %}
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" and entry.fields.Status !== "Complete" and  entry.fields.Status !== "SAT Check"%}
+            <a href="/admin/entry/start-peer-review/{{entry.fields.ID}}">Start peer review</a>{% else%}Start peer review{% endif%}
+         </th>
          <td class="dfeuk-table__cell">Service Assurance Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-            {% if entry.fields.Status === "Review" or entry.fields.Status === "Complete" or  entry.fields.Status === "SAT Check"  %}
+            {% if entry.fields.Status === "Review" or entry.fields.Status === "Complete" or entry.fields.Status === "SAT Check" %}
             <strong class="govuk-tag govuk-tag--green">Complete</strong>
             {% elseif entry.fields.Status === "Pre-Review"%}
-            <strong class="govuk-tag govuk-tag--grey">Not started</strong> 
+            <strong class="govuk-tag govuk-tag--grey">Not started</strong>
             {% else %}
             <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
             {% endif %}
          </td>
       </tr>
-      {% if entry.fields.Status === "Review"%}
+     {% if entry.fields.Status === "Review"%}
       {% set hasStarted = (entry.fields.Outcome or entry.fields.ReviewComments or entry.fields.ReviewDoneWell or entry.fields.ReviewImprove)%}
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status === "Review"%}<a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>{% else%}Report{% endif%}</th>
-         <td class="dfeuk-table__cell">Becky Morton</td>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status !== "New" and entry.fields.Status !== "Complete" and  entry.fields.Status !== "SAT Check"%}
+            <a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>{%else%}Complete report
+            {%endif%}
+         </th>
+         <td class="dfeuk-table__cell">
+            Peer review panel
+         </td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-            {% if hasStarted %}
+         {% if entry.fields.Status === "Complete" %}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+            {% elseif entry.fields.Status === "New"%}
+                <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+            {% elseif hasStarted %}
             <strong class="govuk-tag govuk-tag--blue">In progress</strong>
             {% elseif not hasStarted%}
             <strong class="govuk-tag govuk-tag--grey">Not started</strong>
-            {% elseif entry.fields.Status === "Complete" %}
-            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+   
             {% endif %}
          </td>
       </tr>
       <tr class="dfeuk-table__row">
          <th scope="row" class="dfeuk-table__cell">Submit report</th>
-         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell">
+            {% set leadExists = 'false'%}
+            {% for person in panel %}
+            {% if leadExists === 'false'%}
+            {% if person.fields.Role === "Lead reviewer"%}
+            {{person.fields.Name}}
+            {% set leadExists = 'true'%}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% if leadExists === 'false'%}No lead on panel{% endif %}
+         </td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
             {% if entry.fields.Status === "Review"%}
             <strong class="govuk-tag govuk-tag--grey">Not started</strong>
@@ -173,36 +249,46 @@
             {% endif %}
          </td>
       </tr>
-      {%endif%}
+      {% endif %}
 
-
-       {% if entry.fields.Status === "SAT Check"%}
-        <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell"><a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a></th>
-         <td class="dfeuk-table__cell">Becky Morton</td>
+      {% if entry.fields.Status === "SAT Check"%}
+      <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            <a href="/admin/entry/review/{{entry.fields.ID}}">Complete report</a>
+         </th>
+         <td class="dfeuk-table__cell">Peer review panel</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-           
             <strong class="govuk-tag govuk-tag--green">Complete</strong>
-     
          </td>
       </tr>
       <tr class="dfeuk-table__row">
          <th scope="row" class="dfeuk-table__cell">Submit report</th>
-         <td class="dfeuk-table__cell">Becky Morton</td>
+         <td class="dfeuk-table__cell">
+            {% set leadExists = 'false'%}
+            {% for person in panel %}
+            {% if leadExists === 'false'%}
+            {% if person.fields.Role === "Lead reviewer"%}
+            {{person.fields.Name}}
+            {% set leadExists = 'true'%}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% if leadExists === 'false'%}No lead on panel{% endif %}
+         </td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
-           
             <strong class="govuk-tag govuk-tag--green">Complete</strong>
-          
          </td>
       </tr>
       <tr class="dfeuk-table__row">
-         <th scope="row" class="dfeuk-table__cell">{% if entry.fields.Status === "SAT Check"%}<a href="/admin/entry/review/{{entry.fields.ID}}">Check and approve report</a>{% endif%}</th>
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status === "SAT Check"%}
+            <a href="/admin/entry/review/{{entry.fields.ID}}">Check and approve report</a>{% endif%}
+         </th>
          <td class="dfeuk-table__cell">Service Assessment Team</td>
          <td class="dfeuk-table__cell dfeuk-table__header--numeric">
             <strong class="govuk-tag govuk-tag--grey">Not Started</strong>
          </td>
       </tr>
-      
       <tr class="dfeuk-table__row">
          <th scope="row" class="dfeuk-table__cell">Accept review</th>
          <td class="dfeuk-table__cell">{{entry.fields.RequestedBy}}</td>
@@ -217,6 +303,25 @@
          </td>
       </tr>
       {%endif%}
+   {% if entry.fields.Status === "Complete"%}
+            <tr class="dfeuk-table__row">
+         <th scope="row" class="dfeuk-table__cell">
+            {% if entry.fields.Status === "Complete"%}
+            <a href="/admin/entry/send-survey/{{entry.fields.ID}}">Send customer satisfaction survey</a>
+            {%else%}Send customer satisfaction survey{% endif%}
+         </th>
+         <td class="dfeuk-table__cell">Service Assurance Team</td>
+         <td class="dfeuk-table__cell dfeuk-table__header--numeric">
+             {% if entry.fields.SurveySentDate%}
+            <strong class="govuk-tag govuk-tag--green">Complete</strong>
+             {% elseif entry.fields.Status !== "Complete"%}
+             <strong class="govuk-tag govuk-tag--grey">Cannot start yet</strong>
+             {% else %}
+             <strong class="govuk-tag govuk-tag--grey">Not started</strong>
+            {% endif %}
+         </td>
+      </tr>
+         {%endif%}
    </tbody>
 </table>
 {% endif%}
