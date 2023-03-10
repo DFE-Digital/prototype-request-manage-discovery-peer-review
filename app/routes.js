@@ -561,7 +561,17 @@ router.get('/book/dates', function (req, res) {
 
   // Is estimated end date before end of week????
 
-  if (req.session.data['disco-end'] === 'No') {
+  var id = req.session.data['ID']
+
+  axios
+  .all([
+    getDataByID(id)
+  ])
+  .then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+
+  if (entry.fields.EndDateYN === 'No') {
     dates.push({
       week: weeks5.toLocaleDateString('en-GB', {
         day: 'numeric',
@@ -657,7 +667,117 @@ router.get('/book/dates', function (req, res) {
     req.session.data['hasdates'] = 'no'
   }
   console.log(req.session.data['hasdates'])
-  res.render('book/dates/index.html', { dates })
+  res.render('book/dates/index.html', { dates, entry })
+
+}),
+)
+})
+
+router.get('/book/dates', function(req, res){
+
+  var weeks5 = getMonday(addWeeksToDate(new Date(), 5).toISOString())
+  var weeks6 = getMonday(addWeeksToDate(new Date(), 6).toISOString())
+  var weeks7 = getMonday(addWeeksToDate(new Date(), 7).toISOString())
+  var weeks8 = getMonday(addWeeksToDate(new Date(), 8).toISOString())
+  var weeks9 = getMonday(addWeeksToDate(new Date(), 9).toISOString())
+  var weeks10 = getMonday(addWeeksToDate(new Date(), 10).toISOString())
+
+  //Get monday of the week
+
+  let dates = []
+
+  // Is estimated end date before end of week????
+
+  if (req.session.data['disco-end'] === 'No') {
+    dates.push({
+      week: weeks5.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks6.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks7.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks8.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks9.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks10.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  } else {
+    if (endDateEstimated >= weeks5) {
+      dates.push({
+        week: weeks5.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks6) {
+      dates.push({
+        week: weeks6.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks7) {
+      dates.push({
+        week: weeks7.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks8) {
+      dates.push({
+        week: weeks8.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks9) {
+      dates.push({
+        week: weeks9.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks10) {
+      dates.push({
+        week: weeks10.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+  }
+  console.log(dates)
+
+  req.session.data['dates'] = dates
 })
 
 router.post('/book/dates', function (req, res) {
@@ -2225,6 +2345,7 @@ router.get('/manage/draft/:record', function (req, res) {
 
       // Load the draft into session
       req.session.data['draftID'] = entry.id
+      req.session.data['ID'] = entry.fields.ID
       req.session.data['title'] = entry.fields.Name
 
       req.session.data['retrieved'] = 'Yes'
