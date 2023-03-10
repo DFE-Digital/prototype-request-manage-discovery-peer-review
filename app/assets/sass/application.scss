@@ -1547,3 +1547,9 @@ p.formatted-content {
   color: $color_dfeuk-white;
   @include dfeuk-typography-responsive(19);
 }
+
+
+.app-task-list__task-name{width: 30%; display: inline-block; }
+.app-task-list__task-value{display: inline-block; width: 49%; }
+
+.app-task-list__task-tag{display: inline-block;  width: 20%; }

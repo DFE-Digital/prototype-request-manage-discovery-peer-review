@@ -1,0 +1,238 @@
+{% extends "layouts/main.html" %}
+{% block pageTitle %}
+Tasks – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+{% set pageSection = "Book"%}
+{% block beforeContent %}
+{% endblock%}
+{% block content %}
+{%if (data['disco-start-month'] and data['disco-start-day'] and data['disco-start-year']) %}
+{% set dstartDate = (data['disco-start-month']+"/"+data['disco-start-day']+"/"+data['disco-start-year']) %}
+{% endif %}
+
+{% set count = 0 %}
+{%if entry.fields.Name %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.Description %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.StartDate %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.EndDateYN %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.RequestedWeeks %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.Portfolio %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.DeputyDirector %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.SROSameAsDD %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.DeliveryManagerYN %}{% set count = (count + 1) %}{%endif%}
+{% if entry.fields.ProductManagerYN %}{% set count = (count + 1) %}{%endif%}
+
+<div class="govuk-grid-row">
+   <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Request a discovery peer review</span>
+      <h1 class="govuk-heading-l">
+         {{entry.fields.Name}}
+      </h1>
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Request incomplete</h2>
+      <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{count}} of 10 sections.</p>
+      <ol class="app-task-list">
+         <li>
+            <h2 class="app-task-list__section">
+               <span class="app-task-list__section-number">1. </span> Details of your discovery
+            </h2>
+            <ul class="app-task-list__items">
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/service" aria-describedby="eligibility-status">Discovery name</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {{entry.fields.Name}}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.Name %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+                  </span>
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/summary" aria-describedby="read-declaration-status">Summary</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {{entry.fields.Description}}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.Description %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+                  </span>
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/start-date" aria-describedby="read-declaration-status">Start date</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                    {% if entry.fields.StartDate %}
+                  {{entry.fields.StartDate | date('D MMMM YYYY')}}
+                  {% endif %}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.StartDate %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+                  </span>
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/end-date" aria-describedby="read-declaration-status">End date</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {% if entry.fields.EndDateYN === "Yes"%}
+                  {{entry.fields.EndDate | date('D MMMM YYYY')}}
+                  {% elseif entry.fields.EndDateYN === "No"%}
+                  End date not known
+
+                  {% endif%}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.EndDateYN %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+                  </span>
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/dates" aria-describedby="read-declaration-status">Requested weeks</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                     {% if entry.fields.RequestedWeeks %}
+                     <ul class="govuk-list">
+                        {% for item in (entry.fields.RequestedWeeks | split(",")) %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                     </ul>
+                     {% endif%}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.EndDateYN %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+                  </span>
+               </li>
+            </ul>
+         </li>
+         <li>
+            <h2 class="app-task-list__section">
+               <span class="app-task-list__section-number">2. </span> Product and Delivery
+            </h2>
+            <ul class="app-task-list__items">
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/portfolio" aria-describedby="read-declaration-status">Portfolio</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {{entry.fields.Portfolio}}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.Portfolio %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/dd" aria-describedby="read-declaration-status">Deputy director</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {{entry.fields.DeputyDirector}}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.DeputyDirector %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/sro" aria-describedby="read-declaration-status">Senior responsible officer</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {{entry.fields.SROName}}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.SROName %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/product" aria-describedby="read-declaration-status">Product manager</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {% if entry.fields.ProductManagerYN === "Yes" %}
+                  {{entry.fields.ProductManagerYN }}
+                  {%elseif entry.fields.ProductManagerYN === "No" %}
+                  No product manager
+                  {% else%}
+                  {% endif%}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.ProductManagerYN %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+               </li>
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-name">
+                  <a href="/book/delivery" aria-describedby="read-declaration-status">Delivery manager</a>
+                  </span>
+                  <span class="app-task-list__task-value">
+                  {% if entry.fields.DeliveryManagerYN === "Yes" %}
+                  {{entry.fields.DeliveryManagerName }}
+                  {%elseif entry.fields.DeliveryManagerYN === "No" %}
+                  No delivery manager
+                  {% else%}
+                  {% endif%}
+                  </span>
+                  <span class="app-task-list__task-tag">
+                  {% if entry.fields.DeliveryManagerYN %}
+                  <strong class="govuk-tag app-task-list__tag" id="read-declaration-status">Completed</strong>
+                  {%else%}
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="list-convictions-status">Not started</strong>
+                  {% endif%}
+               </li>
+            </ul>
+         </li>
+         <li>
+            <h2 class="app-task-list__section">
+               <span class="app-task-list__section-number">3. </span> Submit
+            </h2>
+            {% if count !== 10 %}
+            <ul class="app-task-list__items">
+               <li class="app-task-list__item">
+                  <span class="app-task-list__task-value">Submit request</span>
+                  <strong class="govuk-tag govuk-tag--grey app-task-list__tag" id="submit-pay-status">Cannot start yet</strong>
+               </li>
+            </ul>
+            {%else%}
+            <p>You've completed all the information needed to book a request.</p>
+            <p>If any of these details change before your peer review, you can update them from the Manage option in the site navigation.{# site navigation is the name of the header nav so for accessibility supports understanding where it is as it's named, 'site navigation' for assisitve tech to understand #}</p>
+            <form action="/book/process-request" method="post">
+               <button class="govuk-button" data-module="govuk-button">Submit request</button>
+            </form>
+            {% endif%}
+         </li>
+      </ol>
+   </div>
+</div>
+{% endblock %}

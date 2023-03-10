@@ -257,7 +257,7 @@ router.get('/settings/cross-gov', function (req, res) {
 
 // BOOK
 router.get('/book', function (req, res) {
-  // req.session.data = {}
+   req.session.data = {}
 
   req.session.data['retrieved'] = 'No'
 
@@ -265,6 +265,26 @@ router.get('/book', function (req, res) {
     axios.spread((draftrecords) => {
       return res.render('book/index', {
         draftrecords,
+      })
+    }),
+  )
+})
+
+// Retrieved booking
+router.get('/book/tasks', function (req, res) {
+  // req.session.data = {}
+
+  if(!req.session.data['draftID'])
+  {
+    return res.redirect('/book')
+  }
+
+  var id = req.session.data['draftID']
+
+  axios.all([getEntryByPrimaryID(id)]).then(
+    axios.spread((entry) => {
+      return res.render('book/tasks/index', {
+        entry,
       })
     }),
   )
@@ -403,22 +423,6 @@ router.get('/book/start-date', function (req, res) {
 })
 
 router.post('/book/start-date', function (req, res) {
-  // if (process.env.abtest === 'b') {
-  //   // Yes no and Date
-  //   if (!req.session.data['disco-start']) {
-  //     var err = true
-  //     return res.render('book/start-date/b', { err })
-  //   } else if (
-  //     req.session.data['disco-start'] === 'Yes' &&
-  //     (!req.session.data['disco-start-day'] ||
-  //       !req.session.data['disco-start-month'] ||
-  //       !req.session.data['disco-start-year'])
-  //   ) {
-  //     var errcode = true
-  //     return res.render('book/start-date/b', { errcode })
-  //   }
-  // } else {
-  // Just date
   if (
     !req.session.data['disco-start-day'] ||
     !req.session.data['disco-start-month'] ||
@@ -427,9 +431,49 @@ router.post('/book/start-date', function (req, res) {
     var err = true
     return res.render('book/start-date/index', { err })
   }
-  // }
 
-  return res.redirect('/book/end-date')
+  var draftID = req.session.data['draftID']
+  console.log(draftID)
+
+  var startDate = null
+
+  startDate =
+    req.session.data['disco-start-month'] +
+    '/' +
+    req.session.data['disco-start-day'] +
+    '/' +
+    req.session.data['disco-start-year']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          StartDate: startDate,
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/end-date')
+      })
+    },
+  )
+})
+
+router.get('/book/end-date', function (req, res) {
+  // if (process.env.abtest === 'b') {
+  //   res.render('book/start-date/b')
+  // } else {
+  res.render('book/end-date/index')
+  // }
 })
 
 router.post('/book/end-date', function (req, res) {
@@ -446,7 +490,43 @@ router.post('/book/end-date', function (req, res) {
     return res.render('book/end-date/index', { errcode })
   }
 
-  return res.redirect('/book/dates')
+  var draftID = req.session.data['draftID']
+  console.log(draftID)
+
+  var endDate = null
+
+  if (req.session.data['disco-end'] === 'Yes') {
+    endDate =
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+  }
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          EndDate: endDate,
+          EndDateYN: req.session.data['disco-end'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/dates')
+      })
+    },
+  )
 })
 
 router.get('/book/dates', function (req, res) {
@@ -593,7 +673,36 @@ router.post('/book/dates', function (req, res) {
     err = true
     return res.render('book/dates/index', { dates, err })
   } else {
-    return res.redirect('/book/portfolio')
+    var requestedWeeks = ''
+
+    requestedWeeks = req.session.data['reviewWeek']
+      ? req.session.data['reviewWeek'].toString()
+      : 'None available as end date is within next 5 weeks'
+
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            RequestedWeeks: requestedWeeks,
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/portfolio')
+        })
+      },
+    )
   }
 })
 
@@ -603,7 +712,31 @@ router.post('/book/portfolio', function (req, res) {
     return res.render('book/portfolio/index', { err })
   }
 
-  return res.redirect('/book/dd')
+  var draftID = req.session.data['draftID']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          Portfolio: req.session.data['portfolio'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/dd')
+      })
+    },
+  )
+
 })
 
 router.post('/book/dd', function (req, res) {
@@ -612,7 +745,31 @@ router.post('/book/dd', function (req, res) {
     return res.render('book/dd/index', { err })
   }
 
-  return res.redirect('/book/sro')
+  var draftID = req.session.data['draftID']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          DeputyDirector: req.session.data['dd'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/sro')
+      })
+    },
+  )
+
 })
 
 router.post('/book/sro', function (req, res) {
@@ -626,21 +783,52 @@ router.post('/book/sro', function (req, res) {
     var errcode = true
     return res.render('book/sro/index', { errcode })
   } else {
-    return res.redirect('/book/delivery')
+    var draftID = req.session.data['draftID']
+
+    var sroName = req.session.data['sro-name']
+
+    if (req.session.data['sro'] === 'Yes') {
+      sroName = req.session.data['dd']
+    }
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            SROName: sroName,
+            SROSameAsDD: req.session.data['sro'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/product')
+        })
+      },
+    )
+
   }
 })
 
-router.post('/book/bp', function (req, res) {
-  if (!req.session.data['bp']) {
-    var err = true
-    return res.render('book/bp/index', { err })
-  } else if (req.session.data['bp'] === 'Yes' && !req.session.data['bp-name']) {
-    var errcode = true
-    return res.render('book/bp/index', { errcode })
-  } else {
-    return res.redirect('/book/delivery')
-  }
-})
+// router.post('/book/bp', function (req, res) {
+//   if (!req.session.data['bp']) {
+//     var err = true
+//     return res.render('book/bp/index', { err })
+//   } else if (req.session.data['bp'] === 'Yes' && !req.session.data['bp-name']) {
+//     var errcode = true
+//     return res.render('book/bp/index', { errcode })
+//   } else {
+//     return res.redirect('/book/delivery')
+//   }
+// })
 
 router.post('/book/delivery', function (req, res) {
   if (!req.session.data['dm']) {
@@ -650,7 +838,33 @@ router.post('/book/delivery', function (req, res) {
     var errcode = true
     return res.render('book/delivery/index', { errcode })
   } else {
-    return res.redirect('/book/product')
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            DeliveryManagerName: req.session.data['dm-name'],
+            DeliveryManagerYN: req.session.data['dm'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/tasks')
+        })
+      },
+    )
+
+
   }
 })
 
@@ -662,7 +876,33 @@ router.post('/book/product', function (req, res) {
     var errcode = true
     return res.render('book/product/index', { errcode })
   } else {
-    return res.redirect('/book/check')
+
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            ProductManagerName: req.session.data['pm-name'],
+            ProductManagerYN: req.session.data['pm'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/delivery')
+        })
+      },
+    )
+
   }
 })
 
@@ -679,75 +919,14 @@ router.post('/book/process-request', function (req, res) {
 
   // Create AirTable entry
 
-  var endDate = null
-  var startDate = null
-
-  if (req.session.data['disco-end'] === 'Yes') {
-    endDate =
-      req.session.data['disco-end-month'] +
-      '/' +
-      req.session.data['disco-end-day'] +
-      '/' +
-      req.session.data['disco-end-year']
-  }
-
-  if (!req.session.data['disco-end']) {
-    endDate =
-      req.session.data['disco-end-month'] +
-      '/' +
-      req.session.data['disco-end-day'] +
-      '/' +
-      req.session.data['disco-end-year']
-  }
-
-  if (!req.session.data['disco-start']) {
-    startDate =
-      req.session.data['disco-start-month'] +
-      '/' +
-      req.session.data['disco-start-day'] +
-      '/' +
-      req.session.data['disco-start-year']
-  }
-
-  var requestedWeeks = ''
-
-  requestedWeeks = req.session.data['reviewWeek']
-    ? req.session.data['reviewWeek'].toString()
-    : ''
-
   var draftID = req.session.data['draftID']
-
-  var sroName = req.session.data['sro-name']
-
-  if (req.session.data['sro'] === 'Yes') {
-    sroName = req.session.data['dd']
-  }
 
   base('Reviews').update(
     [
       {
         id: draftID,
         fields: {
-          AssignedTo: 'Service Assessment Team',
-          BusinessPartnerName: req.session.data['bp-name'],
-          BusinessPartnerYN: req.session.data['bp'],
-          DeliveryManagerName: req.session.data['dm-name'],
-          DeliveryManagerYN: req.session.data['dm'],
-          DeputyDirector: req.session.data['dd'],
-          Description: req.session.data['purpose'],
-          Name: req.session.data['title'],
-          EndDate: endDate,
-          EndDateYN: req.session.data['disco-end'],
-          Portfolio: req.session.data['portfolio'],
-          ProductManagerName: req.session.data['pm-name'],
-          ProductManagerYN: req.session.data['pm'],
-          ProjectCode: req.session.data['code_'],
-          ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: requestedWeeks,
-          SROName: sroName,
-          SROSameAsDD: req.session.data['sro'],
-          StartDate: startDate,
-          StartDateYN: req.session.data['disco-start'],
+         
           Status: 'New',
           RequestedBy: 'Callum Mckay',
         },
@@ -778,7 +957,7 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
-  req.session.data = {}
+
   // This is the URL the users will be redirected to once the email
   // has been sent
   res.redirect('/book/submitted')
@@ -867,8 +1046,7 @@ router.get('/admin/dismiss-notification/:type/:id/:entry', function (req, res) {
 
   if (type === 'choosedate') {
     return res.redirect('/admin/entry/providedates/' + id)
-  }
-  else{
+  } else {
     return res.redirect('/admin/entry/' + id)
   }
 })
@@ -1859,7 +2037,7 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     return res.redirect('/admin/entry/rejected')
   }
 
-  if (view === 'send-survey' && req.body.sendsurvey === "Yes") {
+  if (view === 'send-survey' && req.body.sendsurvey === 'Yes') {
     console.log('send survey')
     axios
       .all([getDataByID(id), getTeam(id), getPanel(id), getObservers(id)])
@@ -1876,38 +2054,34 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
             })
             .then((response) =>
               console.log('Notification: ' + response.statusText),
-              
             )
             .catch((err) => console.error(err))
 
-
-            base('Reviews').update(
-              [
-                {
-                  id: entry.id,
-                  fields: {
-                    SurveySentDate: new Date()
-                  },
+          base('Reviews').update(
+            [
+              {
+                id: entry.id,
+                fields: {
+                  SurveySentDate: new Date(),
                 },
-              ],
-              function (err, records) {
-                if (err) {
-                  console.error(err)
-                  return
-                }
-                records.forEach(function (record) {
-                  console.log(record.get('Status'))
-                })
               },
-            )
+            ],
+            function (err, records) {
+              if (err) {
+                console.error(err)
+                return
+              }
+              records.forEach(function (record) {
+                console.log(record.get('Status'))
+              })
+            },
+          )
 
           req.session.data['send-survey-' + id] = 'Yes'
           return res.redirect('/admin/entry/send-survey/' + id)
         }),
       )
-      
-  }
-  else{
+  } else {
     return res.redirect('/admin/entry/' + id)
   }
 })
@@ -1965,7 +2139,6 @@ router.get('/report/:id', function (req, res) {
         })
       }),
     )
-
 })
 
 // MANAGE
@@ -2057,7 +2230,7 @@ router.get('/manage/draft/:record', function (req, res) {
 
       req.session.data['retrieved'] = 'Yes'
 
-      return res.redirect('/book/check')
+      return res.redirect('/book/tasks/')
     }),
   )
 })

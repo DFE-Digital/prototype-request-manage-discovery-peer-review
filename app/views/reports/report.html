@@ -8,7 +8,19 @@ Report – {{serviceName}} –  Book and manage a discovery peer review
 
 {% block beforeContent %}
 
-    <a href="/reports" class="govuk-back-link">Back</a>
+    <div class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    <li class="govuk-breadcrumbs__list-item">
+      <a class="govuk-breadcrumbs__link" href="/reports">Reports</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item">
+      <a class="govuk-breadcrumbs__link" href="/reports/type/discovery">Discovery peer reviews</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item">
+      {{entry.fields.Name}}
+    </li>
+  </ol>
+</div>
 
     {% endblock%}
 
