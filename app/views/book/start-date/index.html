@@ -69,7 +69,7 @@ When did you start discovery? – {{serviceName}} –  Book and manage a discove
                     <label class="govuk-label govuk-date-input__label" for="disco-start-day">
             Day
           </label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 {%if err%} govuk-input--error{% endif%}" id="disco-start-day" name="disco-start-day" type="text" inputmode="numeric" value="{{data['disco-start-day']}}">
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 {%if err%} govuk-input--error{% endif%}" id="disco-start-day" name="disco-start-day" type="text" inputmode="numeric" value="{{entry.fields.StartDate}}">
                   </div>
                 </div>
                 <div class="govuk-date-input__item">

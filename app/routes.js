@@ -256,9 +256,11 @@ router.get('/settings/cross-gov', function (req, res) {
 
 // BOOK
 router.get('/book', function (req, res) {
-   req.session.data = {}
+   //req.session.data = {}
 
-  req.session.data['retrieved'] = 'No'
+   console.log('book')
+
+  //req.session.data['retrieved'] = 'No'
 
   axios.all([getData('Draft')]).then(
     axios.spread((draftrecords) => {
@@ -275,6 +277,8 @@ router.get('/book/tasks', function (req, res) {
 
   if(!req.session.data['draftID'])
   {
+    console.log('book/tasks redirect to book')
+
     return res.redirect('/book')
   }
 
@@ -509,7 +513,7 @@ router.post('/book/end-date', function (req, res) {
         id: draftID,
         fields: {
           EndDate: endDate,
-          EndDateYN: req.session.data['disco-end'],
+          EndDateYN: req.session.data['disco-end']
         },
       },
     ],
@@ -806,6 +810,7 @@ router.post('/book/dates', function (req, res) {
           id: draftID,
           fields: {
             RequestedWeeks: requestedWeeks,
+            SessionReviewWeek: req.session.data['reviewWeek']
           },
         },
       ],
@@ -2341,16 +2346,24 @@ router.get('/manage/draft/:record', function (req, res) {
 
   axios.all([getEntryByPrimaryID(id)]).then(
     axios.spread((entry) => {
-      console.log(entry)
 
+
+      console.log('retrieve')
       // Load the draft into session
       req.session.data['draftID'] = entry.id
       req.session.data['ID'] = entry.fields.ID
       req.session.data['title'] = entry.fields.Name
 
+      req.session.data['reviewWeek'] = entry.fields.SessionReviewWeek
       req.session.data['retrieved'] = 'Yes'
+return res.redirect('/book/tasks/')
+      try{
+      
+      }catch(err){
+        console.log(err)
+      }
 
-      return res.redirect('/book/tasks/')
+      
     }),
   )
 })
