@@ -16,7 +16,6 @@ var momentBusinessDays = require('moment-business-days')
 
 var Airtable = require('airtable')
 var axios = require('axios')
-const { NULL } = require('mysql/lib/protocol/constants/types')
 var base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
   'appiBjyMzgmJEGFqn',
 )
