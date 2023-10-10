@@ -1,4 +1,4 @@
-<h2 class="govuk-heading-l govuk-!-margin-bottom-5">Submission</h2>
+<h2 class="govuk-heading-l govuk-!-margin-bottom-5">Peer review submission</h2>
 
 <p>Wade Wilson submitted this request on {{entry.fields.Created|date('D MMMM YYYY [at] HH:mm') }}.</p>
 
@@ -36,7 +36,7 @@
     <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Project code</dt>
         <dd class="govuk-summary-list__value">{% if entry.fields.ProjectCode %}{{entry.fields.ProjectCode}}
-                {% else %}No project code provided{% endif%}{{entry.fields.ProjectCode}}</dd>
+                {% else %}No project code provided{% endif%}</dd>
         <dd class="govuk-summary-list__actions">
             {% if entry.fields.Status !== "Complete" and entry.fields.Status !== "Cancelled" and entry.fields.Status !== "Rejected" %}
                 <a class="govuk-link" href="/admin/entry/amend/code/{{entry.fields.ID}}/{{entry.id}}">Change<span class="govuk-visually-hidden"> code</span></a>{% endif%}

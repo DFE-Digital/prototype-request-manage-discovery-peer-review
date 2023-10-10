@@ -8,16 +8,7 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
 
 {% block beforeContent %}
 
-    <div class="govuk-phase-banner">
-        <p class="govuk-phase-banner__content">
-            <strong class="govuk-tag govuk-phase-banner__content__tag">
-      alpha
-    </strong>
-            <span class="govuk-phase-banner__text">
-      This is a prototype – it is not a real service.
-    </span>
-        </p>
-    </div>
+
 
     {% endblock%}
 
@@ -64,6 +55,9 @@ admin – {{serviceName}} –  Book and admin a discovery peer review
                 accessibleAutocomplete.enhanceSelectElement({selectElement: document.querySelector('.auto')})
             {% elseif view === "add-panel-observer" %}
                 accessibleAutocomplete.enhanceSelectElement({selectElement: document.querySelector('.auto')})
+
+            {% elseif view === "add-business-partner" %}
+                accessibleAutocomplete.enhanceSelectElement({defaultValue: '{{ entry.fields.BusinessPartnerName }}', selectElement: document.querySelector('.auto')})
             {% endif %}
         </script>
     {% endblock %}

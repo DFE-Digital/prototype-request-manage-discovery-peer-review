@@ -19,16 +19,16 @@
                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
             </li>
             <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' or view === 'reject_reason'%}dfeuk-vertical-nav__section-item--current{% endif%}">
-                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">Submission</a>
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">View or update submission</a>
             </li>
 
         {% else %}
 
-            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' or view === 'providedates' or view === 'adddateoption' or view==='start-peer-review' %}dfeuk-vertical-nav__section-item--current{% endif%}">
+            <li class="dfeuk-vertical-nav__section-item {% if view === 'new' or view === 'providedates' or view === 'adddateoption' or view==='start-peer-review' or view==='send-survey' or view==='add-date-option' or view==='add-project-code'  or view==='add-business-partner'  or view==='slack' %}dfeuk-vertical-nav__section-item--current{% endif%}">
                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/{{entry.fields.ID}}">Tasks</a>
             </li>
             <li class="dfeuk-vertical-nav__section-item {% if view === 'submission' %}dfeuk-vertical-nav__section-item--current{% endif%}">
-                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">Submission</a>
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/submission/{{entry.fields.ID}}">View or update submission</a>
             </li>
             <li class="dfeuk-vertical-nav__section-item {% if view === 'team' or view==='add-team-member'  or view==='remove-team-member'%}dfeuk-vertical-nav__section-item--current{% endif%}">
                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/team/{{entry.fields.ID}}">Discovery team</a>
@@ -38,7 +38,7 @@
                 <a class="dfeuk-vertical-nav__link " href="/admin/entry/files/{{entry.fields.ID}}">Supporting artefacts</a>
             </li>
             <li class="dfeuk-vertical-nav__section-item {% if view === 'panel' or view==='add-panel-member'  or view==='remove-panel-member' or view==='add-panel-observer'  or view==='remove-panel-observer' %}dfeuk-vertical-nav__section-item--current{% endif%}">
-                <a class="dfeuk-vertical-nav__link " href="/admin/entry/panel/{{entry.fields.ID}}">Review panel</a>
+                <a class="dfeuk-vertical-nav__link " href="/admin/entry/panel/{{entry.fields.ID}}">Panel and observers</a>
             </li>
 
         {% endif %}

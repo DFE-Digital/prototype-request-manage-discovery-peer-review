@@ -8,16 +8,7 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
 
 {% block beforeContent %}
 
-    <div class="govuk-phase-banner">
-        <p class="govuk-phase-banner__content">
-            <strong class="govuk-tag govuk-phase-banner__content__tag">
-      alpha
-    </strong>
-            <span class="govuk-phase-banner__text">
-      This is a prototype – it is not a real service.
-    </span>
-        </p>
-    </div>
+
 
     <a href="/book/product" class="govuk-back-link">Back</a>
 
@@ -50,14 +41,14 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                     <a class="govuk-link" href="/book/summary">Change<span class="govuk-visually-hidden"> summary of discovery</span></a>
                                 </dd>
                             </div>
-                            <div class="govuk-summary-list__row">
+                            {# <div class="govuk-summary-list__row">
                                 <dt class="govuk-summary-list__key">Project code</dt>
                                 <dd class="govuk-summary-list__value">
                                     {% if data['code'] === "Yes"%}{{data['code_']}}{% else%}No{% endif%}</dd>
                                     <dd class="govuk-summary-list__actions">
                                         <a class="govuk-link" href="/book/code">Change<span class="govuk-visually-hidden"> code</span></a>
                                     </dd>
-                                </div>
+                                </div> #}
 
                                 {%if (data['disco-start-month'] and data['disco-start-day'] and data['disco-start-year']) %}{% set dstartDate = (data['disco-start-month']+"/"+data['disco-start-day']+"/"+data['disco-start-year']) %}
                                 {% endif %}
@@ -65,14 +56,10 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                 <div class="govuk-summary-list__row">
                                     <dt class="govuk-summary-list__key">Start date</dt>
                                     <dd class="govuk-summary-list__value">
-                                        {% if data['disco-start'] and data['disco-start'] === "Yes"  %}
+                                        {% if dstartDate.length  %}
                                             {{dstartDate | date('D MMMM YYYY')}}
-                                        {% elseif data['disco-start'] and data['disco-start'] === "No"  %}
-                                  No
-                                  {% else %}
-                                            {% if dstartDate %}
-                                                {{dstartDate | date('D MMMM YYYY')}}
-                                                {% endif%}
+                                        {% else %}
+                                  No date entered
                                             {% endif %}
                                         </dd>
                                         <dd class="govuk-summary-list__actions">
@@ -94,11 +81,15 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                         <div class="govuk-summary-list__row">
                                             <dt class="govuk-summary-list__key">Requested week(s)</dt>
                                             <dd class="govuk-summary-list__value">
+                                                {% if data['reviewWeek'].length %}
                                                 <ul class="govuk-list">
                                                     {% for item in data['reviewWeek' | split(",")] %}
                                                         <li>{{ item }}</li>
                                                     {% endfor %}
                                                 </ul>
+                                                {%else%}
+                                                    No weeks selected or available
+                                                {% endif%}
                                             </dd>
                                             <dd class="govuk-summary-list__actions">
                                                 <a class="govuk-link" href="/book/dates">Change<span class="govuk-visually-hidden"> requested week for review</span></a>
@@ -131,14 +122,14 @@ Do you have a delivery manager? – {{serviceName}} –  Book and manage a disco
                                                 <a class="govuk-link" href="/book/sro">Change<span class="govuk-visually-hidden"> SRO</span></a>
                                             </dd>
                                         </div>
-                                        <div class="govuk-summary-list__row">
+                                        {# <div class="govuk-summary-list__row">
                                             <dt class="govuk-summary-list__key">Business partner</dt>
                                             <dd class="govuk-summary-list__value">
                                                 {% if data['bp'] === "Yes"%}<br/>{{data['bp-name']}}{% else%}No{% endif%}</dd>
                                                 <dd class="govuk-summary-list__actions">
                                                     <a class="govuk-link" href="/book/bp">Change<span class="govuk-visually-hidden"> business partner</span></a>
                                                 </dd>
-                                            </div>
+                                            </div> #}
                                             <div class="govuk-summary-list__row">
                                                 <dt class="govuk-summary-list__key">Delivery manager</dt>
                                                 <dd class="govuk-summary-list__value">

@@ -1,19 +1,66 @@
-<h2 class="govuk-heading-l">Provide available dates and times</h2>
+{% set sessionVar = 'add-date-option'+'-'+entry.fields.ID%}
 
-<p>The team have selected the following weeks as suitable for their peer review:</p>
+{% if data[sessionVar].length %}
 
-{% set weeks = entry.fields.RequestedWeeks | split(",")%}
-<ul class="govuk-list govuk-list--bullet">
-    {% for item in weeks %}
-        <li>week beginning {{ item }}</li>
-    {% endfor %}
-</ul>
+<div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+  aria-labelledby="govuk-notification-banner-title"
+  data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+      Success
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <h3 class="govuk-notification-banner__heading">
+      Review date and time updated. 
+    </h3>
+    <p class="govuk-body">You may need to update calendar invites.</p>
+
+      <p class="govuk-body"><a href="/admin/dismiss-notification/add-date-option/{{entry.fields.ID}}/{{entry.id}}">Return to tasks</a></p>
+  </div>
+</div>
+
+{% endif %}
+
+
+<h2 class="govuk-heading-l">Set review date and time</h2>
+
+<div class="govuk-inset-text">
+    <p>The team have selected the following weeks as suitable for their peer review:</p>
+
+    {% if entry.fields.RequestedWeeks.length%}
+     {% if entry.fields.RequestedWeeks.length > 1%}
+        {% set weeks = entry.fields.RequestedWeeks | split(",")%}
+        <ul class="govuk-list govuk-list--bullet">
+            {% for item in weeks %}
+                <li>week beginning {{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul class="govuk-list govuk-list--bullet">
+           
+                <li>week beginning {{ entry.fields.RequestedWeeks }}</li>
+        </ul>
+     {% endif %}
+
+ {% else %}
+        <p>The end date of the discovery has been entered as {{entry.fields.EndDate | date('D MMM YYYY')}} which is less than 5 weeks away.</p>
+
+        <p>You may want to contact {{entry.fields.RequestedBy}} about this, or continue to add dates for the team to select for their peer review.</p>
+
+    {% endif %}
+</div>
 
 <form action="/admin/entry/amend/add-date-option/{{entry.fields.ID}}/{{entry.id}}" method="post">
 
+ {% set rdate = "" %}
+
+   {% if entry.fields.ReviewDate%}
+    {% set rdate =  entry.fields.ReviewDate | split("-")%}
+{% endif %}
     <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" role="group" aria-describedby="available-hint">
-            <legend class="govuk-fieldset__legend ">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                Date
             </legend>
             <div id="available-hint" class="govuk-hint">
@@ -25,7 +72,7 @@
                         <label class="govuk-label govuk-date-input__label" for="available-day">
             Day
           </label>
-                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="available-day" name="available-day" type="text" inputmode="numeric">
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="available-day" name="available-day" type="text" inputmode="numeric" value="{{rdate[2]}}">
                     </div>
                 </div>
                 <div class="govuk-date-input__item">
@@ -33,7 +80,7 @@
                         <label class="govuk-label govuk-date-input__label" for="available-month">
             Month
           </label>
-                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="available-month" name="available-month" type="text" inputmode="numeric">
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="available-month" name="available-month" type="text" inputmode="numeric" value="{{rdate[1]}}">
                     </div>
                 </div>
                 <div class="govuk-date-input__item">
@@ -41,7 +88,7 @@
                         <label class="govuk-label govuk-date-input__label" for="available-year">
             Year
           </label>
-                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="available-year" name="available-year" type="text" inputmode="numeric">
+                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="available-year" name="available-year" type="text" inputmode="numeric" value="{{rdate[0]}}">
                     </div>
                 </div>
             </div>
@@ -49,36 +96,42 @@
     </div>
 
     <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset" aria-describedby="availabletime-hint">
-            <legend class="govuk-fieldset__legend">
-               Times
-            </legend>
-            <div id="availabletime-hint" class="govuk-hint">
-      Select all that apply.
+  <fieldset class="govuk-fieldset" aria-describedby="availabletime-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      Selected time
+    </legend>
+    <div id="availabletime-hint" class="govuk-hint">
+      This includes changing your last name or spelling your name differently.
     </div>
-            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="availabletime" name="availabletime" type="checkbox" value="10:00">
-                    <label class="govuk-label govuk-checkboxes__label" for="availabletime">
+    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="availabletime" name="availabletime" type="radio" value="10:00" {%if entry.fields.ReviewTime === "10:00"%}checked{% endif %}>
+        <label class="govuk-label govuk-radios__label" for="availabletime">
           10am to 12pm
         </label>
-                </div>
-                <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="availabletime-2" name="availabletime" type="checkbox" value="13:00">
-                    <label class="govuk-label govuk-checkboxes__label" for="availabletime-2">
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="availabletime-2" name="availabletime" type="radio" value="13:00" {%if entry.fields.ReviewTime === "13:00"%}checked{% endif %}>
+        <label class="govuk-label govuk-radios__label" for="availabletime-2">
           1pm to 3pm
         </label>
-                </div>
-
-            </div>
-        </fieldset>
+      </div>
     </div>
+  </fieldset>
+</div>
+
+
 
     <div class="govuk-button-group">
         <button class="govuk-button" data-module="govuk-button">
-    Add to list of date options
-  </button>
-        <a class="govuk-link" href="/admin/entry/providedates/{{entry.fields.ID}}">Cancel</a>
-    </div>
+            {% if entry.fields.ReviewDate %}
+             Change review date
+            {% else %}
+    Save review date
+    {%endif%}
+            </button>
+            <a href="/admin/entry/{{entry.fields.ID}}">Return to tasks</a>
 
-</form>
+        </div>
+
+    </form>

@@ -24,24 +24,28 @@
 
 {% endif %}
 
-<h2 class="govuk-heading-l">Provide available dates and times</h2>
+<h2 class="govuk-heading-l">Update review date</h2>
 
+
+<div class="govuk-inset-text">
 <p>The team have selected the following weeks as suitable for their peer review:</p>
 
-{% if entry.fields.RequestedWeeks.length %}
-{% set weeks = entry.fields.RequestedWeeks | split(",")%}
-<ul class="govuk-list govuk-list--bullet">
-    {% for item in weeks %}
-        <li>week beginning {{ item }}</li>
-    {% endfor %}
-</ul>
-{% else %}
+    {% if entry.fields.RequestedWeeks.length %}
+    {% set weeks = entry.fields.RequestedWeeks | split(",")%}
+        <ul class="govuk-list govuk-list--bullet">
+            {% for item in weeks %}
+                <li>week beginning {{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+
 
 <p>The end date of the discovery has been entered as {{entry.fields.EndDate | date('D MMM YYYY')}} which is less than 5 weeks away.</p>
 
 <p>You may want to contact {{entry.fields.RequestedBy}} about this, or continue to add dates for the team to select for their peer review.</p>
 
 {% endif %}
+</div>
 
 <div class="govuk-summary-card">
     <div class="govuk-summary-card__title-wrapper">

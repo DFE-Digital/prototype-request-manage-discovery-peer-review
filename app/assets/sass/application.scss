@@ -1534,4 +1534,22 @@ p.formatted-content {
   +table, +p {
     margin-top: 24px;
   }
+
 }
+
+
+
+
+.dfeuk-header--username{
+  padding-bottom: 25px;
+  margin:0px;
+  text-align: right;
+  color: $color_dfeuk-white;
+  @include dfeuk-typography-responsive(19);
+}
+
+
+.app-task-list__task-name{width: 30%; display: inline-block; }
+.app-task-list__task-value{display: inline-block; width: 49%; }
+
+.app-task-list__task-tag{display: inline-block;  width: 20%; }

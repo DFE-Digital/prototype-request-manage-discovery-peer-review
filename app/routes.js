@@ -11,6 +11,9 @@ var NotifyClient = require('notifications-node-client').NotifyClient,
 
 const { v4: uuidv4 } = require('uuid')
 
+var moment = require('moment')
+var momentBusinessDays = require('moment-business-days')
+
 var Airtable = require('airtable')
 var axios = require('axios')
 var base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
@@ -253,14 +256,38 @@ router.get('/settings/cross-gov', function (req, res) {
 
 // BOOK
 router.get('/book', function (req, res) {
-  // req.session.data = {}
+   //req.session.data = {}
 
-  req.session.data['retrieved'] = 'No'
+   console.log('book')
+
+  //req.session.data['retrieved'] = 'No'
 
   axios.all([getData('Draft')]).then(
     axios.spread((draftrecords) => {
       return res.render('book/index', {
         draftrecords,
+      })
+    }),
+  )
+})
+
+// Retrieved booking
+router.get('/book/tasks', function (req, res) {
+  // req.session.data = {}
+
+  if(!req.session.data['draftID'])
+  {
+    console.log('book/tasks redirect to book')
+
+    return res.redirect('/book')
+  }
+
+  var id = req.session.data['draftID']
+
+  axios.all([getEntryByPrimaryID(id)]).then(
+    axios.spread((entry) => {
+      return res.render('book/tasks/index', {
+        entry,
       })
     }),
   )
@@ -339,7 +366,7 @@ router.post('/book/summary', function (req, res) {
         if (req.session.data['cya'] === 'true') {
           return res.redirect('/book/check')
         } else {
-          return res.redirect('/book/code')
+          return res.redirect('/book/start-date')
         }
       })
     },
@@ -391,41 +418,65 @@ router.post('/book/code', function (req, res) {
 })
 
 router.get('/book/start-date', function (req, res) {
-  if (process.env.abtest === 'b') {
-    res.render('book/start-date/b')
-  } else {
-    res.render('book/start-date/index')
-  }
+  // if (process.env.abtest === 'b') {
+  //   res.render('book/start-date/b')
+  // } else {
+  res.render('book/start-date/index')
+  // }
 })
 
 router.post('/book/start-date', function (req, res) {
-  if (process.env.abtest === 'b') {
-    // Yes no and Date
-    if (!req.session.data['disco-start']) {
-      var err = true
-      return res.render('book/start-date/b', { err })
-    } else if (
-      req.session.data['disco-start'] === 'Yes' &&
-      (!req.session.data['disco-start-day'] ||
-        !req.session.data['disco-start-month'] ||
-        !req.session.data['disco-start-year'])
-    ) {
-      var errcode = true
-      return res.render('book/start-date/b', { errcode })
-    }
-  } else {
-    // Just date
-    if (
-      !req.session.data['disco-start-day'] ||
-      !req.session.data['disco-start-month'] ||
-      !req.session.data['disco-start-year']
-    ) {
-      var err = true
-      return res.render('book/start-date/index', { err })
-    }
+  if (
+    !req.session.data['disco-start-day'] ||
+    !req.session.data['disco-start-month'] ||
+    !req.session.data['disco-start-year']
+  ) {
+    var err = true
+    return res.render('book/start-date/index', { err })
   }
 
-  return res.redirect('/book/end-date')
+  var draftID = req.session.data['draftID']
+  console.log(draftID)
+
+  var startDate = null
+
+  startDate =
+    req.session.data['disco-start-month'] +
+    '/' +
+    req.session.data['disco-start-day'] +
+    '/' +
+    req.session.data['disco-start-year']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          StartDate: startDate,
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/end-date')
+      })
+    },
+  )
+})
+
+router.get('/book/end-date', function (req, res) {
+  // if (process.env.abtest === 'b') {
+  //   res.render('book/start-date/b')
+  // } else {
+  res.render('book/end-date/index')
+  // }
 })
 
 router.post('/book/end-date', function (req, res) {
@@ -442,7 +493,43 @@ router.post('/book/end-date', function (req, res) {
     return res.render('book/end-date/index', { errcode })
   }
 
-  return res.redirect('/book/dates')
+  var draftID = req.session.data['draftID']
+  console.log(draftID)
+
+  var endDate = null
+
+  if (req.session.data['disco-end'] === 'Yes') {
+    endDate =
+      req.session.data['disco-end-month'] +
+      '/' +
+      req.session.data['disco-end-day'] +
+      '/' +
+      req.session.data['disco-end-year']
+  }
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          EndDate: endDate,
+          EndDateYN: req.session.data['disco-end']
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/dates')
+      })
+    },
+  )
 })
 
 router.get('/book/dates', function (req, res) {
@@ -464,6 +551,133 @@ router.get('/book/dates', function (req, res) {
   console.log(endDateEstimated)
 
   // What are the weeks 5-10 from now?
+
+  var weeks5 = getMonday(addWeeksToDate(new Date(), 5).toISOString())
+  var weeks6 = getMonday(addWeeksToDate(new Date(), 6).toISOString())
+  var weeks7 = getMonday(addWeeksToDate(new Date(), 7).toISOString())
+  var weeks8 = getMonday(addWeeksToDate(new Date(), 8).toISOString())
+  var weeks9 = getMonday(addWeeksToDate(new Date(), 9).toISOString())
+  var weeks10 = getMonday(addWeeksToDate(new Date(), 10).toISOString())
+
+  //Get monday of the week
+
+  let dates = []
+
+  // Is estimated end date before end of week????
+
+  var id = req.session.data['ID']
+
+  axios
+  .all([
+    getDataByID(id)
+  ])
+  .then(
+    axios.spread((entryx) => {
+      entry = entryx[0]
+
+  if (entry.fields.EndDateYN === 'No') {
+    dates.push({
+      week: weeks5.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks6.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks7.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks8.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks9.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+    dates.push({
+      week: weeks10.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+      }),
+    })
+  } else {
+    if (endDateEstimated >= weeks5) {
+      dates.push({
+        week: weeks5.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks6) {
+      dates.push({
+        week: weeks6.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks7) {
+      dates.push({
+        week: weeks7.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks8) {
+      dates.push({
+        week: weeks8.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks9) {
+      dates.push({
+        week: weeks9.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+    if (endDateEstimated >= weeks10) {
+      dates.push({
+        week: weeks10.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+        }),
+      })
+    }
+  }
+  console.log(dates)
+
+  req.session.data['dates'] = dates
+  if (dates.length) {
+    req.session.data['hasdates'] = 'yes'
+  } else {
+    req.session.data['hasdates'] = 'no'
+  }
+  console.log(req.session.data['hasdates'])
+  res.render('book/dates/index.html', { dates, entry })
+
+}),
+)
+})
+
+router.get('/book/dates', function(req, res){
 
   var weeks5 = getMonday(addWeeksToDate(new Date(), 5).toISOString())
   var weeks6 = getMonday(addWeeksToDate(new Date(), 6).toISOString())
@@ -568,13 +782,6 @@ router.get('/book/dates', function (req, res) {
   console.log(dates)
 
   req.session.data['dates'] = dates
-  if (dates.length) {
-    req.session.data['hasdates'] = 'yes'
-  } else {
-    req.session.data['hasdates'] = 'no'
-  }
-  console.log(req.session.data['hasdates'])
-  res.render('book/dates/index.html', { dates })
 })
 
 router.post('/book/dates', function (req, res) {
@@ -589,7 +796,37 @@ router.post('/book/dates', function (req, res) {
     err = true
     return res.render('book/dates/index', { dates, err })
   } else {
-    return res.redirect('/book/portfolio')
+    var requestedWeeks = ''
+
+    requestedWeeks = req.session.data['reviewWeek']
+      ? req.session.data['reviewWeek'].toString()
+      : 'None available as end date is within next 5 weeks'
+
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            RequestedWeeks: requestedWeeks,
+            SessionReviewWeek: req.session.data['reviewWeek']
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/portfolio')
+        })
+      },
+    )
   }
 })
 
@@ -599,7 +836,31 @@ router.post('/book/portfolio', function (req, res) {
     return res.render('book/portfolio/index', { err })
   }
 
-  return res.redirect('/book/dd')
+  var draftID = req.session.data['draftID']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          Portfolio: req.session.data['portfolio'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/dd')
+      })
+    },
+  )
+
 })
 
 router.post('/book/dd', function (req, res) {
@@ -608,7 +869,31 @@ router.post('/book/dd', function (req, res) {
     return res.render('book/dd/index', { err })
   }
 
-  return res.redirect('/book/sro')
+  var draftID = req.session.data['draftID']
+
+  base('Reviews').update(
+    [
+      {
+        id: draftID,
+        fields: {
+          DeputyDirector: req.session.data['dd'],
+        },
+      },
+    ],
+    { typecast: true },
+    function (err, records) {
+      if (err) {
+        console.error(err)
+        return
+      }
+      records.forEach(function (record) {
+        console.log(record.fields.ID)
+
+        return res.redirect('/book/sro')
+      })
+    },
+  )
+
 })
 
 router.post('/book/sro', function (req, res) {
@@ -622,21 +907,52 @@ router.post('/book/sro', function (req, res) {
     var errcode = true
     return res.render('book/sro/index', { errcode })
   } else {
-    return res.redirect('/book/bp')
+    var draftID = req.session.data['draftID']
+
+    var sroName = req.session.data['sro-name']
+
+    if (req.session.data['sro'] === 'Yes') {
+      sroName = req.session.data['dd']
+    }
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            SROName: sroName,
+            SROSameAsDD: req.session.data['sro'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/product')
+        })
+      },
+    )
+
   }
 })
 
-router.post('/book/bp', function (req, res) {
-  if (!req.session.data['bp']) {
-    var err = true
-    return res.render('book/bp/index', { err })
-  } else if (req.session.data['bp'] === 'Yes' && !req.session.data['bp-name']) {
-    var errcode = true
-    return res.render('book/bp/index', { errcode })
-  } else {
-    return res.redirect('/book/delivery')
-  }
-})
+// router.post('/book/bp', function (req, res) {
+//   if (!req.session.data['bp']) {
+//     var err = true
+//     return res.render('book/bp/index', { err })
+//   } else if (req.session.data['bp'] === 'Yes' && !req.session.data['bp-name']) {
+//     var errcode = true
+//     return res.render('book/bp/index', { errcode })
+//   } else {
+//     return res.redirect('/book/delivery')
+//   }
+// })
 
 router.post('/book/delivery', function (req, res) {
   if (!req.session.data['dm']) {
@@ -646,7 +962,33 @@ router.post('/book/delivery', function (req, res) {
     var errcode = true
     return res.render('book/delivery/index', { errcode })
   } else {
-    return res.redirect('/book/product')
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            DeliveryManagerName: req.session.data['dm-name'],
+            DeliveryManagerYN: req.session.data['dm'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/tasks')
+        })
+      },
+    )
+
+
   }
 })
 
@@ -658,7 +1000,33 @@ router.post('/book/product', function (req, res) {
     var errcode = true
     return res.render('book/product/index', { errcode })
   } else {
-    return res.redirect('/book/check')
+
+    var draftID = req.session.data['draftID']
+
+    base('Reviews').update(
+      [
+        {
+          id: draftID,
+          fields: {
+            ProductManagerName: req.session.data['pm-name'],
+            ProductManagerYN: req.session.data['pm'],
+          },
+        },
+      ],
+      { typecast: true },
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.fields.ID)
+
+          return res.redirect('/book/delivery')
+        })
+      },
+    )
+
   }
 })
 
@@ -675,75 +1043,14 @@ router.post('/book/process-request', function (req, res) {
 
   // Create AirTable entry
 
-  var endDate = null
-  var startDate = null
-
-  if (req.session.data['disco-end'] === 'Yes') {
-    endDate =
-      req.session.data['disco-end-month'] +
-      '/' +
-      req.session.data['disco-end-day'] +
-      '/' +
-      req.session.data['disco-end-year']
-  }
-
-  if (!req.session.data['disco-end']) {
-    endDate =
-      req.session.data['disco-end-month'] +
-      '/' +
-      req.session.data['disco-end-day'] +
-      '/' +
-      req.session.data['disco-end-year']
-  }
-
-  if (!req.session.data['disco-start']) {
-    startDate =
-      req.session.data['disco-start-month'] +
-      '/' +
-      req.session.data['disco-start-day'] +
-      '/' +
-      req.session.data['disco-start-year']
-  }
-
-  var requestedWeeks = ''
-
-  requestedWeeks = req.session.data['reviewWeek']
-    ? req.session.data['reviewWeek'].toString()
-    : ''
-
   var draftID = req.session.data['draftID']
-
-  var sroName = req.session.data['sro-name']
-
-  if (req.session.data['sro'] === 'Yes') {
-    sroName = req.session.data['dd']
-  }
 
   base('Reviews').update(
     [
       {
         id: draftID,
         fields: {
-          AssignedTo: 'Service Assessment Team',
-          BusinessPartnerName: req.session.data['bp-name'],
-          BusinessPartnerYN: req.session.data['bp'],
-          DeliveryManagerName: req.session.data['dm-name'],
-          DeliveryManagerYN: req.session.data['dm'],
-          DeputyDirector: req.session.data['dd'],
-          Description: req.session.data['purpose'],
-          Name: req.session.data['title'],
-          EndDate: endDate,
-          EndDateYN: req.session.data['disco-end'],
-          Portfolio: req.session.data['portfolio'],
-          ProductManagerName: req.session.data['pm-name'],
-          ProductManagerYN: req.session.data['pm'],
-          ProjectCode: req.session.data['code_'],
-          ProjectCodeYN: req.session.data['code'],
-          RequestedWeeks: requestedWeeks,
-          SROName: sroName,
-          SROSameAsDD: req.session.data['sro'],
-          StartDate: startDate,
-          StartDateYN: req.session.data['disco-start'],
+         
           Status: 'New',
           RequestedBy: 'Callum Mckay',
         },
@@ -761,7 +1068,7 @@ router.post('/book/process-request', function (req, res) {
         notify
           .sendEmail(process.env.SATTemplateId, process.env.recipient, {
             personalisation: {
-              title: record.fields.Name,
+              nameOfDiscovery: record.fields.Name,
               summary: record.fields.Description,
               id: record.fields.ID,
             },
@@ -774,7 +1081,7 @@ router.post('/book/process-request', function (req, res) {
     },
   )
 
-  req.session.data = {}
+
   // This is the URL the users will be redirected to once the email
   // has been sent
   res.redirect('/book/submitted')
@@ -786,32 +1093,32 @@ router.post('/book/process-request', function (req, res) {
 /// /admin/
 router.get('/admin', function (req, res) {
   axios
-  .all([
-    getData('New'),
-    getData('Rejected'),
-    getData('Active'),
-    getData('Completed'),
-    getData('Cancelled'),
-  ])
-  .then(
-    axios.spread(
-      (
-        newrecords,
-        rejectedrecords,
-        activerecords,
-        completedrecords,
-        cancelledrecords,
-      ) => {
-        res.render('admin/index.html', {
+    .all([
+      getData('New'),
+      getData('Rejected'),
+      getData('Active'),
+      getData('Completed'),
+      getData('Cancelled'),
+    ])
+    .then(
+      axios.spread(
+        (
           newrecords,
           rejectedrecords,
           activerecords,
           completedrecords,
-          cancelledrecords
-        })
-      },
-    ),
-  )
+          cancelledrecords,
+        ) => {
+          res.render('admin/index.html', {
+            newrecords,
+            rejectedrecords,
+            activerecords,
+            completedrecords,
+            cancelledrecords,
+          })
+        },
+      ),
+    )
 })
 
 /// Gets view by status of the requests
@@ -837,7 +1144,7 @@ router.get('/admin/:status', function (req, res) {
           completedrecords,
           cancelledrecords,
         ) => {
-          res.render('admin/index.html', {
+          res.render('admin/statusview.html', {
             newrecords,
             rejectedrecords,
             activerecords,
@@ -854,14 +1161,17 @@ router.get('/admin/entry/rejected', function (req, res) {
   res.render('admin/entry/rejected.html')
 })
 
-router.get('/admin/dismiss-notification/:type/:id', function (req, res) {
+router.get('/admin/dismiss-notification/:type/:id/:entry', function (req, res) {
   var type = req.params.type
   var id = req.params.id
+  var entry = req.params.entry
 
   req.session.data[type + '-' + id] = {}
 
   if (type === 'choosedate') {
     return res.redirect('/admin/entry/providedates/' + id)
+  } else {
+    return res.redirect('/admin/entry/' + id)
   }
 })
 
@@ -869,23 +1179,43 @@ router.post('/admin/send-notification/:type/:id', function (req, res) {
   var type = req.params.type
   var id = req.params.id
 
-  if (type === 'choosedate') {
-    // Sends notification to the requestor that they can now select a date
-    notify
-      .sendEmail(
-        process.env.pick_some_dates_template_id,
-        process.env.recipient,
-        {
-          personalisation: {
-            id: id,
-          },
-        },
-      )
-      .then((response) => console.log('Notification: ' + response.statusText))
-      .catch((err) => console.error(err))
-  }
+  axios.all([getDataByID(id), getDates(id)]).then(
+    axios.spread((entryx, dates) => {
+      entry = entryx[0]
 
-  req.session.data[type + '-' + id] = 'Message sent'
+      if (type === 'choosedate') {
+        // format the date
+
+        var datef = new Date(dates[0].fields.Date)
+
+        var formattedDate = moment(datef).format('dddd D MMMM YYYY')
+
+        console.log(formattedDate)
+
+        // Sends notification to the requestor that they can now select a date
+        notify
+          .sendEmail(
+            process.env.pick_some_dates_template_id,
+            process.env.recipient,
+            {
+              personalisation: {
+                id: id,
+                nameOfDiscovery: entryx[0].fields.Name,
+                date: formattedDate,
+                time: dates[0].fields.Time,
+              },
+            },
+          )
+          .then((response) =>
+            console.log('Notification: ' + response.statusText),
+          )
+          .catch((err) => console.error(err))
+      }
+
+      req.session.data[type + '-' + id] = 'Message sent'
+    }),
+  )
+
   return res.redirect('/admin/entry/providedates/' + id)
 })
 
@@ -907,7 +1237,7 @@ router.get('/admin/entry/:id', async function (req, res) {
       getArtefacts(id),
       getPanel(id),
       getObservers(id),
-      getDates(id)
+      getDates(id),
     ])
     .then(
       axios.spread((entryx, team, artefacts, panel, observers, dates) => {
@@ -919,7 +1249,7 @@ router.get('/admin/entry/:id', async function (req, res) {
           view,
           panel,
           observers,
-          dates
+          dates,
         })
       }),
     )
@@ -961,7 +1291,7 @@ router.get('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 })
 
 // Saves the submission list value change
-router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
+router.post('/admin/entry/amend/:view/:id/:entry', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
   var entry = req.params.entry
@@ -980,55 +1310,92 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
 
     //availabletime
     var tempTimes = req.session.data['availabletime']
-    optiontime = req.session.data['availabletime'][0]
 
-    if (tempTimes.length === 1) {
-      base('ReviewDateOptions').create(
-        [
-          {
-            fields: {
-              Date: optiondate,
-              ReviewID: parseInt(id),
-              Time: optiontime,
-            },
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewDate: optiondate,
+            ReviewTime: tempTimes,
           },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log(record.get('ID'))
-          })
         },
-      )
-    } else {
-      tempTimes.forEach(function (time) {
-        base('ReviewDateOptions').create(
-          [
-            {
-              fields: {
-                Date: optiondate,
-                ReviewID: parseInt(id),
-                Time: time,
-              },
-            },
-          ],
-          function (err, records) {
-            if (err) {
-              console.error(err)
-              return
-            }
-            records.forEach(function (record) {
-              console.log(record.get('ID'))
-            })
-          },
-        )
-      })
-    }
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjeReviewDatectCode'))
+        })
+      },
+    )
 
-    return res.redirect('/admin/entry/providedates/' + id)
+    await wait(1500)
+
+    req.session.data['add-date-option-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-date-option/' + id + '/' + entry,
+    )
+  }
+
+  if (view === 'add-project-code') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ProjectCode: req.body.code_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+
+    await wait(1500)
+
+    req.session.data['add-project-code-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-project-code/' + id + '/' + entry,
+    )
+  }
+
+  if (view === 'add-business-partner') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            BusinessPartnerName: req.body.bp_,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ProjectCode'))
+        })
+      },
+    )
+
+    await wait(1500)
+
+    req.session.data['add-business-partner-' + id] = 'Yes'
+    return res.redirect(
+      '/admin/entry/amend/add-business-partner/' + id + '/' + entry,
+    )
   }
 
   if (view === 'remove-date-option') {
@@ -1041,7 +1408,7 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
         console.log(record.get('ID'))
       })
     })
-    return res.redirect('/admin/entry/providedates/' + id)
+    return res.redirect('/admin/entry/' + id)
   }
 
   if (view === 'add-panel-member') {
@@ -1200,6 +1567,30 @@ router.post('/admin/entry/amend/:view/:id/:entry', function (req, res) {
         })
       },
     )
+  }
+
+  if (view === 'slack') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            SlackChannel: req.body.slackchannel,
+            SlackURL: req.body.slackurl,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('slackchannel'))
+        })
+      },
+    )
+    return res.redirect('/admin/entry/' + id)
   }
 
   if (view === 'add-artefact') {
@@ -1471,6 +1862,13 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
   var id = req.params.id
   var view = req.params.view
 
+  var businessDays = momentBusinessDays(new Date(), 'DD-MM-YYYY').businessAdd(5)
+    ._d
+  var businessDaysPlus1 = momentBusinessDays(
+    new Date(),
+    'DD-MM-YYYY',
+  ).businessAdd(6)._d
+
   await wait(1500)
 
   axios
@@ -1493,6 +1891,8 @@ router.get('/admin/entry/:view/:id', async function (req, res) {
           panel,
           observers,
           dates,
+          businessDays,
+          businessDaysPlus1,
         })
       }),
     )
@@ -1589,6 +1989,110 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     return res.redirect('/admin/entry/review/' + id)
   }
 
+  // Update the status of the review
+  if (view === 'updatedonewell') {
+    var comments = req.body.review_donewell
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewDoneWell: comments,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ReviewDoneWell'))
+        })
+      },
+    )
+
+    return res.redirect('/admin/entry/review/' + id)
+  }
+
+  if (view === 'editimprove') {
+    var comments =
+      req.body.review_improve === '' ? null : req.body.review_improve
+
+    console.log(comments)
+
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            ReviewImprove: comments,
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('ReviewImprove'))
+        })
+      },
+    )
+
+    return res.redirect('/admin/entry/review/' + id)
+  }
+
+  if (view === 'submitreport') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Status: 'SAT Check',
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Status'))
+        })
+      },
+    )
+
+    return res.redirect('/admin/entry/' + id)
+  }
+
+  if (view === 'satsubmit') {
+    base('Reviews').update(
+      [
+        {
+          id: entry,
+          fields: {
+            Status: 'Complete',
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log(record.get('Status'))
+        })
+      },
+    )
+
+    return res.redirect('/admin/entry/' + id)
+  }
+
   if (view === 'process') {
     // This is the first task to accept or reject.
 
@@ -1656,6 +2160,54 @@ router.post('/admin/action/:view/:id/:entry', function (req, res) {
     )
     return res.redirect('/admin/entry/rejected')
   }
+
+  if (view === 'send-survey' && req.body.sendsurvey === 'Yes') {
+    console.log('send survey')
+    axios
+      .all([getDataByID(id), getTeam(id), getPanel(id), getObservers(id)])
+      .then(
+        axios.spread((entryx, team, panel, observers) => {
+          entry = entryx[0]
+
+          notify
+            .sendEmail(process.env.surveytemplateid, process.env.recipient, {
+              personalisation: {
+                nameOfDiscovery: entry.fields.Name,
+                id: entry.fields.ID,
+              },
+            })
+            .then((response) =>
+              console.log('Notification: ' + response.statusText),
+            )
+            .catch((err) => console.error(err))
+
+          base('Reviews').update(
+            [
+              {
+                id: entry.id,
+                fields: {
+                  SurveySentDate: new Date(),
+                },
+              },
+            ],
+            function (err, records) {
+              if (err) {
+                console.error(err)
+                return
+              }
+              records.forEach(function (record) {
+                console.log(record.get('Status'))
+              })
+            },
+          )
+
+          req.session.data['send-survey-' + id] = 'Yes'
+          return res.redirect('/admin/entry/send-survey/' + id)
+        }),
+      )
+  } else {
+    return res.redirect('/admin/entry/' + id)
+  }
 })
 
 // ANALYSIS
@@ -1691,14 +2243,26 @@ router.get('/reports', function (req, res) {
 router.get('/report/:id', function (req, res) {
   var id = req.params.id
 
-  axios.all([getDataByID(id)]).then(
-    axios.spread((entryx) => {
-      entry = entryx[0]
-      return res.render('reports/report.html', {
-        entry,
-      })
-    }),
-  )
+  axios
+    .all([
+      getDataByID(id),
+      getTeam(id),
+      getArtefacts(id),
+      getPanel(id),
+      getObservers(id),
+    ])
+    .then(
+      axios.spread((entryx, team, artefacts, panel, observers) => {
+        entry = entryx[0]
+        res.render('reports/report.html', {
+          entry,
+          team,
+          artefacts,
+          panel,
+          observers,
+        })
+      }),
+    )
 })
 
 // MANAGE
@@ -1782,15 +2346,24 @@ router.get('/manage/draft/:record', function (req, res) {
 
   axios.all([getEntryByPrimaryID(id)]).then(
     axios.spread((entry) => {
-      console.log(entry)
 
+
+      console.log('retrieve')
       // Load the draft into session
       req.session.data['draftID'] = entry.id
+      req.session.data['ID'] = entry.fields.ID
       req.session.data['title'] = entry.fields.Name
 
+      req.session.data['reviewWeek'] = entry.fields.SessionReviewWeek
       req.session.data['retrieved'] = 'Yes'
+return res.redirect('/book/tasks/')
+      try{
+      
+      }catch(err){
+        console.log(err)
+      }
 
-      return res.redirect('/book/check')
+      
     }),
   )
 })

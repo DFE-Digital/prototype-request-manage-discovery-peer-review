@@ -8,17 +8,6 @@ Request submitted – {{serviceName}} –  Book and manage a discovery peer revi
 
 {% block beforeContent %}
 
-    <div class="govuk-phase-banner">
-        <p class="govuk-phase-banner__content">
-            <strong class="govuk-tag govuk-phase-banner__content__tag">
-      alpha
-    </strong>
-            <span class="govuk-phase-banner__text">
-      This is a prototype – it is not a real service.
-    </span>
-        </p>
-    </div>
-
     {% endblock%}
 
     {% block content %}
@@ -29,10 +18,10 @@ Request submitted – {{serviceName}} –  Book and manage a discovery peer revi
                 <div class="govuk-panel govuk-!-margin-bottom-5 govuk-panel--confirmation govuk-!-text-align-left">
                     <h1 class="govuk-panel__title">Request submitted</h1>
                     <div class="govuk-panel__body">
-                        We've got your request to book a discovery peer review for <span class="govuk-!-font-weight-bold">{{data['title']}}</span>
+                        <p>We've got your request to book a discovery peer review.</p>
+                        <p>We've also sent you an email confirming the details.</p>
                     </div>
                 </div>
-                <p>We've sent you a confirmation email. 
 
                 <h2 class="govuk-heading-l">What happens next</h2>
             
@@ -40,7 +29,7 @@ Request submitted – {{serviceName}} –  Book and manage a discovery peer revi
 
                 <p>You can view the progress of your booking on the <a href="/manage/">manage</a> page.</p>
 
+                </div>
             </div>
-        </div>
 
-    {% endblock %}
+        {% endblock %}

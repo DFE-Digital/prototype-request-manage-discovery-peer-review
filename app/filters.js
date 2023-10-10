@@ -15,6 +15,10 @@ addFilter('split', function(str, seperator) {
 });
 
 
+addFilter('username', function(){
+    return process.env.username
+})
+
 addFilter('date', dateFilter);
 
 addFilter('BoolToYesNo', function(str){

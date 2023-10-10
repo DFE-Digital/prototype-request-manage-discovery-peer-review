@@ -1,0 +1,87 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Manage – {{serviceName}} –  Book and manage a discovery peer review
+{% endblock %}
+
+{% set pageSection = "Admin"%}
+
+{% block beforeContent %}
+
+
+
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+                <h2 class="govuk-heading-m">Reviews</h2>
+                <nav class="dfeuk-vertical-nav">
+                    <ul class="dfeuk-vertical-nav__section">
+                        <li class="dfeuk-vertical-nav__section-item  {%if type === 'new' %}dfeuk-vertical-nav__section-item--current{%endif%}">
+                            <span class="dfeuk-vertical-nav--count">{{newrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/admin/new">New</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item {%if type === 'active' %}dfeuk-vertical-nav__section-item--current{%endif%}">
+                            <span class="dfeuk-vertical-nav--count">{{activerecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/admin/active">Active</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">{{completedrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/admin/completed">Completed</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">{{cancelledrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/admin/cancelled">Cancelled</a>
+                        </li>
+
+                        <li class="dfeuk-vertical-nav__section-item">
+                            <span class="dfeuk-vertical-nav--count">{{rejectedrecords.length}}</span>
+                            <a class="dfeuk-vertical-nav__link " href="/admin/rejected">Rejected</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="govuk-grid-column-three-quarters">
+
+                <span class="govuk-caption-l">Service assessment team</span>
+         
+
+
+                {% if type === 'new'%}    <h1 class="govuk-heading-l">New requests</h1>
+                {% if newrecords.length %}   
+                    {% include "./_new.html" %}
+                {% else%}
+                    <p>There are no new requests.</p>
+                {% endif %}
+                 {% endif %}
+
+                 {% if type === 'active'%}    <h1 class="govuk-heading-l">Active peer reviews</h1>
+                {% if activerecords.length %}   
+                    {% include "./_active.html" %}
+                {% else%}
+                    <p>There are no active peer reviews.</p>
+                {% endif %}
+                 {% endif %}
+
+                         {% if type === 'completed'%}    <h1 class="govuk-heading-l">Completed peer reviews</h1>
+                {% if completedrecords.length %}   
+                    {% include "./_completed.html" %}
+                {% else%}
+                    <p>There are no completed peer reviews.</p>
+                {% endif %}
+                 {% endif %}
+
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters"></div>
+        </div>
+
+    {% endblock %}

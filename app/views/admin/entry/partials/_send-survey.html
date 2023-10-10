@@ -1,0 +1,101 @@
+{% set sessionVar = 'send-survey'+'-'+entry.fields.ID%}
+
+{% if data[sessionVar].length %}
+
+<div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+  aria-labelledby="govuk-notification-banner-title"
+  data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+      Success
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+    <h3 class="govuk-notification-banner__heading">
+      Customer satisfaction survey has been sent.
+    </h3>
+
+      <p class="govuk-body"><a href="/admin/dismiss-notification/send-survey/{{entry.fields.ID}}/{{entry.id}}">Return to tasks</a></p>
+  </div>
+</div>
+
+{% endif %}
+
+{% if entry.fields.SurveySentDate %}
+
+<div class="govuk-notification-banner govuk-notification-banner--information" role="alert"
+  aria-labelledby="govuk-notification-banner-title"
+  data-module="govuk-notification-banner">
+  <div class="govuk-notification-banner__header">
+    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+      Information
+    </h2>
+  </div>
+  <div class="govuk-notification-banner__content">
+     <p class="govuk-notification-banner__heading">Survey has been sent</p>
+      <p>The survey was sent to people involved in the discovery peer review on {{entry.fields.SurveySentDate | date('D MMMM YYYY [at] HH:mm')}}</p>
+   
+
+      <p class="govuk-body"><a href="/admin/dismiss-notification/send-survey/{{entry.fields.ID}}/{{entry.id}}">Return to tasks</a></p>
+  </div>
+</div>
+
+{% endif %}
+
+{% if not entry.fields.SurveySentDate %}
+  <h1 class="govuk-heading-l">Customer satisfaction survey</h1>
+
+<form method="post" action="/admin/action/send-survey/{{entry.fields.ID}}/{{entry.id}}">
+
+<p>The survey will be sent to the following people:</p>
+
+<ul>
+
+    <li>{{entry.fields.RequestedBy}}</li>
+
+{% for person in team %}<li>{{person.fields.Name}}</li>
+{% endfor %}
+
+{% for person in panel %}<li>{{person.fields.Name}}</li>
+{% endfor %}
+
+
+{% for person in observers %}<li>{{person.fields.Name}}</li>
+{% endfor %}
+</ul>
+
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="sendsurvey-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                <h2 class="govuk-fieldset__heading">
+        Do you want to send the survey?
+      </h2>
+            </legend>
+            <div id="sendsurvey-hint" class="govuk-hint">
+      An email will be sent to the people listed which contains a link to the feedback form.
+    </div>
+            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="sendsurvey" name="sendsurvey" type="radio" value="Yes" {% if entry.fields.SurveySentDate %}checked{%endif%}>
+                    <label class="govuk-label govuk-radios__label" for="sendsurvey">
+          Yes
+        </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="sendsurvey-2" name="sendsurvey" type="radio" value="No">
+                    <label class="govuk-label govuk-radios__label" for="sendsurvey-2">
+          No
+        </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="govuk-button-group">
+        <button  name="action" class="govuk-button"  data-module="govuk-button">Send survey</button>
+        <a href="/admin/entry/{{entry.fields.ID}}" class="govuk-link">Cancel and return to tasks</a>
+    </div>
+
+</form>
+
+{% endif %}
