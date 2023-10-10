@@ -39,7 +39,7 @@ Weeks – {{serviceName}} –  Book and manage a discovery peer review
         {% if data['disco-end'] === "Yes" and dates.length %}
           <p class="govuk-body">Based on your anticipated end date of {{data['disco-end-day']}}/{{data['disco-end-month']}}/{{data['disco-end-year']}} we are suggesting the following weeks for your peer review.</p>
         {% elseif data['disco-end'] === "Yes" and not dates.length%}
-          <p class="govuk-body">Your end date is within 5 weeks, you can submit a request and the Service Assessment Team will contact you.</p>
+          <p class="govuk-body">Your end date is within 5 weeks, you can submit a request and the service assessment team will contact you.</p>
         {% else %}
           <p class="govuk-body">As you have not provided an estimated end date for your discovery, you can choose date ranges between 5 and 10 weeks from now.</p>
         {% endif %}
